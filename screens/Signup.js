@@ -1,16 +1,28 @@
 import React from 'react'
 import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native'
 
-import Firebase from '../firebase'
+import firebase from '../firebase'
 
 class Signup extends React.Component {
 
     handleSignUp = () => {
-        const { email, password } = this.state
-        Firebase.auth()
+        const { name, email, password } = this.state
+        firebase.auth()
             .createUserWithEmailAndPassword(email, password)
-            .then(() => this.props.navigation.navigate('Profile'))
-            .catch(error => console.log(error))
+            .then((result) => {
+                // var db = firebase.firestore();
+                // db.collection("students").doc(result.user.uid).updateData({
+                //     name: name,
+                // }).then(function() {
+                //     console.log("Document successfully written!");
+                // }).catch(function(error) {
+                //     console.error("Error writing document: ", error);
+                // });
+                this.props.navigation.navigate('Profile');
+            })
+            .catch(error => console.log(error));
+        
+        
     }
 
     state = {

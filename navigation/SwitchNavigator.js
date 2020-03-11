@@ -4,6 +4,8 @@ import {
 import Login from '../screens/Login'
 import Signup from '../screens/Signup'
 import Profile from '../screens/Profile'
+import StudentMap from '../screens/StudentMap'
+import TutorPreview from '../screens/tutorPreview'
 
 const SwitchNavigator = createSwitchNavigator(
     {
@@ -15,6 +17,12 @@ const SwitchNavigator = createSwitchNavigator(
         },
         Profile: {
             screen: Profile
+        },
+        StudentMap: {
+            screen: StudentMap
+        },
+        TutorPreview: {
+            screen: TutorPreview
         }
     },
     {

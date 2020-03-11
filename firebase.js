@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import "firebase/firestore"
 let config = {
     apiKey: "AIzaSyDMxh7OITvNwXptgvB8OIvJAbPykF8pGeY",
     authDomain: "lavalab-project.firebaseapp.com",
@@ -10,4 +11,5 @@ let config = {
     measurementId: "G-SWV5KXFNW3"
 };
 let Firebase = firebase.initializeApp(config);
+export const firestore = firebase.firestore()
 export default Firebase 
