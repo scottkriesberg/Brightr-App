@@ -19,12 +19,13 @@ export default class TutorPreview extends Component {
             id: "",
             tutor: {},
             isLoading: true,
+            uid: "",
         };
       }
 
       componentDidMount() {
-        const tutorId =  this.props.navigation.getParam('tutorId', "")
-        console.log(tutorId);
+        const tutorId =  this.props.navigation.getParam('tutorId', "");
+        this.state.uid =  this.props.navigation.getParam('uid', "")
         const ref = firebase.firestore().collection('tutors').doc(tutorId);
         ref.get().then((doc) => {
           if (doc.exists) {
@@ -39,7 +40,7 @@ export default class TutorPreview extends Component {
         });
       }
 
-  toStudentMap = () => {this.props.navigation.navigate('StudentMap')}
+  toStudentMap = () => {this.props.navigation.navigate('StudentMap', {uid:this.state.uid})}
   render() {
     if(this.state.isLoading){
         return(

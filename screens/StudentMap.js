@@ -25,6 +25,7 @@ class StudentMap extends Component {
         this.ref = firebase.firestore().collection('tutors');
         this.unsubscribe = null;
         this.state = {
+          uid: "",
           isLoading: true,
           data: [],
           location: 'All Locations',
@@ -34,7 +35,7 @@ class StudentMap extends Component {
 
     renderItem = ({ item }) => {
         return (
-            <TouchableOpacity style={styles.row} onPress = {() => this.props.navigation.navigate('TutorPreview', {tutorId: item.id})}>
+            <TouchableOpacity style={styles.row} onPress = {() => this.props.navigation.navigate('TutorPreview', {tutorId: item.id, uid:this.state.uid})}>
                 <Text>{item.name}</Text>
                 <View style={styles.tutorInfo}>
                     <Text>{item.rating}/5</Text>
@@ -46,6 +47,7 @@ class StudentMap extends Component {
         }
         
       componentDidMount() {
+        this.state.uid =  this.props.navigation.getParam('uid', "");
         this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
       }
 
@@ -73,7 +75,7 @@ class StudentMap extends Component {
       }
 
   toProfile = () => {
-      this.props.navigation.navigate('Profile')
+      this.props.navigation.navigate('Profile', {uid: this.state.uid})
   }
   clearLocations = () => {
     this.ref.onSnapshot(this.onCollectionUpdate);
@@ -103,6 +105,8 @@ render(){
         <TouchableWithoutFeedback onPress={this.clearLocations}>
         <ImageBackground source={map} style={styles.map}>
                 <Location name={'Leavey Library'} style={styles.leavy} filter={this.filter}></Location>
+                <Location name={'Cafe 84'} style={styles.cafe84} filter={this.filter}></Location>
+                <Location name={'USC Village Tables'} style={styles.village} filter={this.filter}></Location>
         </ImageBackground>
         </TouchableWithoutFeedback>
         <View style={styles.locationsHeader}>
@@ -125,6 +129,16 @@ const styles = StyleSheet.create({
     locationsHeader: {
         marginBottom: 10,
         marginTop: 10,
+    },
+    village:{
+        width:20,
+        left: 209,
+        top: -136
+    },
+    cafe84:{
+        width:20,
+        left: 20,
+        top: 70
     },
     leavy:{
         width:20,

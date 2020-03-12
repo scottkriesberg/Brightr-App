@@ -2,16 +2,52 @@ import React, { Component } from 'react';
 import { Button } from 'react-native-elements';
 import Stars from 'react-native-stars';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import firebase from '../firebase'
 import {
   StyleSheet,
   Text,
   View,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 
 export default class Profile extends Component {
-    toStudentMap = () => {this.props.navigation.navigate('StudentMap')}
+
+    constructor() {
+        super();
+        this.state = {
+            uid: "",
+            user: {},
+            isLoading: true,
+        };
+      }
+
+      componentDidMount() {
+        this.state.uid =  this.props.navigation.getParam('uid', "");
+        const ref = firebase.firestore().collection('students').doc(this.state.uid);
+        ref.get().then((doc) => {
+          if (doc.exists) {
+            this.setState({
+              user: doc.data(),
+              key: doc.id,
+              isLoading: false
+            });
+          } else {
+            console.log("No such document!");
+          }
+        });
+      }
+
+    toStudentMap = () => {this.props.navigation.navigate('StudentMap', {uid:this.state.uid})}
   render() {
+
+    if(this.state.isLoading){
+        return(
+          <View style={styles.activity}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        )
+      }
     return (
       <View style={styles.container}>
           <View style={styles.header}>
@@ -31,7 +67,7 @@ export default class Profile extends Component {
           </View>
           <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
           <View style={styles.body}>
-            <Text style={styles.name}>John Doe</Text>
+            <Text style={styles.name}>{this.state.user.name}</Text>
             <Text style={styles.info}>Senior / CSCI</Text>
             <Text style={styles.description}>I love developing apps in my free time. I interned at Google last summer. I hope can help you.</Text>
             <View style={styles.rating}>

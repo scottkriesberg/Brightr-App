@@ -6,7 +6,7 @@ class Login extends React.Component {
     handleSignIn = () => {
         const { email, password } = this.state
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .then(() => this.props.navigation.navigate('StudentMap'))
+            .then((user) => this.props.navigation.navigate('StudentMap', {uid: user.uid}))
             .catch(error => console.log(error))
     }
     
@@ -37,7 +37,7 @@ class Login extends React.Component {
                 </TouchableOpacity>
                 <Button
                     title="Don't have an account yet? Sign up"
-                    onPress={() => this.props.navigation.navigate('StudentMap')}
+                    onPress={() => this.props.navigation.navigate('StudentMap', {uid: "KE61CyI6GmbCh2SPOtEi"})}
                 />
             </View>
         )
