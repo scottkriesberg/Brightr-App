@@ -7,12 +7,47 @@ import {
   Text,
   View,
   Image,
+  ActivityIndicator
 } from 'react-native';
+import firebase from '../firebase'
 
 export default class TutorPreview extends Component {
-    toStudentMap = () => {this.props.navigation.navigate('StudentMap')}
+
+    constructor() {
+        super();
+        this.state = {
+            id: "",
+            tutor: {},
+            isLoading: true,
+        };
+      }
+
+      componentDidMount() {
+        const tutorId =  this.props.navigation.getParam('tutorId', "")
+        console.log(tutorId);
+        const ref = firebase.firestore().collection('tutors').doc(tutorId);
+        ref.get().then((doc) => {
+          if (doc.exists) {
+            this.setState({
+              tutor: doc.data(),
+              key: doc.id,
+              isLoading: false
+            });
+          } else {
+            console.log("No such document!");
+          }
+        });
+      }
+
+  toStudentMap = () => {this.props.navigation.navigate('StudentMap')}
   render() {
-    const tutor =  this.props.navigation.getParam('tutor', {})
+    if(this.state.isLoading){
+        return(
+          <View style={styles.activity}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        )
+      }
     return (
       <View style={styles.container}>
           <View style={styles.header}>
@@ -32,13 +67,13 @@ export default class TutorPreview extends Component {
           </View>
           <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
           <View style={styles.body}>
-            <Text style={styles.name}>{tutor.name}</Text>
-            <Text style={styles.info}>Senior / CSCI</Text>
-            <Text style={styles.description}>I love developing apps in my free time. I interned at Google last summer. I hope can help you.</Text>
+            <Text style={styles.name}>{this.state.tutor.name}</Text>
+            <Text style={styles.info}>{this.state.tutor.year} / {this.state.tutor.major}</Text>
+            <Text style={styles.description}>{this.state.tutor.bio}</Text>
             <View style={styles.rating}>
                 <Stars
                         style = {styles.rating}
-                        default={4.5}
+                        default={Number(this.state.tutor.rating)}
                         count={5}
                         starSize={200}
                         fullStar={<Icon name={'star'} style={[styles.myStarStyle]}/>}

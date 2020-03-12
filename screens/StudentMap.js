@@ -1,12 +1,23 @@
 import React, { Component, useState } from 'react';
-import { View, FlatList,StyleSheet, Image, Dimensions, ActivityIndicator, Text, TouchableOpacity} from 'react-native';
+import { View, FlatList,StyleSheet, ImageBackground, Dimensions, ActivityIndicator, Text, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import { List, ListItem, Icon } from 'react-native-elements';
+
 //import SelectableFlatlist, { STATE } from 'react-native-selectable-flatlist';
 import firebase from '../firebase'
 
 const map = require("../images/USC_Map.png"); 
 const width = Dimensions.get("window").width;
 
+
+
+function Location({ name, filter, style }) {
+    return (
+        <View style={style}>
+            <Icon  name='location-on' type='MaterialIcons' onPress={() => filter(name)}/>
+        </View>
+    );
+  }
+  
 
 class StudentMap extends Component {
     constructor() {
@@ -15,17 +26,24 @@ class StudentMap extends Component {
         this.unsubscribe = null;
         this.state = {
           isLoading: true,
-          data: []
+          data: [],
+          location: 'All Locations',
+          numActive: 0,
         };
       }
 
-        renderItem = ({ item }) => {
-            return (
-              <TouchableOpacity style={styles.row} onPress = {() => this.props.navigation.navigate('TutorPreview', {tutor: item})}>
-                    <Text>{item.name}</Text>
-              </TouchableOpacity>
-            )
-          }
+    renderItem = ({ item }) => {
+        return (
+            <TouchableOpacity style={styles.row} onPress = {() => this.props.navigation.navigate('TutorPreview', {tutorId: item.id})}>
+                <Text>{item.name}</Text>
+                <View style={styles.tutorInfo}>
+                    <Text>{item.rating}/5</Text>
+                    <Text>{item.major}</Text>
+                    <Text>{item.year}</Text>
+                </View>
+            </TouchableOpacity>
+        )
+        }
         
       componentDidMount() {
         this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
@@ -34,19 +52,38 @@ class StudentMap extends Component {
       onCollectionUpdate = (querySnapshot) => {
         const data = [];
         querySnapshot.forEach((doc) => {
-          const { name  } = doc.data();
+          const { 
+            name, 
+            major,
+            rating,
+            year,  } = doc.data();
           data.push({
-            key: doc.id,
             name,
+            major,
+            rating,
+            year,
+            id: doc.id,
           });
         });
         this.setState({
           data,
           isLoading: false,
+          numActive: data.length
        });
       }
 
-  toProfile = () => {this.props.navigation.navigate('Profile')}
+  toProfile = () => {
+      this.props.navigation.navigate('Profile')
+  }
+  clearLocations = () => {
+    this.ref.onSnapshot(this.onCollectionUpdate);
+    this.state.location = "All Locations";
+  }
+  
+  filter = (name) => {
+      this.ref.where("locations", "array-contains", name).onSnapshot(this.onCollectionUpdate);
+      this.state.location = name;
+  }
 
 render(){
     if(this.state.isLoading){
@@ -60,8 +97,18 @@ render(){
   return(
     <View style={styles.container}>
     <View>
-    <Icon style={styles.profileIcon} name='person' onPress={this.toProfile}/>
-        <Image source={map} style={styles.map} />
+        <View style={ styles.profileIcon}>
+            <Icon  name='person' onPress={this.toProfile}/>
+        </View>
+        <TouchableWithoutFeedback onPress={this.clearLocations}>
+        <ImageBackground source={map} style={styles.map}>
+                <Location name={'Leavey Library'} style={styles.leavy} filter={this.filter}></Location>
+        </ImageBackground>
+        </TouchableWithoutFeedback>
+        <View style={styles.locationsHeader}>
+            <Text>{this.state.location}    Tutors: {this.state.numActive}</Text>
+            <Icon  name='settings-input-component' type='Octicons' color='black'/>
+        </View>
     </View>
     <FlatList data = {this.state.data}
         renderItem={this.renderItem}
@@ -72,6 +119,18 @@ render(){
 }
  
 const styles = StyleSheet.create({
+    tutorInfo: {
+        color: 'white'
+    },
+    locationsHeader: {
+        marginBottom: 10,
+        marginTop: 10,
+    },
+    leavy:{
+        width:20,
+        left: 290,
+        top: 70
+    },
     row: {
         padding: 15,
         marginBottom: 5,
@@ -79,7 +138,12 @@ const styles = StyleSheet.create({
         color: 'red'
       },
     profileIcon:{
-        justifyContent: 'flex-end'
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        width: 40,
     },
     map: {
         alignItems: 'stretch',
