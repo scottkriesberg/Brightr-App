@@ -54,6 +54,7 @@ export default class TutorPreview extends Component {
           <View style={styles.header}>
           <Button
           style={styles.backButton}
+          color="#6A7BD6"
             icon={
                 <Icon
                 name="arrow-left"
@@ -92,7 +93,7 @@ export default class TutorPreview extends Component {
 
 const styles = StyleSheet.create({
     backButton:{
-        marginTop: 30,
+        marginTop: 50,
     },
     rating: {
         paddingTop: 10,
