@@ -6,6 +6,7 @@ import Signup from '../screens/Signup'
 import Profile from '../screens/Profile'
 import StudentMap from '../screens/StudentMap'
 import TutorPreview from '../screens/tutorPreview'
+import RequestWaiting from '../screens/RequestWaiting'
 
 const SwitchNavigator = createSwitchNavigator(
     {
@@ -23,6 +24,9 @@ const SwitchNavigator = createSwitchNavigator(
         },
         TutorPreview: {
             screen: TutorPreview
+        },
+        RequestWaiting: {
+            screen: RequestWaiting
         }
     },
     {
