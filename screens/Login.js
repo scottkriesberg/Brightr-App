@@ -36,8 +36,12 @@ class Login extends React.Component {
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
                 <Button
-                    title="Don't have an account yet? Sign up"
+                    title="Don't have an account yet? Sign up (to student)"
                     onPress={() => this.props.navigation.navigate('StudentMap', {uid: "KE61CyI6GmbCh2SPOtEi"})}
+                />
+                <Button
+                    title="Don't have an account yet? Sign up (to tutor)"
+                    onPress={() => this.props.navigation.navigate('TutorHome', {uid: "usdXvClRwPGhdPgjJomX"})}
                 />
             </View>
         )

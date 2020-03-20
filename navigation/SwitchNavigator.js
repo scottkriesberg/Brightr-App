@@ -7,6 +7,8 @@ import Profile from '../screens/Profile'
 import StudentMap from '../screens/StudentMap'
 import TutorPreview from '../screens/tutorPreview'
 import RequestWaiting from '../screens/RequestWaiting'
+import TutorHome from '../screens/TutorHome'
+import TutorWorkSetUp from '../screens/TutorWorkSetUp'
 
 const SwitchNavigator = createSwitchNavigator(
     {
@@ -27,7 +29,13 @@ const SwitchNavigator = createSwitchNavigator(
         },
         RequestWaiting: {
             screen: RequestWaiting
-        }
+        },
+        TutorHome: {
+            screen: TutorHome
+        },
+        TutorWorkSetUp: {
+            screen: TutorWorkSetUp
+        },
     },
     {
         initialRouteName: 'Login'
