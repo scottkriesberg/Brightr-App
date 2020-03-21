@@ -1,18 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Icon, Slider } from 'react-native-elements';
-import Stars from 'react-native-stars';
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import firebase from '../firebase';
-import {
-	StyleSheet,
-	Text,
-	View,
-	ImageBackground,
-	ActivityIndicator,
-	FlatList,
-	TouchableWithoutFeedback
-} from 'react-native';
-const map = require('../images/USC_Map.png');
+import firebase from '../../firebase';
+import { StyleSheet, Text, View, ImageBackground, ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
+const map = require('../../images/USC_Map.png');
 
 function Location({ name, style }) {
 	return (
@@ -61,6 +51,10 @@ class TutorWorkSetUp extends Component {
 		this.props.navigation.navigate('TutorHome', { uid: this.state.uid });
 	};
 
+	goLive = () => {
+		this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
+	};
+
 	render() {
 		if (this.state.isLoading) {
 			return (
@@ -96,7 +90,9 @@ class TutorWorkSetUp extends Component {
 					<Text>Hourly Price: ${this.state.value}</Text>
 				</View>
 
-				<View style={styles.live} />
+				<View style={styles.live}>
+					<Button style={styles.button} title="Go Live" onPress={this.goLive} />
+				</View>
 			</View>
 		);
 	}

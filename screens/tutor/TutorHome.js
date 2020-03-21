@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'react-native-elements';
 import Stars from 'react-native-stars';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import firebase from '../firebase';
+import firebase from '../../firebase';
 import { StyleSheet, Text, View, Image, ActivityIndicator, FlatList } from 'react-native';
 
 class TutorHome extends Component {
