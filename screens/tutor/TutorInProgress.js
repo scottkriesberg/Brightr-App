@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
-import { View, FlatList, StyleSheet, ActivityIndicator, Text } from 'react-native';
-import { Button, Icon } from 'react-native-elements';
+import {
+	View,
+	TextInput,
+	Modal,
+	TouchableWithoutFeedback,
+	Keyboard,
+	StyleSheet,
+	ActivityIndicator,
+	Text
+} from 'react-native';
+import { Button, Icon, AirbnbRating } from 'react-native-elements';
 import firebase from '../../firebase';
 import Fire from 'firebase';
 
@@ -12,12 +21,24 @@ class TutorInProgress extends Component {
 		this.state = {
 			uid: '',
 			isLoading: true,
-			requests: []
+			requests: [],
+			min: 0,
+			sec: 0,
+			hour: 0,
+			modalVisible: false,
+			code: '',
+			rating: 3
 		};
-    }
-    
-    back = () => {
-        console.log("cancel")
+		this.interval = null;
+	}
+
+	toggleModal(visible) {
+		this.setState({ modalVisible: visible });
+	}
+
+	padToTwo = (number) => (number <= 9 ? `0${number}` : number);
+
+	finish = () => {
 		this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
 	};
 
@@ -25,14 +46,33 @@ class TutorInProgress extends Component {
 		this.state.uid = this.props.navigation.getParam('uid', '');
 		this.ref = this.ref.doc(this.state.uid);
 		this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+		this.interval = setInterval(() => {
+			if (this.state.sec !== 59) {
+				this.setState({
+					sec: this.state.sec + 1
+				});
+			} else if (this.state.min !== 59) {
+				this.setState({
+					sec: 0,
+					min: ++this.state.min
+				});
+			} else {
+				this.setState({
+					sec: 0,
+					min: 0,
+					hour: ++this.state.hour
+				});
+			}
+		}, 1000);
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.interval);
 	}
 
 	onCollectionUpdate = (doc) => {
-		const requests = doc.data().requests;
 		this.setState({
-			requests,
-			isLoading: false,
-			numActive: requests.length
+			isLoading: false
 		});
 	};
 
@@ -46,33 +86,93 @@ class TutorInProgress extends Component {
 		}
 		return (
 			<View style={styles.container}>
-				<Button style={styles.button} title="back" onPress={this.back} />
-                <Text>00:00</Text>
-                <Button style={styles.button} title="End Session" onPress={this.back} />
+				<Modal
+					animationType={'slide'}
+					transparent={false}
+					visible={this.state.modalVisible}
+					onRequestClose={() => {
+						console.log('Modal has been closed.');
+					}}
+				>
+					<TouchableWithoutFeedback
+						onPress={() => {
+							Keyboard.dismiss();
+						}}
+					>
+						<View style={styles.modal}>
+							<Text style={styles.modalHeader}>End Session</Text>
+							<TextInput
+								keyboardType="numeric"
+								returnKeyType="done"
+								style={styles.codeInput}
+								placeholder="Type code to end session"
+								onChangeText={(code) => this.setState({ code })}
+								value={this.state.code}
+							/>
+
+							<View>
+								<Text style={styles.rateText}>Please rate the student</Text>
+
+								<AirbnbRating
+									count={5}
+									reviews={[]}
+									onFinishRating={(rating) => {
+										this.state.rating = rating;
+									}}
+								/>
+							</View>
+
+							<Button
+								title="Finish"
+								onPress={() => {
+									this.finish();
+									this.state.code = '';
+									this.state.rating = 3;
+								}}
+							/>
+						</View>
+					</TouchableWithoutFeedback>
+				</Modal>
+
+				<Text style={styles.heading}>Session Time</Text>
+				<View style={styles.clock}>
+					<Text style={styles.child}>{this.padToTwo(this.state.hour) + ' : '}</Text>
+					<Text style={styles.child}>{this.padToTwo(this.state.min) + ' : '}</Text>
+					<Text style={styles.child}>{this.padToTwo(this.state.sec)}</Text>
+				</View>
+				<Button style={styles.button} title="End Session" onPress={() => this.toggleModal(true)} />
 			</View>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
-	tutorInfo: {
-		color: 'white'
-	},
-	tutorList: {
-		flex: 5,
-		backgroundColor: 'blue'
-	},
-	row: {
-		padding: 15,
-		marginBottom: 5,
-		backgroundColor: 'skyblue',
-		color: 'red',
-		flexDirection: 'row'
-	},
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		paddingTop: 40
+		paddingTop: 40,
+		justifyContent: 'space-between',
+		paddingBottom: 40
+	},
+	modal: {
+		flex: 1,
+		flexDirection: 'column',
+		paddingTop: 40,
+		justifyContent: 'space-between',
+		paddingBottom: 40
+	},
+	modalHeader: {
+		fontSize: 40,
+		alignSelf: 'center'
+	},
+	codeInput: {
+		alignSelf: 'center',
+		width: '75%',
+		backgroundColor: 'skyblue',
+		height: '5%'
+	},
+	rateText: {
+		alignSelf: 'center'
 	},
 	activity: {
 		position: 'absolute',
@@ -82,6 +182,25 @@ const styles = StyleSheet.create({
 		bottom: 0,
 		alignItems: 'center',
 		justifyContent: 'center'
+	},
+	clock: {
+		flexDirection: 'row',
+		alignSelf: 'center',
+		borderWidth: 1,
+		borderRadius: 125,
+		borderColor: 'black',
+		backgroundColor: 'skyblue',
+		width: 250,
+		height: 250,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	child: {
+		fontSize: 35
+	},
+	heading: {
+		fontSize: 50,
+		alignSelf: 'center'
 	}
 });
 

@@ -4,10 +4,10 @@ import firebase from '../../firebase';
 import { StyleSheet, Text, View, ImageBackground, ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
 const map = require('../../images/USC_Map.png');
 
-function Location({ name, style }) {
+function Location({ name, addLoc, style }) {
 	return (
 		<View style={style}>
-			<Icon name="location-on" type="MaterialIcons" onPress={() => console.log(name)} />
+			<Icon name="location-on" type="MaterialIcons" onPress={() => addLoc(name)} />
 		</View>
 	);
 }
@@ -18,7 +18,8 @@ class TutorWorkSetUp extends Component {
 		this.state = {
 			uid: '',
 			user: {},
-			isLoading: true
+			isLoading: true,
+			locations: []
 		};
 	}
 
@@ -55,6 +56,18 @@ class TutorWorkSetUp extends Component {
 		this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
 	};
 
+	toggleLoc = (name) => {
+		console.log(name);
+		if (this.state.locations.includes(name)) {
+			console.log('already in');
+			this.state.locations = this.state.locations.filter((x) => x != name);
+		} else {
+			console.log('new location');
+			this.state.locations.push(name);
+		}
+		console.log(this.state.locations);
+	};
+
 	render() {
 		if (this.state.isLoading) {
 			return (
@@ -65,29 +78,32 @@ class TutorWorkSetUp extends Component {
 		}
 		return (
 			<View style={styles.container}>
-				<View style={styles.header}>
-					<Button style={styles.button} title="Cancel" onPress={this.cancel} />
+				<View style={styles.profileIcon}>
+					<Icon name="person" onPress={this.cancel} />
 				</View>
 
 				<View style={styles.mapContainer}>
 					<TouchableWithoutFeedback onPress={this.clearLocations}>
 						<ImageBackground source={map} style={styles.map}>
-							<Location name={'Leavey Library'} style={styles.leavy} />
-							<Location name={'Cafe 84'} style={styles.cafe84} />
-							<Location name={'USC Village Tables'} style={styles.village} />
+							<Location name={'Leavey Library'} addLoc={this.toggleLoc} style={styles.leavy} />
+							<Location name={'Cafe 84'} addLoc={this.toggleLoc} style={styles.cafe84} />
+							<Location name={'USC Village Tables'} addLoc={this.toggleLoc} style={styles.village} />
 						</ImageBackground>
 					</TouchableWithoutFeedback>
 				</View>
 
 				<View style={styles.slider}>
 					<Slider
+						style={styles.sliderBar}
 						value={this.state.value}
 						maximumValue={100}
 						minimumValue={10}
+						thumbStyle={styles.thumb}
+						trackStyle={styles.track}
 						step={5}
 						onValueChange={(value) => this.setState({ value })}
 					/>
-					<Text>Hourly Price: ${this.state.value}</Text>
+					<Text style={styles.sliderText}>Hourly Price: ${this.state.value}</Text>
 				</View>
 
 				<View style={styles.live}>
@@ -119,7 +135,7 @@ const styles = StyleSheet.create({
 		alignSelf: 'flex-start'
 	},
 	mapContainer: {
-		flex: 2
+		flex: 5
 	},
 	map: {
 		alignItems: 'stretch',
@@ -144,9 +160,22 @@ const styles = StyleSheet.create({
 	slider: {
 		flex: 1
 	},
+	sliderBar: {},
+	thumb: {
+		width: 40,
+		height: 40,
+		borderRadius: 20
+	},
+	track: {
+		height: 30
+	},
+	sliderText: {
+		alignSelf: 'center',
+		fontSize: 25
+	},
 	live: {
 		flex: 1,
-		backgroundColor: 'purple'
+		justifyContent: 'center'
 	}
 });
 

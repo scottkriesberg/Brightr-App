@@ -19,13 +19,13 @@ class TutorIncomingRequests extends Component {
 	renderItem = ({ item }) => {
 		return (
 			<View style={styles.row}>
-				<View style={styles.tutorInfo}>
+				<View style={styles.requestInfo}>
 					<Text>{item.studentUid}</Text>
 					<Text>Class: {item.class}</Text>
 					<Text>Location: {item.location}</Text>
 					<Text>Estimated Session Time: {item.estTime} minutes</Text>
 				</View>
-				<View>
+				<View style={styles.requestButtons}>
 					<Button style={styles.button} title="Decline" onPress={() => this.decline({ item })} />
 					<Button style={styles.button} title="Accept" onPress={() => this.accept({ item })} />
 				</View>
@@ -89,34 +89,61 @@ class TutorIncomingRequests extends Component {
 		}
 		return (
 			<View style={styles.container}>
-				<View style={styles.tutorList}>
-					<FlatList data={this.state.requests} renderItem={this.renderItem} />
+				<View style={styles.header}>
+					<Text style={styles.headerText}>Incoming Requests</Text>
 				</View>
-				<Button style={styles.button} title="End Live" onPress={this.stopLive} />
+				<View style={styles.requestList}>
+					<FlatList
+						data={this.state.requests}
+						renderItem={this.renderItem}
+						keyExtractor={(item, index) => index.toString()}
+					/>
+				</View>
+				<Button style={styles.endButton} title="End Live" onPress={this.stopLive} />
 			</View>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
-	tutorInfo: {
-		color: 'white'
+	header: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: 'grey'
 	},
-	tutorList: {
-		flex: 5,
-		backgroundColor: 'blue'
+	headerText: {
+		fontSize: 40
+	},
+	requestInfo: {},
+	requestList: {
+		paddingTop: 10,
+		flex: 15,
+		backgroundColor: 'grey'
+	},
+	requestButtons: {
+		justifyContent: 'space-between',
+		alignItems: 'flex-end'
+	},
+	button: {
+		height: 40,
+		width: 150,
+		alignSelf: 'flex-end',
+		paddingLeft: 65
 	},
 	row: {
 		padding: 15,
 		marginBottom: 5,
 		backgroundColor: 'skyblue',
 		color: 'red',
-		flexDirection: 'row'
+		flexDirection: 'row',
+		height: 120
 	},
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		paddingTop: 40
+		paddingTop: 40,
+		paddingBottom: 40
 	},
 	activity: {
 		position: 'absolute',
