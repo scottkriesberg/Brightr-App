@@ -72,6 +72,7 @@ class TutorIncomingRequests extends Component {
 
 	accept = ({ item }) => {
 		console.log(item);
+		this.props.navigation.navigate('TutorChat', { uid: this.state.uid });
 	};
 
 	stopLive = () => {

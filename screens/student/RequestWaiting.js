@@ -17,7 +17,7 @@ export default class TutorPreview extends Component {
 			isLoading: true,
 			uid: '',
 			requestInfo: {},
-			timer: 10
+			timer: 3
 		};
 	}
 	componentDidMount() {
@@ -64,7 +64,8 @@ export default class TutorPreview extends Component {
 	componentDidUpdate() {
 		if (this.state.timer === 0) {
 			clearInterval(this.interval);
-			this.cancelRequest();
+			// this.cancelRequest();
+			this.props.navigation.navigate('StudentChat', { uid: this.state.uid });
 		}
 	}
 
@@ -119,6 +120,9 @@ export default class TutorPreview extends Component {
 						iconLeft
 						title="Cancel"
 						onPress={this.cancelRequest}
+					/>
+					<Button
+						title="To Chat Screen"
 					/>
 				</View>
 				<View style={styles.activity}>

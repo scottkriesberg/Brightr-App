@@ -40,12 +40,12 @@ export default class TutorChat extends Component {
 	};
 
 	start = () => {
-		this.props.navigation.navigate('TutorInProgresss', { uid: this.state.uid });
+		this.props.navigation.navigate('StudentInProgress', { uid: this.state.uid });
 	};
 
 	cancel = () => {
         console.log("cancel")
-		this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
+		this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
 	};
 
 	render() {
