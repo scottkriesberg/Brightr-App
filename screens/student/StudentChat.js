@@ -1,6 +1,6 @@
 import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat'; // 0.3.0
-import { View, Button, StyleSheet } from 'react-native';
+import { View, Modal, Button, StyleSheet, Text } from 'react-native';
 import firebase from '../../firebase';
 import Fire from 'firebase';
 
@@ -13,7 +13,9 @@ export default class Chat extends React.Component {
 			uid: '',
 			user: {},
 			isLoading: true,
-			messages: []
+			messages: [],
+			modalVisible: false,
+			request: {}
 		};
 	}
 
@@ -46,51 +48,105 @@ export default class Chat extends React.Component {
 			if (doc.exists) {
 				this.setState({
 					user: doc.data(),
-					key: doc.id,
-					isLoading: false
+					key: doc.id
+				});
+				this.requestRef.get().then((doc) => {
+					if (doc.exists) {
+						this.setState({
+							request: doc.data(),
+							isLoading: false
+						});
+					} else {
+						console.log('No such document!');
+					}
 				});
 			} else {
 				console.log('No such document!');
 			}
 		});
+
 		this.unsubscribe = this.requestRef.onSnapshot(this.onCollectionUpdate);
 	}
 
+	cancel = () => {
+		this.requestRef
+			.delete()
+			.then((docRef) => {
+				this.props.navigation.navigate('StudentMap', {
+					uid: this.state.uid
+				});
+			})
+			.catch((error) => {
+				console.error('Error adding document: ', error);
+				this.setState({
+					isLoading: false
+				});
+			});
+	};
+
+	start = () => {
+		console.log('mod on');
+		this.setState({ modalVisible: true });
+	};
+
 	onCollectionUpdate = (doc) => {
-		const messagesBackward = doc.data().messages;
-		const messages = messagesBackward.reverse();
-		for (var i = 0; i < messages.length; i++) {
-			messages[i].createdAt = messages[i].createdAt.toDate();
+		if (doc.exists) {
+			const messagesBackward = doc.data().messages;
+			const messages = messagesBackward.reverse();
+			for (var i = 0; i < messages.length; i++) {
+				messages[i].createdAt = messages[i].createdAt.toDate();
+			}
+			this.setState({
+				messages,
+				isLoading: false
+			});
+			if (doc.data().status == 'declined') {
+				this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
+			} else if (doc.data().status == 'started') {
+				this.props.navigation.navigate('StudentInProgress', { uid: this.state.uid });
+			}
+		} else {
+			this.props.navigation.navigate('StudentMap', {
+				uid: this.state.uid
+			});
 		}
-		this.setState({
-			messages,
-			isLoading: false
-		});
-		console.log(messages);
 	};
 	componentWillUnmount() {}
 	render() {
 		return (
-			// <View styles={styles.container}>
-			// 	<View styel={styles.top}>
-			// 		<Button style={styles.button} title="Start Session" onPress={() => this.start()} />
-			// 		<Button style={styles.button} title="Cancel Session" onPress={() => this.cancel()} />
-			// 	</View>
-			// 	<View style={styles.chatView}>
-			<GiftedChat
-				messages={this.state.messages}
-				onSend={(messages) => this.onSend(messages)}
-				user={this.getUser()}
-			/>
-			// 	</View>
-			// </View>
+			<View style={styles.container}>
+				<Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
+					<View style={{ marginTop: 22 }}>
+						<View>
+							<Text>Start Code: {this.state.request.startCode}</Text>
+
+							<Button
+								title="Back to chat"
+								onPress={() => {
+									this.setState({ modalVisible: false });
+								}}
+							/>
+						</View>
+					</View>
+				</Modal>
+
+				<View styel={styles.top}>
+					<Button style={styles.button} title="Start Session" onPress={() => this.start()} />
+					<Button style={styles.button} title="Cancel Session" onPress={() => this.cancel()} />
+				</View>
+				<GiftedChat
+					messages={this.state.messages}
+					onSend={(messages) => this.onSend(messages)}
+					user={this.getUser()}
+				/>
+			</View>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
 	container: {
-		paddingTop: 100,
+		paddingTop: 40,
 		paddingBottom: 10,
 		flex: 1
 	},

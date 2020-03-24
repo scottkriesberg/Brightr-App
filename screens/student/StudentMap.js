@@ -27,7 +27,7 @@ function Location({ name, locationFilter, style }) {
 class StudentMap extends Component {
 	constructor() {
 		super();
-		this.ref = firebase.firestore().collection('tutors');
+		this.ref = firebase.firestore().collection('tutors').where('isLive', '==', true);
 		this.unsubscribe = null;
 		this.state = {
 			uid: '',

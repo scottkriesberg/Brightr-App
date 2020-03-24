@@ -15,18 +15,20 @@ function Location({ name, addLoc, style }) {
 class TutorWorkSetUp extends Component {
 	constructor() {
 		super();
+		this.tutorRef = firebase.firestore().collection('tutors');
 		this.state = {
 			uid: '',
 			user: {},
 			isLoading: true,
-			locations: []
+			locations: [],
+			value: 10
 		};
 	}
 
 	componentDidMount() {
 		this.state.uid = this.props.navigation.getParam('uid', '');
-		const ref = firebase.firestore().collection('tutors').doc(this.state.uid);
-		ref.get().then((doc) => {
+		this.tutorRef = this.tutorRef.doc(this.state.uid);
+		this.tutorRef.get().then((doc) => {
 			if (doc.exists) {
 				this.setState({
 					user: doc.data(),
@@ -53,7 +55,9 @@ class TutorWorkSetUp extends Component {
 	};
 
 	goLive = () => {
-		this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
+		this.tutorRef.update({ isLive: true, hourlyRate: this.state.value }).then(() => {
+			this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
+		});
 	};
 
 	toggleLoc = (name) => {

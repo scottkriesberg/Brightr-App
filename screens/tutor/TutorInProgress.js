@@ -17,11 +17,13 @@ class TutorInProgress extends Component {
 	constructor() {
 		super();
 		this.ref = firebase.firestore().collection('tutors');
+		this.sessionRef = firebase.firestore().collection('sessions');
 		this.unsubscribe = null;
 		this.state = {
 			uid: '',
+			sessionUid: '',
+			session: {},
 			isLoading: true,
-			requests: [],
 			min: 0,
 			sec: 0,
 			hour: 0,
@@ -39,13 +41,21 @@ class TutorInProgress extends Component {
 	padToTwo = (number) => (number <= 9 ? `0${number}` : number);
 
 	finish = () => {
-		this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
+		this.sessionRef
+			.update({
+				studentRating: this.state.rating
+			})
+			.then(() => {
+				this.toggleModal(false);
+			});
 	};
 
 	componentDidMount() {
 		this.state.uid = this.props.navigation.getParam('uid', '');
+		this.state.sessionUid = this.props.navigation.getParam('sessionUid', '');
 		this.ref = this.ref.doc(this.state.uid);
-		this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+		this.sessionRef = this.sessionRef.doc(this.state.sessionUid);
+		this.unsubscribe = this.sessionRef.onSnapshot(this.onCollectionUpdate);
 		this.interval = setInterval(() => {
 			if (this.state.sec !== 59) {
 				this.setState({
@@ -71,6 +81,13 @@ class TutorInProgress extends Component {
 	}
 
 	onCollectionUpdate = (doc) => {
+		if (doc.exists) {
+			this.state.session = doc.data();
+			if (this.state.session.status == 'completed') {
+				this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
+			}
+		}
+		console.log(this.state.session);
 		this.setState({
 			isLoading: false
 		});
@@ -100,15 +117,7 @@ class TutorInProgress extends Component {
 						}}
 					>
 						<View style={styles.modal}>
-							<Text style={styles.modalHeader}>End Session</Text>
-							<TextInput
-								keyboardType="numeric"
-								returnKeyType="done"
-								style={styles.codeInput}
-								placeholder="Type code to end session"
-								onChangeText={(code) => this.setState({ code })}
-								value={this.state.code}
-							/>
+							<Text style={styles.modalHeader}>End Session Code: {this.state.session.endCode}</Text>
 
 							<View>
 								<Text style={styles.rateText}>Please rate the student</Text>
@@ -157,12 +166,12 @@ const styles = StyleSheet.create({
 	modal: {
 		flex: 1,
 		flexDirection: 'column',
-		paddingTop: 40,
+		paddingTop: 400,
 		justifyContent: 'space-between',
 		paddingBottom: 40
 	},
 	modalHeader: {
-		fontSize: 40,
+		fontSize: 30,
 		alignSelf: 'center'
 	},
 	codeInput: {

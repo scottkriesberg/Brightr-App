@@ -5,14 +5,13 @@ import Profile from '../screens/student/Profile';
 import StudentMap from '../screens/student/StudentMap';
 import TutorPreview from '../screens/student/tutorPreview';
 import RequestWaiting from '../screens/student/RequestWaiting';
-import StudentChat from '../screens/student/StudentChat'
-import StudentInProgress from '../screens/student/StudentInProgress'
+import StudentChat from '../screens/student/StudentChat';
+import StudentInProgress from '../screens/student/StudentInProgress';
 import TutorHome from '../screens/tutor/TutorHome';
 import TutorWorkSetUp from '../screens/tutor/TutorWorkSetUp';
 import TutorIncomingRequests from '../screens/tutor/TutorIncomingRequests';
 import TutorChat from '../screens/tutor/TutorChat';
-import TutorInProgresss from '../screens/tutor/TutorInProgress'
-
+import TutorInProgress from '../screens/tutor/TutorInProgress';
 
 const SwitchNavigator = createSwitchNavigator(
 	{
@@ -46,16 +45,15 @@ const SwitchNavigator = createSwitchNavigator(
 		TutorChat: {
 			screen: TutorChat
 		},
-		TutorInProgresss: {
-			screen: TutorInProgresss
+		TutorInProgress: {
+			screen: TutorInProgress
 		},
 		StudentChat: {
 			screen: StudentChat
 		},
 		StudentInProgress: {
 			screen: StudentInProgress
-		},
-
+		}
 	},
 	{
 		initialRouteName: 'Login'

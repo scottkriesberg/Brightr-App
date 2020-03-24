@@ -16,18 +16,20 @@ import Fire from 'firebase';
 class StudentInProgress extends Component {
 	constructor() {
 		super();
-		this.ref = firebase.firestore().collection('tutors');
+		this.ref = firebase.firestore().collection('students');
+		this.sessionRef = firebase.firestore().collection('sessions');
 		this.unsubscribe = null;
 		this.state = {
 			uid: '',
 			isLoading: true,
-			requests: [],
 			min: 0,
 			sec: 0,
 			hour: 0,
 			modalVisible: false,
 			code: '',
-			rating: 3
+			rating: 3,
+			sessionUid: '',
+			session: {}
 		};
 		this.interval = null;
 	}
@@ -39,13 +41,27 @@ class StudentInProgress extends Component {
 	padToTwo = (number) => (number <= 9 ? `0${number}` : number);
 
 	finish = () => {
-		this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
+		if (this.state.code != this.state.session.endCode) {
+			console.log('wrong code');
+			return;
+		}
+		this.sessionRef
+			.update({
+				tutorRating: this.state.rating,
+				sessionTime: Date.now() - this.state.session.startTime,
+				status: 'completed'
+			})
+			.then(() => {
+				this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
+			});
 	};
 
 	componentDidMount() {
 		this.state.uid = this.props.navigation.getParam('uid', '');
-		this.ref = this.ref.doc(this.state.uid);
-		this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+		this.sessionRef = this.sessionRef
+			.where('studentUid', '==', this.state.uid)
+			.where('status', '==', 'in progress');
+		this.unsubscribe = this.sessionRef.onSnapshot(this.onCollectionUpdate);
 		this.interval = setInterval(() => {
 			if (this.state.sec !== 59) {
 				this.setState({
@@ -70,7 +86,12 @@ class StudentInProgress extends Component {
 		clearInterval(this.interval);
 	}
 
-	onCollectionUpdate = (doc) => {
+	onCollectionUpdate = (querySnapshot) => {
+		querySnapshot.forEach((doc) => {
+			this.state.session = doc.data();
+			this.sessionUid = doc.id;
+			this.sessionRef = firebase.firestore().collection('sessions').doc(doc.id);
+		});
 		this.setState({
 			isLoading: false
 		});

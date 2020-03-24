@@ -39,6 +39,8 @@ export default class TutorPreview extends Component {
 					uid: this.state.uid,
 					requestUid: this.state.requestUid
 				});
+			} else if (doc.data().status == 'declined') {
+				this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
 			}
 		} else {
 			this.props.navigation.navigate('StudentMap', { uid: this.state.uid });

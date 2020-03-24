@@ -37,7 +37,7 @@ class TutorIncomingRequests extends Component {
 	componentDidMount() {
 		this.state.uid = this.props.navigation.getParam('uid', '');
 		this.tutorRef = this.tutorRef.doc(this.state.uid);
-		this.requestRef = this.requestRef.where('tutorUid', '==', this.state.uid);
+		this.requestRef = this.requestRef.where('tutorUid', '==', this.state.uid).where('status', '==', 'pending');
 		this.unsubscribe = this.requestRef.onSnapshot(this.onCollectionUpdate);
 	}
 
@@ -62,12 +62,18 @@ class TutorIncomingRequests extends Component {
 	};
 
 	decline = ({ item }) => {
-		firebase.firestore().collection('requests').doc(item.id).delete().then((docRef) => {}).catch((error) => {
-			console.error('Error adding document: ', error);
-			this.setState({
-				isLoading: false
+		firebase
+			.firestore()
+			.collection('requests')
+			.doc(item.id)
+			.update({ status: 'declined' })
+			.then((docRef) => {})
+			.catch((error) => {
+				console.error('Error adding document: ', error);
+				this.setState({
+					isLoading: false
+				});
 			});
-		});
 		// console.log(item);
 	};
 
@@ -85,7 +91,9 @@ class TutorIncomingRequests extends Component {
 	};
 
 	stopLive = () => {
-		this.props.navigation.navigate('TutorWorkSetUp', { uid: this.state.uid });
+		this.tutorRef.update({ isLive: false, hourlyRate: 0 }).then(() => {
+			this.props.navigation.navigate('TutorWorkSetUp', { uid: this.state.uid });
+		});
 	};
 
 	render() {
