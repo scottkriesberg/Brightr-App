@@ -72,8 +72,16 @@ class TutorIncomingRequests extends Component {
 	};
 
 	accept = ({ item }) => {
-		console.log(item);
-		this.props.navigation.navigate('TutorChat', { uid: this.state.uid, requestUid: item.id });
+		firebase
+			.firestore()
+			.collection('requests')
+			.doc(item.id)
+			.update({
+				status: 'accepted'
+			})
+			.then(() => {
+				this.props.navigation.navigate('TutorChat', { uid: this.state.uid, requestUid: item.id });
+			});
 	};
 
 	stopLive = () => {

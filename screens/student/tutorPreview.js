@@ -83,7 +83,9 @@ export default class TutorPreview extends Component {
 				location: this.state.locationRequest,
 				estTime: this.state.value,
 				className: this.state.classRequest,
-				startCode: this.codeGenerator()
+				startCode: this.codeGenerator(),
+				status: 'pending',
+				messages: []
 			})
 			.then((docRef) => {
 				this.props.navigation.navigate('RequestWaiting', {

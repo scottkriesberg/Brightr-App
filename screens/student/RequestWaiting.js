@@ -28,24 +28,22 @@ export default class TutorPreview extends Component {
 		this.interval = setInterval(() => {
 			this.setState((prevState) => ({ timer: prevState.timer - 1 }));
 		}, 1000);
+		this.unsubscribe = this.requestRef.onSnapshot(this.onCollectionUpdate);
 	}
 
-	//   onCollectionUpdate = () => {
-	//       var test = 0;
-	//     this.studentRef.onSnapshot(function(doc) {
-	//         const data = doc.data();
-	//         if(data != undefined){
-	//             test = data.requestStatus;
-	//             this.requestStatus = test;
-	//             console.log(this.requestStatus)
-	//             if(this.requestStatus == 1){
-	//                 clearInterval(this.interval);
-	//                 this.cancelRequest()
-
-	//               }
-	//         }
-	//     });
-	//   }
+	onCollectionUpdate = (doc) => {
+		if (doc.exists) {
+			console.log(doc.data().status);
+			if (doc.data().status == 'accepted') {
+				this.props.navigation.navigate('StudentChat', {
+					uid: this.state.uid,
+					requestUid: this.state.requestUid
+				});
+			}
+		} else {
+			this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
+		}
+	};
 
 	componentDidUpdate() {
 		if (this.state.timer === 0) {
