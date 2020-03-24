@@ -8,39 +8,25 @@ import Fire from 'firebase';
 export default class TutorPreview extends Component {
 	constructor() {
 		super();
-		this.ref = firebase.firestore().collection('tutors');
+		this.tutorRef = firebase.firestore().collection('tutors');
 		this.studentRef = firebase.firestore().collection('students');
-		this.requestStatus = 0;
+		this.requestRef = firebase.firestore().collection('requests');
 		this.state = {
 			id: '',
-			tutor: {},
+			tutorId: '',
 			isLoading: true,
 			uid: '',
-			requestInfo: {},
+			requestUid: '',
 			timer: 3
 		};
 	}
 	componentDidMount() {
-		const tutorId = this.props.navigation.getParam('tutorId', '');
+		this.state.tutorId = this.props.navigation.getParam('tutorId', '');
 		this.state.uid = this.props.navigation.getParam('uid', '');
-		this.state.requestInfo = this.props.navigation.getParam('requestInfo', {});
-		this.ref = this.ref.doc(tutorId);
-		this.studentRef = this.studentRef.doc(this.state.uid);
-		this.ref.get().then((doc) => {
-			if (doc.exists) {
-				this.setState({
-					tutor: doc.data(),
-					id: doc.id,
-					isLoading: false
-				});
-			} else {
-				console.log('No such document!');
-			}
-		});
-		// this.onCollectionUpdate();
+		this.state.requestUid = this.props.navigation.getParam('requestUid', '');
+		this.requestRef = this.requestRef.doc(this.state.requestUid);
 		this.interval = setInterval(() => {
 			this.setState((prevState) => ({ timer: prevState.timer - 1 }));
-			// console.log("we here",this.requestStatus)
 		}, 1000);
 	}
 
@@ -64,8 +50,7 @@ export default class TutorPreview extends Component {
 	componentDidUpdate() {
 		if (this.state.timer === 0) {
 			clearInterval(this.interval);
-			// this.cancelRequest();
-			this.props.navigation.navigate('StudentChat', { uid: this.state.uid });
+			// this.props.navigation.navigate('StudentChat', { uid: this.state.uid });
 		}
 	}
 
@@ -74,16 +59,8 @@ export default class TutorPreview extends Component {
 	}
 
 	cancelRequest = () => {
-		this.ref
-			.update({
-				requests: Fire.firestore.FieldValue.arrayRemove({
-					studentUid: this.state.uid,
-					timestamp: this.state.requestInfo.timestamp,
-					location: this.state.requestInfo.location,
-					estTime: this.state.requestInfo.estTime,
-					class: this.state.requestInfo.class
-				})
-			})
+		this.requestRef
+			.delete()
 			.then((docRef) => {
 				this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
 			})
@@ -121,9 +98,7 @@ export default class TutorPreview extends Component {
 						title="Cancel"
 						onPress={this.cancelRequest}
 					/>
-					<Button
-						title="To Chat Screen"
-					/>
+					<Button title="To Chat Screen" />
 				</View>
 				<View style={styles.activity}>
 					<ActivityIndicator size="large" color="#0000ff" />

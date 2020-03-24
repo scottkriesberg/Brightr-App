@@ -7,7 +7,8 @@ import Fire from 'firebase';
 class TutorIncomingRequests extends Component {
 	constructor() {
 		super();
-		this.ref = firebase.firestore().collection('tutors');
+		this.tutorRef = firebase.firestore().collection('tutors');
+		this.requestRef = firebase.firestore().collection('requests');
 		this.unsubscribe = null;
 		this.state = {
 			uid: '',
@@ -21,7 +22,7 @@ class TutorIncomingRequests extends Component {
 			<View style={styles.row}>
 				<View style={styles.requestInfo}>
 					<Text>{item.studentUid}</Text>
-					<Text>Class: {item.class}</Text>
+					<Text>Class: {item.className}</Text>
 					<Text>Location: {item.location}</Text>
 					<Text>Estimated Session Time: {item.estTime} minutes</Text>
 				</View>
@@ -35,44 +36,44 @@ class TutorIncomingRequests extends Component {
 
 	componentDidMount() {
 		this.state.uid = this.props.navigation.getParam('uid', '');
-		this.ref = this.ref.doc(this.state.uid);
-		this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+		this.tutorRef = this.tutorRef.doc(this.state.uid);
+		this.requestRef = this.requestRef.where('tutorUid', '==', this.state.uid);
+		this.unsubscribe = this.requestRef.onSnapshot(this.onCollectionUpdate);
 	}
 
-	onCollectionUpdate = (doc) => {
-		const requests = doc.data().requests;
+	onCollectionUpdate = (querySnapshot) => {
+		const requests = [];
+		querySnapshot.forEach((doc) => {
+			const { studentUid, className, estTime, location } = doc.data();
+			requests.push({
+				studentUid,
+				className,
+				estTime,
+				location,
+				id: doc.id
+			});
+		});
 		this.setState({
 			requests,
 			isLoading: false,
 			numActive: requests.length
 		});
+		console.log(requests);
 	};
 
 	decline = ({ item }) => {
-		this.ref
-			.update({
-				requests: Fire.firestore.FieldValue.arrayRemove({
-					studentUid: item.studentUid,
-					timestamp: item.timestamp,
-					location: item.location,
-					estTime: item.estTime,
-					class: item.class
-				})
-			})
-			.then((docRef) => {
-				// this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
-			})
-			.catch((error) => {
-				console.error('Error adding document: ', error);
-				this.setState({
-					isLoading: false
-				});
+		firebase.firestore().collection('requests').doc(item.id).delete().then((docRef) => {}).catch((error) => {
+			console.error('Error adding document: ', error);
+			this.setState({
+				isLoading: false
 			});
+		});
+		// console.log(item);
 	};
 
 	accept = ({ item }) => {
 		console.log(item);
-		this.props.navigation.navigate('TutorChat', { uid: this.state.uid });
+		this.props.navigation.navigate('TutorChat', { uid: this.state.uid, requestUid: item.id });
 	};
 
 	stopLive = () => {

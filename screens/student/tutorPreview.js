@@ -14,6 +14,13 @@ export default class TutorPreview extends Component {
 	locationSelected = (selectedItem) => {
 		this.state.locationRequest = selectedItem[0];
 	};
+	codeGenerator = () => {
+		const num1 = Math.floor(Math.random() * 10);
+		const num2 = Math.floor(Math.random() * 10);
+		const num3 = Math.floor(Math.random() * 10);
+		const num4 = Math.floor(Math.random() * 10);
+		return num1.toString() + num2.toString() + num3.toString() + num4.toString();
+	};
 
 	rowItem = (item) => (
 		<View
@@ -32,9 +39,11 @@ export default class TutorPreview extends Component {
 
 	constructor() {
 		super();
-		this.ref = firebase.firestore().collection('tutors');
+		this.tutorRef = firebase.firestore().collection('tutors');
+		this.requestRef = firebase.firestore().collection('requests');
 		this.state = {
 			id: '',
+			tutorId: '',
 			tutor: {},
 			isLoading: true,
 			uid: '',
@@ -45,10 +54,10 @@ export default class TutorPreview extends Component {
 	}
 
 	componentDidMount() {
-		const tutorId = this.props.navigation.getParam('tutorId', '');
+		this.state.tutorId = this.props.navigation.getParam('tutorId', '');
 		this.state.uid = this.props.navigation.getParam('uid', '');
-		this.ref = this.ref.doc(tutorId);
-		this.ref.get().then((doc) => {
+		this.tutorRef = this.tutorRef.doc(this.state.tutorId);
+		this.tutorRef.get().then((doc) => {
 			if (doc.exists) {
 				this.setState({
 					tutor: doc.data(),
@@ -65,29 +74,22 @@ export default class TutorPreview extends Component {
 		this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
 	};
 	requestTutor = () => {
-		console.log(this.state.uid);
 		const time = Date.now();
-		this.ref
-			.update({
-				requests: Fire.firestore.FieldValue.arrayUnion({
-					studentUid: this.state.uid,
-					timestamp: time,
-					location: this.state.locationRequest,
-					estTime: this.state.value,
-					class: this.state.classRequest
-				})
+		this.requestRef
+			.add({
+				studentUid: this.state.uid,
+				tutorUid: this.state.tutorId,
+				timestamp: time,
+				location: this.state.locationRequest,
+				estTime: this.state.value,
+				className: this.state.classRequest,
+				startCode: this.codeGenerator()
 			})
 			.then((docRef) => {
 				this.props.navigation.navigate('RequestWaiting', {
 					tutorId: this.state.id,
 					uid: this.state.uid,
-					requestInfo: {
-						studentUid: this.state.uid,
-						timestamp: time,
-						location: this.state.locationRequest,
-						estTime: this.state.value,
-						class: this.state.classRequest
-					}
+					requestUid: docRef.id
 				});
 			})
 			.catch((error) => {
