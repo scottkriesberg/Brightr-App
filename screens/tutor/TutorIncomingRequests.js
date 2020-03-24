@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, ActivityIndicator, Text } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import firebase from '../../firebase';
-import Fire from 'firebase';
 
 class TutorIncomingRequests extends Component {
 	constructor() {
@@ -18,7 +17,6 @@ class TutorIncomingRequests extends Component {
 	}
 
 	renderItem = ({ item }) => {
-		console.log('here');
 		return (
 			<View style={styles.row}>
 				<View style={styles.requestInfo}>
@@ -26,6 +24,7 @@ class TutorIncomingRequests extends Component {
 					<Text>Class: {item.className}</Text>
 					<Text>Location: {item.location}</Text>
 					<Text>Estimated Session Time: {item.estTime} minutes</Text>
+					<Text>{item.description}</Text>
 				</View>
 				<View style={styles.requestButtons}>
 					<Button style={styles.button} title="Decline" onPress={() => this.decline({ item })} />
@@ -45,12 +44,13 @@ class TutorIncomingRequests extends Component {
 	onCollectionUpdate = (querySnapshot) => {
 		const requests = [];
 		querySnapshot.forEach((doc) => {
-			const { studentUid, className, estTime, location } = doc.data();
+			const { studentUid, description, className, estTime, location } = doc.data();
 			requests.push({
 				studentUid,
 				className,
 				estTime,
 				location,
+				description,
 				id: doc.id
 			});
 		});

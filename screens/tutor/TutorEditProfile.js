@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import firebase from '../../firebase';
 import { StyleSheet, Text, View, Image, ActivityIndicator, FlatList } from 'react-native';
 
-class TutorHome extends Component {
+class TutorEditProfile extends Component {
 	constructor() {
 		super();
 		this.state = {
@@ -39,16 +39,16 @@ class TutorHome extends Component {
 		);
 	};
 
-	logout = () => {
-		this.props.navigation.navigate('Login');
+	cancel = () => {
+		this.props.navigation.navigate('TutorHome', { uid: this.state.uid });
+	};
+
+	save = () => {
+		this.props.navigation.navigate('TutorHome', { uid: this.state.uid });
 	};
 
 	toWorkPage = () => {
 		this.props.navigation.navigate('TutorWorkSetUp', { uid: this.state.uid });
-	};
-
-	toEditPage = () => {
-		this.props.navigation.navigate('TutorEditProfile', { uid: this.state.uid });
 	};
 
 	render() {
@@ -66,19 +66,11 @@ class TutorHome extends Component {
 						style={styles.logoutButton}
 						icon={<Icon name="arrow-left" size={15} color="white" />}
 						iconLeft
-						title="Logout"
-						onPress={this.logout}
+						title="Cancel"
+						onPress={this.cancel}
 					/>
 
-					<Text style={styles.profileText}>Profile</Text>
-					<Icon
-						style={styles.editProfile}
-						name="account-edit"
-						type="MaterialCommunityIcons"
-						color="black"
-						size={50}
-						onPress={this.toEditPage}
-					/>
+					<Text style={styles.editProfileText}>Edit Profile</Text>
 				</View>
 
 				<View style={styles.selfInfo}>
@@ -128,7 +120,7 @@ class TutorHome extends Component {
 				</View>
 
 				<View style={styles.work}>
-					<Button style={styles.workButton} title="Start Tutoring" onPress={this.toWorkPage} />
+					<Button style={styles.workButton} title="Save" onPress={this.save} />
 				</View>
 
 				<View style={styles.navbar} />
@@ -151,13 +143,12 @@ const styles = StyleSheet.create({
 	header: {
 		flex: 1,
 		flexDirection: 'row',
-		backgroundColor: 'green',
-		justifyContent: 'space-between'
+		backgroundColor: 'green'
 	},
 	logoutButton: {
 		alignSelf: 'flex-start'
 	},
-	profileText: {
+	editProfileText: {
 		fontSize: 40
 	},
 	editProfile: {
@@ -244,4 +235,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default TutorHome;
+export default TutorEditProfile;

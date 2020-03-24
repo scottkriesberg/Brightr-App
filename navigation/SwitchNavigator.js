@@ -12,6 +12,7 @@ import TutorWorkSetUp from '../screens/tutor/TutorWorkSetUp';
 import TutorIncomingRequests from '../screens/tutor/TutorIncomingRequests';
 import TutorChat from '../screens/tutor/TutorChat';
 import TutorInProgress from '../screens/tutor/TutorInProgress';
+import TutorEditProfile from '../screens/tutor/TutorEditProfile';
 
 const SwitchNavigator = createSwitchNavigator(
 	{
@@ -53,6 +54,9 @@ const SwitchNavigator = createSwitchNavigator(
 		},
 		StudentInProgress: {
 			screen: StudentInProgress
+		},
+		TutorEditProfile: {
+			screen: TutorEditProfile
 		}
 	},
 	{

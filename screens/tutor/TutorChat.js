@@ -1,6 +1,16 @@
 import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat'; // 0.3.0
-import { View, Button, StyleSheet, TouchableWithoutFeedback, Keyboard, Modal, Text, TextInput } from 'react-native';
+import {
+	View,
+	Alert,
+	Button,
+	StyleSheet,
+	TouchableWithoutFeedback,
+	Keyboard,
+	Modal,
+	Text,
+	TextInput
+} from 'react-native';
 import firebase from '../../firebase';
 import Fire from 'firebase';
 
@@ -38,14 +48,9 @@ export default class Chat extends React.Component {
 	}
 
 	onSend(messages) {
-		// this.setState((previousState) => ({
-		// 	messages: GiftedChat.append(previousState.messages, messages)
-		// }));
-		console.log(messages);
 		this.requestRef.update({
 			messages: Fire.firestore.FieldValue.arrayUnion(messages[0])
 		});
-		// this.unsubscribe = this.requestRef.onSnapshot(this.onCollectionUpdate);
 	}
 
 	componentDidMount() {
@@ -59,8 +64,6 @@ export default class Chat extends React.Component {
 					user: doc.data(),
 					key: doc.id
 				});
-			} else {
-				console.log('No such document!');
 			}
 		});
 		this.requestRef.get().then((doc) => {
@@ -69,8 +72,6 @@ export default class Chat extends React.Component {
 					request: doc.data(),
 					isLoading: false
 				});
-			} else {
-				console.log('No such document!');
 			}
 		});
 		this.unsubscribe = this.requestRef.onSnapshot(this.onCollectionUpdate);
@@ -95,13 +96,14 @@ export default class Chat extends React.Component {
 	};
 
 	start = () => {
-		console.log('mod on');
 		this.setState({ modalVisible: true });
 	};
 
 	begin = () => {
 		if (this.state.code != this.state.request.startCode) {
-			console.log('wrong code');
+			Alert.alert('Wrong Code', 'Please try again', [ { text: 'OK' } ], {
+				cancelable: false
+			});
 			return;
 		}
 		const time = Date.now();

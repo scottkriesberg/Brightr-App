@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import { Button, Icon, Slider } from 'react-native-elements';
 import firebase from '../../firebase';
-import { StyleSheet, Text, View, ImageBackground, ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
+import {
+	Alert,
+	StyleSheet,
+	Text,
+	View,
+	ImageBackground,
+	ActivityIndicator,
+	TouchableWithoutFeedback
+} from 'react-native';
 const map = require('../../images/USC_Map.png');
 
 function Location({ name, addLoc, style }) {
@@ -55,6 +63,12 @@ class TutorWorkSetUp extends Component {
 	};
 
 	goLive = () => {
+		if (this.state.locations.length == 0) {
+			Alert.alert('No Locations', 'Please select at least one location', [ { text: 'OK' } ], {
+				cancelable: false
+			});
+			return;
+		}
 		this.tutorRef
 			.update({ isLive: true, hourlyRate: this.state.value, locations: this.state.locations })
 			.then(() => {

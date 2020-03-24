@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
 	View,
 	TextInput,
+	Alert,
 	Modal,
 	TouchableWithoutFeedback,
 	Keyboard,
@@ -29,7 +30,8 @@ class TutorInProgress extends Component {
 			hour: 0,
 			modalVisible: false,
 			code: '',
-			rating: 3
+			rating: 0,
+			finish: false
 		};
 		this.interval = null;
 	}
@@ -41,12 +43,20 @@ class TutorInProgress extends Component {
 	padToTwo = (number) => (number <= 9 ? `0${number}` : number);
 
 	finish = () => {
+		if (this.state.rating == 0) {
+			Alert.alert('No Rating', 'Please rate your tutor', [ { text: 'OK' } ], {
+				cancelable: false
+			});
+			return;
+		}
 		this.sessionRef
 			.update({
 				studentRating: this.state.rating
 			})
 			.then(() => {
+				this.state.finish = true;
 				this.toggleModal(false);
+				this.sessionRef.onSnapshot(this.onCollectionUpdate);
 			});
 	};
 
@@ -83,11 +93,10 @@ class TutorInProgress extends Component {
 	onCollectionUpdate = (doc) => {
 		if (doc.exists) {
 			this.state.session = doc.data();
-			if (this.state.session.status == 'completed') {
+			if (this.state.session.status == 'completed' && this.state.finish) {
 				this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
 			}
 		}
-		console.log(this.state.session);
 		this.setState({
 			isLoading: false
 		});
@@ -124,6 +133,7 @@ class TutorInProgress extends Component {
 
 								<AirbnbRating
 									count={5}
+									defaultRating={0}
 									reviews={[]}
 									onFinishRating={(rating) => {
 										this.state.rating = rating;
@@ -136,7 +146,7 @@ class TutorInProgress extends Component {
 								onPress={() => {
 									this.finish();
 									this.state.code = '';
-									this.state.rating = 3;
+									this.state.rating = 0;
 								}}
 							/>
 						</View>

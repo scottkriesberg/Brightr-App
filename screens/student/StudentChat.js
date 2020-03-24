@@ -118,7 +118,7 @@ export default class Chat extends React.Component {
 				<Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
 					<View style={{ marginTop: 22 }}>
 						<View>
-							<Text>Start Code: {this.state.request.startCode}</Text>
+							<Text style={styles.modalHeader}>Start Code: {this.state.request.startCode}</Text>
 
 							<Button
 								title="Back to chat"
@@ -157,5 +157,9 @@ const styles = StyleSheet.create({
 	},
 	chatView: {
 		flex: 1
+	},
+	modalHeader: {
+		fontSize: 30,
+		alignSelf: 'center'
 	}
 });

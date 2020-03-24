@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+	Alert,
 	View,
 	TextInput,
 	Modal,
@@ -27,7 +28,7 @@ class StudentInProgress extends Component {
 			hour: 0,
 			modalVisible: false,
 			code: '',
-			rating: 3,
+			rating: 0,
 			sessionUid: '',
 			session: {}
 		};
@@ -42,7 +43,14 @@ class StudentInProgress extends Component {
 
 	finish = () => {
 		if (this.state.code != this.state.session.endCode) {
-			console.log('wrong code');
+			Alert.alert('Wrong Code', 'Please try again', [ { text: 'OK' } ], {
+				cancelable: false
+			});
+			return;
+		} else if (this.state.rating == 0) {
+			Alert.alert('No Rating', 'Please rate your tutor', [ { text: 'OK' } ], {
+				cancelable: false
+			});
 			return;
 		}
 		this.sessionRef
@@ -136,6 +144,7 @@ class StudentInProgress extends Component {
 
 								<AirbnbRating
 									count={5}
+									defaultRating={0}
 									reviews={[]}
 									onFinishRating={(rating) => {
 										this.state.rating = rating;
@@ -148,7 +157,7 @@ class StudentInProgress extends Component {
 								onPress={() => {
 									this.finish();
 									this.state.code = '';
-									this.state.rating = 3;
+									this.state.rating = 0;
 								}}
 							/>
 						</View>

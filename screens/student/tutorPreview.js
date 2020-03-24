@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Slider } from 'react-native-elements';
 import Stars from 'react-native-stars';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, TextInput, Text, View, Image, ActivityIndicator } from 'react-native';
 import firebase from '../../firebase';
 import Fire from 'firebase';
 import SelectableFlatlist, { STATE } from 'react-native-selectable-flatlist';
@@ -49,7 +49,8 @@ export default class TutorPreview extends Component {
 			uid: '',
 			classRequest: '',
 			locationRequest: '',
-			value: 15
+			value: 15,
+			description: ''
 		};
 	}
 
@@ -85,7 +86,8 @@ export default class TutorPreview extends Component {
 				className: this.state.classRequest,
 				startCode: this.codeGenerator(),
 				status: 'pending',
-				messages: []
+				messages: [],
+				description: this.state.description
 			})
 			.then((docRef) => {
 				this.props.navigation.navigate('RequestWaiting', {
@@ -144,6 +146,14 @@ export default class TutorPreview extends Component {
 							halfStar={<Icon name={'star-half'} style={[ styles.myStarStyle ]} />}
 						/>
 					</View>
+				</View>
+				<View>
+					<TextInput
+						style={{ height: 40 }}
+						placeholder="Description"
+						onChangeText={(description) => this.setState({ description })}
+						value={this.state.description}
+					/>
 				</View>
 				<View style={styles.slider}>
 					<Slider
