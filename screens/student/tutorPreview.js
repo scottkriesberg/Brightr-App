@@ -129,6 +129,7 @@ export default class TutorPreview extends Component {
 					<Text style={styles.info}>
 						{this.state.tutor.year} / {this.state.tutor.major}
 					</Text>
+					<Text>${this.state.tutor.hourlyRate}/hour</Text>
 					<Text style={styles.description}>{this.state.tutor.bio}</Text>
 					<View style={styles.rating}>
 						<Stars

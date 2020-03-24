@@ -18,6 +18,7 @@ class TutorIncomingRequests extends Component {
 	}
 
 	renderItem = ({ item }) => {
+		console.log('here');
 		return (
 			<View style={styles.row}>
 				<View style={styles.requestInfo}>
@@ -91,7 +92,7 @@ class TutorIncomingRequests extends Component {
 	};
 
 	stopLive = () => {
-		this.tutorRef.update({ isLive: false, hourlyRate: 0 }).then(() => {
+		this.tutorRef.update({ isLive: false, hourlyRate: 0, locations: [] }).then(() => {
 			this.props.navigation.navigate('TutorWorkSetUp', { uid: this.state.uid });
 		});
 	};

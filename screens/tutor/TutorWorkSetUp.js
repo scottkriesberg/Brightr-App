@@ -55,9 +55,11 @@ class TutorWorkSetUp extends Component {
 	};
 
 	goLive = () => {
-		this.tutorRef.update({ isLive: true, hourlyRate: this.state.value }).then(() => {
-			this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
-		});
+		this.tutorRef
+			.update({ isLive: true, hourlyRate: this.state.value, locations: this.state.locations })
+			.then(() => {
+				this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
+			});
 	};
 
 	toggleLoc = (name) => {

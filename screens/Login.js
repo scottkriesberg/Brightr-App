@@ -43,7 +43,7 @@ class Login extends React.Component {
 				/>
 				<Button
 					title="Don't have an account yet? Sign up (to tutor)"
-					onPress={() => this.props.navigation.navigate('TutorHome', { uid: 'usdXvClRwPGhdPgjJomX' })}
+					onPress={() => this.props.navigation.navigate('TutorWorkSetUp', { uid: 'usdXvClRwPGhdPgjJomX' })}
 				/>
 			</View>
 		);

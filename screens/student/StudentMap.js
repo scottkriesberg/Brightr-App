@@ -56,9 +56,11 @@ class StudentMap extends Component {
 			>
 				<Text>{item.name}</Text>
 				<View style={styles.tutorInfo}>
-					<Text>{item.rating}/5</Text>
-					<Text>{item.major}</Text>
-					<Text>{item.year}</Text>
+					<Text>Rating: {item.rating}/5</Text>
+					<Text>
+						{item.major} / {item.year}
+					</Text>
+					<Text>${item.hourlyRate}/hour</Text>
 				</View>
 			</TouchableOpacity>
 		);
@@ -72,12 +74,14 @@ class StudentMap extends Component {
 	onCollectionUpdate = (querySnapshot) => {
 		const data = [];
 		querySnapshot.forEach((doc) => {
-			const { name, major, rating, year } = doc.data();
+			const { name, major, rating, year, hourlyRate, classes } = doc.data();
 			data.push({
 				name,
 				major,
 				rating,
 				year,
+				hourlyRate,
+				classes,
 				id: doc.id
 			});
 		});
@@ -99,7 +103,7 @@ class StudentMap extends Component {
 	};
 
 	updateRef() {
-		var newRef = firebase.firestore().collection('tutors');
+		var newRef = firebase.firestore().collection('tutors').where('isLive', '==', true);
 		for (var i in this.state.query) {
 			newRef = newRef.where(this.state.query[i].field, this.state.query[i].op, this.state.query[i].val);
 		}
