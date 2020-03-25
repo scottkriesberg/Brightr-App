@@ -2,7 +2,16 @@ import React, { Component } from 'react';
 import { Button, Slider } from 'react-native-elements';
 import Stars from 'react-native-stars';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StyleSheet, TextInput, Text, View, Image, ActivityIndicator } from 'react-native';
+import {
+	StyleSheet,
+	TouchableWithoutFeedback,
+	Keyboard,
+	TextInput,
+	Text,
+	View,
+	Image,
+	ActivityIndicator
+} from 'react-native';
 import firebase from '../../firebase';
 import Fire from 'firebase';
 import SelectableFlatlist, { STATE } from 'react-native-selectable-flatlist';
@@ -112,95 +121,104 @@ export default class TutorPreview extends Component {
 			);
 		}
 		return (
-			<View style={styles.container}>
-				<View style={styles.header}>
-					<Button
-						style={styles.backButton}
-						icon={<Icon name="arrow-left" size={20} color="white" />}
-						iconLeft
-						title="Back"
-						onPress={this.toStudentMap}
-					/>
-				</View>
-				<View style={styles.tutorInfo}>
-					<Image
-						style={styles.avatar}
-						source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }}
-					/>
-					<Text style={styles.name}>{this.state.tutor.name}</Text>
-					<Text style={styles.info}>
-						{this.state.tutor.year} / {this.state.tutor.major}
-					</Text>
-					<Text>${this.state.tutor.hourlyRate}/hour</Text>
-					<Text style={styles.description}>{this.state.tutor.bio}</Text>
-					<View style={styles.rating}>
-						<Stars
-							style={styles.rating}
-							default={Number(this.state.tutor.rating)}
-							count={5}
-							starSize={200}
-							fullStar={<Icon name={'star'} style={[ styles.myStarStyle ]} />}
-							emptyStar={
-								<Icon name={'star-outline'} style={[ styles.myStarStyle, styles.myEmptyStarStyle ]} />
-							}
-							halfStar={<Icon name={'star-half'} style={[ styles.myStarStyle ]} />}
+			<TouchableWithoutFeedback
+				onPress={() => {
+					Keyboard.dismiss();
+				}}
+			>
+				<View style={styles.container}>
+					<View style={styles.header}>
+						<Button
+							style={styles.backButton}
+							icon={<Icon name="arrow-left" size={20} color="white" />}
+							iconLeft
+							title="Back"
+							onPress={this.toStudentMap}
+						/>
+					</View>
+					<View style={styles.tutorInfo}>
+						<Image
+							style={styles.avatar}
+							source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }}
+						/>
+						<Text style={styles.name}>{this.state.tutor.name}</Text>
+						<Text style={styles.info}>
+							{this.state.tutor.year} / {this.state.tutor.major}
+						</Text>
+						<Text>${this.state.tutor.hourlyRate}/hour</Text>
+						<Text style={styles.description}>{this.state.tutor.bio}</Text>
+						<View style={styles.rating}>
+							<Stars
+								style={styles.rating}
+								default={Number(this.state.tutor.rating)}
+								count={5}
+								starSize={200}
+								fullStar={<Icon name={'star'} style={[ styles.myStarStyle ]} />}
+								emptyStar={
+									<Icon
+										name={'star-outline'}
+										style={[ styles.myStarStyle, styles.myEmptyStarStyle ]}
+									/>
+								}
+								halfStar={<Icon name={'star-half'} style={[ styles.myStarStyle ]} />}
+							/>
+						</View>
+					</View>
+					<View>
+						<TextInput
+							style={{ height: 40 }}
+							placeholder="Description"
+							onChangeText={(description) => this.setState({ description })}
+							value={this.state.description}
+						/>
+					</View>
+					<View style={styles.slider}>
+						<Slider
+							value={this.state.value}
+							maximumValue={90}
+							minimumValue={15}
+							step={15}
+							onValueChange={(value) => this.setState({ value })}
+						/>
+						<Text>Estimated Session Time: {this.state.value} minutes</Text>
+					</View>
+
+					<View style={styles.locationList}>
+						<SelectableFlatlist
+							data={this.state.tutor.locations}
+							state={STATE.EDIT}
+							multiSelect={false}
+							itemsSelected={(selectedItem) => {
+								this.locationSelected(selectedItem);
+							}}
+							initialSelectedIndex={[ 0 ]}
+							cellItemComponent={(item, otherProps) => this.rowItem(item)}
+						/>
+					</View>
+
+					<View style={styles.classList}>
+						<SelectableFlatlist
+							data={this.state.tutor.classes}
+							state={STATE.EDIT}
+							multiSelect={false}
+							itemsSelected={(selectedItem) => {
+								this.classSelected(selectedItem);
+							}}
+							initialSelectedIndex={[ 0 ]}
+							cellItemComponent={(item, otherProps) => this.rowItem(item)}
+						/>
+					</View>
+
+					<View style={styles.button}>
+						<Button
+							style={styles.requestButton}
+							color="#6A7BD6"
+							title="Request Tutor"
+							onPress={this.requestTutor}
 						/>
 					</View>
 				</View>
-				<View>
-					<TextInput
-						style={{ height: 40 }}
-						placeholder="Description"
-						onChangeText={(description) => this.setState({ description })}
-						value={this.state.description}
-					/>
-				</View>
-				<View style={styles.slider}>
-					<Slider
-						value={this.state.value}
-						maximumValue={90}
-						minimumValue={15}
-						step={15}
-						onValueChange={(value) => this.setState({ value })}
-					/>
-					<Text>Estimated Session Time: {this.state.value} minutes</Text>
-				</View>
-
-				<View style={styles.locationList}>
-					<SelectableFlatlist
-						data={this.state.tutor.locations}
-						state={STATE.EDIT}
-						multiSelect={false}
-						itemsSelected={(selectedItem) => {
-							this.locationSelected(selectedItem);
-						}}
-						initialSelectedIndex={[ 0 ]}
-						cellItemComponent={(item, otherProps) => this.rowItem(item)}
-					/>
-				</View>
-
-				<View style={styles.classList}>
-					<SelectableFlatlist
-						data={this.state.tutor.classes}
-						state={STATE.EDIT}
-						multiSelect={false}
-						itemsSelected={(selectedItem) => {
-							this.classSelected(selectedItem);
-						}}
-						initialSelectedIndex={[ 0 ]}
-						cellItemComponent={(item, otherProps) => this.rowItem(item)}
-					/>
-				</View>
-
-				<View style={styles.button}>
-					<Button
-						style={styles.requestButton}
-						color="#6A7BD6"
-						title="Request Tutor"
-						onPress={this.requestTutor}
-					/>
-				</View>
-			</View>
+			</TouchableWithoutFeedback>
 		);
 	}
 }

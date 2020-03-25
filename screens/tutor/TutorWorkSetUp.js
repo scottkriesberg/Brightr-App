@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Button, Icon, Slider } from 'react-native-elements';
-import firebase from '../../firebase';
 import {
 	Alert,
 	StyleSheet,
@@ -10,6 +9,7 @@ import {
 	ActivityIndicator,
 	TouchableWithoutFeedback
 } from 'react-native';
+import firebase from '../../firebase';
 const map = require('../../images/USC_Map.png');
 
 function Location({ name, addLoc, style }) {
@@ -50,13 +50,11 @@ class TutorWorkSetUp extends Component {
 		});
 	}
 
-	renderItem = ({ item }) => {
-		return (
-			<View style={styles.classRow}>
-				<Text style={styles.classText}>{item}</Text>
-			</View>
-		);
-	};
+	renderItem = ({ item }) => (
+		<View style={styles.classRow}>
+			<Text style={styles.classText}>{item}</Text>
+		</View>
+	);
 
 	cancel = () => {
 		this.props.navigation.navigate('TutorHome', { uid: this.state.uid });
@@ -79,13 +77,10 @@ class TutorWorkSetUp extends Component {
 	toggleLoc = (name) => {
 		console.log(name);
 		if (this.state.locations.includes(name)) {
-			console.log('already in');
 			this.state.locations = this.state.locations.filter((x) => x != name);
 		} else {
-			console.log('new location');
 			this.state.locations.push(name);
 		}
-		console.log(this.state.locations);
 	};
 
 	render() {
@@ -105,9 +100,9 @@ class TutorWorkSetUp extends Component {
 				<View style={styles.mapContainer}>
 					<TouchableWithoutFeedback onPress={this.clearLocations}>
 						<ImageBackground source={map} style={styles.map}>
-							<Location name={'Leavey Library'} addLoc={this.toggleLoc} style={styles.leavy} />
-							<Location name={'Cafe 84'} addLoc={this.toggleLoc} style={styles.cafe84} />
-							<Location name={'USC Village Tables'} addLoc={this.toggleLoc} style={styles.village} />
+							<Location name="Leavey Library" addLoc={this.toggleLoc} style={styles.leavy} />
+							<Location name="Cafe 84" addLoc={this.toggleLoc} style={styles.cafe84} />
+							<Location name="USC Village Tables" addLoc={this.toggleLoc} style={styles.village} />
 						</ImageBackground>
 					</TouchableWithoutFeedback>
 				</View>
@@ -123,7 +118,10 @@ class TutorWorkSetUp extends Component {
 						step={5}
 						onValueChange={(value) => this.setState({ value })}
 					/>
-					<Text style={styles.sliderText}>Hourly Price: ${this.state.value}</Text>
+					<Text style={styles.sliderText}>
+						Hourly Price: $
+						{this.state.value}
+					</Text>
 				</View>
 
 				<View style={styles.live}>
