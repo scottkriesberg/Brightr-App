@@ -68,12 +68,11 @@ class TutorIncomingRequests extends Component {
 			});
 			var studentInfo = {};
 			const { studentUid, description, className, estTime, location } = doc.data();
-			firebase.firestore().collection('students').doc(studentUid).get().then((doc) => {
+			firebase.firestore().collection('students').doc(studentUid).get().then((studentDoc) => {
 				console.log('here');
-				if (doc.exists) {
-					studentInfo = doc.data();
+				if (studentDoc.exists) {
+					studentInfo = studentDoc.data();
 				} else {
-					return;
 				}
 				requests.push({
 					studentUid,
@@ -91,7 +90,11 @@ class TutorIncomingRequests extends Component {
 				});
 			});
 		});
-
+		this.setState({
+			requests,
+			isLoading: false,
+			numActive: requests.length
+		});
 		console.log(requests);
 	};
 
@@ -104,9 +107,6 @@ class TutorIncomingRequests extends Component {
 			.then((docRef) => {})
 			.catch((error) => {
 				console.error('Error adding document: ', error);
-				this.setState({
-					isLoading: false
-				});
 			});
 		// console.log(item);
 	};
@@ -126,6 +126,17 @@ class TutorIncomingRequests extends Component {
 
 	stopLive = () => {
 		this.tutorRef.update({ isLive: false, hourlyRate: 0, locations: [] }).then(() => {
+			for (var i = 0; i < this.state.requests.length; i++) {
+				firebase
+					.firestore()
+					.collection('requests')
+					.doc(this.state.requests[i].id)
+					.update({ status: 'declined' })
+					.then((docRef) => {})
+					.catch((error) => {
+						console.error('Error adding document: ', error);
+					});
+			}
 			this.props.navigation.navigate('TutorWorkSetUp', { uid: this.state.uid });
 		});
 	};
