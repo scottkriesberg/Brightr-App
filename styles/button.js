@@ -18,5 +18,12 @@ export default StyleSheet.create({
     fontWeight: "bold",
     color: "#6A7BD6",
     alignSelf: "center"
+  },
+  clearButton: {
+    color: "white",
+    paddingTop: 40,
+    paddingLeft: "90%",
+    position: "relative",
+    backgroundColor: "#A8BBFF"
   }
 });

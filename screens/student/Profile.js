@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import ContainerStyles from "../../styles/container.js";
 import TextStyles from "../../styles/text.js";
+import ButtonStyles from "../../styles/button.js";
 
 export default class Profile extends Component {
   constructor() {
@@ -62,6 +63,12 @@ export default class Profile extends Component {
             source={{
               uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
             }}
+          />
+          <Icon.Button
+            name="close"
+            size={25}
+            style={ButtonStyles.clearButton}
+            onPress={this.toStudentMap}
           />
         </View>
         <View style={ContainerStyles.profileContainer}>
@@ -123,11 +130,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 60,
     backgroundColor: "white"
-  },
-  name: {
-    fontSize: 28,
-    color: "#696969",
-    fontWeight: "600"
   },
   info: {
     fontSize: 16,
