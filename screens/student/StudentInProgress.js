@@ -62,6 +62,7 @@ class StudentInProgress extends Component {
 			.then(() => {
 				this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
 			});
+		// firebase.firestore().collection('tutors').doc(this.state.session.tutourUid).update()
 	};
 
 	componentDidMount() {

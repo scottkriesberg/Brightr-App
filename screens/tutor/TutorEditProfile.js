@@ -34,7 +34,9 @@ class TutorEditProfile extends Component {
 	renderItem = ({ item }) => {
 		return (
 			<View style={styles.classRow}>
-				<Text style={styles.classText}>{item}</Text>
+				<Text style={styles.classText}>
+					{item.department}: {item.code}
+				</Text>
 			</View>
 		);
 	};

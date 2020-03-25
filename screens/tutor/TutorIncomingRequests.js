@@ -17,11 +17,30 @@ class TutorIncomingRequests extends Component {
 	}
 
 	renderItem = ({ item }) => {
+		var studentInfo = {};
+		// this.setState({
+		// 	isLoading: true
+		// });
+		// firebase.firestore().collection('students').doc(item.studentUid).get().then((doc) => {
+		// 	if (doc.exists) {
+		// 		studentInfo = doc.data();
+		// 		// this.setState({
+		// 		// 	isLoading: false
+		// 		// });
+		// 	} else {
+		// 		return (
+		// 			<View>
+		// 				<Text>Error</Text>
+		// 			</View>
+		// 		);
+		// 	}
+		// });
+
 		return (
 			<View style={styles.row}>
 				<View style={styles.requestInfo}>
-					<Text>{item.studentUid}</Text>
-					<Text>Class: {item.className}</Text>
+					<Text>{item.studentInfo.name}</Text>
+					<Text>Class: {item.className.department}</Text>
 					<Text>Location: {item.location}</Text>
 					<Text>Estimated Session Time: {item.estTime} minutes</Text>
 					<Text>{item.description}</Text>
@@ -44,21 +63,35 @@ class TutorIncomingRequests extends Component {
 	onCollectionUpdate = (querySnapshot) => {
 		const requests = [];
 		querySnapshot.forEach((doc) => {
+			this.setState({
+				isLoading: true
+			});
+			var studentInfo = {};
 			const { studentUid, description, className, estTime, location } = doc.data();
-			requests.push({
-				studentUid,
-				className,
-				estTime,
-				location,
-				description,
-				id: doc.id
+			firebase.firestore().collection('students').doc(studentUid).get().then((doc) => {
+				console.log('here');
+				if (doc.exists) {
+					studentInfo = doc.data();
+				} else {
+					return;
+				}
+				requests.push({
+					studentUid,
+					className,
+					estTime,
+					location,
+					description,
+					studentInfo,
+					id: doc.id
+				});
+				this.setState({
+					requests,
+					isLoading: false,
+					numActive: requests.length
+				});
 			});
 		});
-		this.setState({
-			requests,
-			isLoading: false,
-			numActive: requests.length
-		});
+
 		console.log(requests);
 	};
 

@@ -205,7 +205,7 @@ export default class TutorPreview extends Component {
 								this.classSelected(selectedItem);
 							}}
 							initialSelectedIndex={[ 0 ]}
-							cellItemComponent={(item, otherProps) => this.rowItem(item)}
+							cellItemComponent={(item, otherProps) => this.rowItem(item.department + ': ' + item.code)}
 						/>
 					</View>
 
