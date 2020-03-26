@@ -12,5 +12,9 @@ export default StyleSheet.create({
     color: "#6A7BD6",
     fontWeight: "bold",
     fontSize: 30
+  },
+  tutorPreview: {
+    color: "#6A7BD6",
+    backgroundColor: "white"
   }
 });

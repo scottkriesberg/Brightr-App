@@ -34,5 +34,21 @@ export default StyleSheet.create({
     position: "absolute",
     alignSelf: "center",
     marginTop: 100
+  },
+  previewImage: {
+    height: 70,
+    width: 70,
+    borderRadius: 63,
+    borderWidth: 2.5,
+    borderColor: "#6A7BD6",
+    margin: 20
+  },
+  tutorPreviewContainer: {
+    backgroundColor: "white",
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#6A7BD6"
   }
 });
