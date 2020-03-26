@@ -7,5 +7,14 @@ export default StyleSheet.create({
     fontStyle: "italic",
     fontWeight: "900",
     fontSize: 60
+  },
+  name: {
+    color: "#6A7BD6",
+    fontWeight: "bold",
+    fontSize: 30
+  },
+  tutorPreview: {
+    color: "#6A7BD6",
+    backgroundColor: "white"
   }
 });
