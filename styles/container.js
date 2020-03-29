@@ -7,6 +7,12 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-evenly"
   },
+  landingContainer: {
+    flex: 1,
+    backgroundColor: "#6A7BD6",
+    alignItems: "center",
+    justifyContent: "center"
+  },
   profileHeaderContainer: {
     backgroundColor: "#A8BBFF",
     height: "25%",
