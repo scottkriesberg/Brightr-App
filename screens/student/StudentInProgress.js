@@ -41,6 +41,31 @@ class StudentInProgress extends Component {
 
 	padToTwo = (number) => (number <= 9 ? `0${number}` : number);
 
+	addRating(collection, uid, rating) {
+		// In a transaction, add the new rating and update the aggregate totals
+		var ref = firebase.firestore().collection(collection).doc(uid);
+		return firebase.firestore().runTransaction((transaction) => {
+			return transaction.get(ref).then((res) => {
+				if (!res.exists) {
+					throw 'Document does not exist!';
+				}
+
+				// Compute new number of ratings
+				var newNumRatings = res.data().numRatings + 1;
+
+				// Compute new average rating
+				var oldRatingTotal = res.data().rating * res.data().numRatings;
+				var newAvgRating = (oldRatingTotal + rating) / newNumRatings;
+
+				// Commit to Firestore
+				transaction.update(ref, {
+					numRatings: newNumRatings,
+					rating: newAvgRating
+				});
+			});
+		});
+	}
+
 	finish = () => {
 		if (this.state.code != this.state.session.endCode) {
 			Alert.alert('Wrong Code', 'Please try again', [ { text: 'OK' } ], {
@@ -60,6 +85,7 @@ class StudentInProgress extends Component {
 				status: 'completed'
 			})
 			.then(() => {
+				this.addRating('tutors', this.state.session.tutorUid, this.state.rating);
 				this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
 			});
 		// firebase.firestore().collection('tutors').doc(this.state.session.tutourUid).update()
@@ -141,7 +167,7 @@ class StudentInProgress extends Component {
 							/>
 
 							<View>
-								<Text style={styles.rateText}>Please rate the student</Text>
+								<Text style={styles.rateText}>Please rate the tutor</Text>
 
 								<AirbnbRating
 									count={5}

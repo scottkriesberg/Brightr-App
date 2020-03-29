@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import firebase from '../../firebase';
 import Fire from 'firebase';
+import LoadingStyle from '../../styles/loading.js';
+import ButtonStyle from '../../styles/button.js';
 
 export default class TutorPreview extends Component {
 	constructor() {
@@ -33,7 +35,6 @@ export default class TutorPreview extends Component {
 
 	onCollectionUpdate = (doc) => {
 		if (doc.exists) {
-			console.log(doc.data().status);
 			if (doc.data().status == 'accepted') {
 				this.props.navigation.navigate('StudentChat', {
 					uid: this.state.uid,
@@ -59,6 +60,7 @@ export default class TutorPreview extends Component {
 	}
 
 	cancelRequest = () => {
+		// console.log('cancel');
 		this.requestRef
 			.delete()
 			.then((docRef) => {
@@ -73,36 +75,19 @@ export default class TutorPreview extends Component {
 	};
 
 	render() {
-		if (this.state.isLoading) {
-			return (
-				<View style={styles.container}>
-					<Button
-						style={styles.backButton}
-						icon={<Icon name="arrow-left" size={20} color="white" />}
-						iconLeft
-						title="Cancel"
-						onPress={this.cancelRequest}
-					/>
-					<View style={styles.activity}>
-						<ActivityIndicator size="large" color="#0000ff" />
-					</View>
-				</View>
-			);
-		}
 		return (
 			<View style={styles.container}>
-				<View style={styles.backButton}>
-					<Button
-						icon={<Icon name="arrow-left" size={20} color="white" />}
-						iconLeft
-						title="Cancel"
-						onPress={this.cancelRequest}
-					/>
-					<Button title="To Chat Screen" />
-				</View>
-				<View style={styles.activity}>
+				<Button
+					style={ButtonStyle.normalButton}
+					icon={<Icon name="arrow-left" size={20} color="white" />}
+					iconLeft
+					title="Cancel"
+					onPress={() => {
+						this.cancelRequest();
+					}}
+				/>
+				<View style={LoadingStyle.loadingIcon}>
 					<ActivityIndicator size="large" color="#0000ff" />
-					<Text> {this.state.timer} </Text>
 				</View>
 			</View>
 		);
@@ -115,11 +100,5 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		alignItems: 'center',
 		paddingTop: 40
-	},
-	backButton: {
-		flex: 1
-	},
-	activity: {
-		flex: 1
 	}
 });

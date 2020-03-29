@@ -36,6 +36,32 @@ class TutorInProgress extends Component {
 		this.interval = null;
 	}
 
+	addRating(collection, uid, rating) {
+		console.log(rating);
+		// In a transaction, add the new rating and update the aggregate totals
+		var ref = firebase.firestore().collection(collection).doc(uid);
+		return firebase.firestore().runTransaction((transaction) => {
+			return transaction.get(ref).then((res) => {
+				if (!res.exists) {
+					throw 'Document does not exist!';
+				}
+
+				// Compute new number of ratings
+				var newNumRatings = res.data().numRatings + 1;
+
+				// Compute new average rating
+				var oldRatingTotal = res.data().rating * res.data().numRatings;
+				var newAvgRating = (oldRatingTotal + rating) / newNumRatings;
+
+				// Commit to Firestore
+				transaction.update(ref, {
+					numRatings: newNumRatings,
+					rating: newAvgRating
+				});
+			});
+		});
+	}
+
 	toggleModal(visible) {
 		this.setState({ modalVisible: visible });
 	}
@@ -44,7 +70,7 @@ class TutorInProgress extends Component {
 
 	finish = () => {
 		if (this.state.rating == 0) {
-			Alert.alert('No Rating', 'Please rate your tutor', [ { text: 'OK' } ], {
+			Alert.alert('No Rating', 'Please rate your student', [ { text: 'OK' } ], {
 				cancelable: false
 			});
 			return;
@@ -94,6 +120,9 @@ class TutorInProgress extends Component {
 		if (doc.exists) {
 			this.state.session = doc.data();
 			if (this.state.session.status == 'completed' && this.state.finish) {
+				this.addRating('students', this.state.session.studentUid, this.state.rating);
+				this.state.code = '';
+				this.state.rating = 0;
 				this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
 			}
 		}
@@ -145,8 +174,6 @@ class TutorInProgress extends Component {
 								title="Finish"
 								onPress={() => {
 									this.finish();
-									this.state.code = '';
-									this.state.rating = 0;
 								}}
 							/>
 						</View>

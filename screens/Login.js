@@ -47,6 +47,8 @@ class Login extends React.Component {
 		// 		}
 		// 	]
 		// });
+		// var ref = firebase.firestore().collection('tutors').doc('zM9iERetSQBrLlbdxHeR');
+		// this.addRating(ref, 4);
 	}
 
 	render() {
