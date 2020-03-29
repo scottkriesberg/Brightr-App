@@ -204,7 +204,7 @@ class StudentMap extends Component {
           </TouchableWithoutFeedback>
         </View>
 
-        <View style={styles.midbar}>
+        <View style={ContainerStyles.midbar}>
           <Text style={styles.currentLocationText}>
             {" "}
             {this.state.location} Tutors: {this.state.numActive}
@@ -219,7 +219,11 @@ class StudentMap extends Component {
         </View>
 
         <View style={styles.tutorList}>
-          <FlatList data={this.state.data} renderItem={this.renderItem} />
+          <FlatList
+            ListHeaderComponentStyle={ContainerStyles.tutorList}
+            data={this.state.data}
+            renderItem={this.renderItem}
+          />
         </View>
       </View>
     );
@@ -227,24 +231,12 @@ class StudentMap extends Component {
 }
 
 const styles = StyleSheet.create({
-  currentLocationText: {
-    flex: 1
-  },
-  filterButton: {
-    flex: 1
-  },
   tutorList: {
     flex: 5,
     backgroundColor: "white"
   },
   mapContainer: {
     flex: 7
-  },
-  midbar: {
-    flex: 1,
-    alignSelf: "stretch",
-    flexDirection: "row",
-    backgroundColor: "blue"
   },
   village: {
     width: 20,
