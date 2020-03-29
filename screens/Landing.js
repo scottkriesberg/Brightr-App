@@ -5,13 +5,16 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  Button
+  Button,
+  Image
 } from "react-native";
 import firebase from "../firebase";
 import ButtonStyles from "../styles/button.js";
 import ContainerStyles from "../styles/container.js";
-import InputStyles from "../styles/input.js";
+import ImageStyles from "../styles/image.js";
 import TextStyles from "../styles/text.js";
+
+const logo = require("../assets/logo-09.png");
 
 class Landing extends React.Component {
   constructor(props) {
@@ -21,17 +24,29 @@ class Landing extends React.Component {
   }
 
   render() {
-    <View style={ContainerStyles.container}>
-      <Text h1 style={TextStyles.title}>
-        Brightr
-      </Text>
-      <TouchableOpacity
-        style={ButtonStyles.normalButton}
-        onPress={() => this.props.navigation.navigate("Login")}
-      >
-        <Text style={ButtonStyles.buttonText}>Login</Text>
-      </TouchableOpacity>
-    </View>;
+    return (
+      <View style={ContainerStyles.landingContainer}>
+        <Image style={ImageStyles.logoImage} source={logo} />
+        <Text h1 style={TextStyles.title}>
+          Brightr
+        </Text>
+        {/* Button container */}
+        <View style={ContainerStyles.inputContainer}>
+          <TouchableOpacity
+            style={ButtonStyles.normalButton}
+            onPress={() => this.props.navigation.navigate("Login")}
+          >
+            <Text style={ButtonStyles.buttonText}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={ButtonStyles.normalButton}
+            onPress={() => this.props.navigation.navigate("Login")}
+          >
+            <Text style={ButtonStyles.buttonText}>SignUp</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
   }
 }
 
