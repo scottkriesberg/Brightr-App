@@ -3,9 +3,8 @@ import { Button, Text } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import firebase from '../../firebase';
-import Fire from 'firebase';
-import LoadingStyle from '../../styles/loading.js';
 import ButtonStyle from '../../styles/button.js';
+import Loading from '../components/utils.js';
 
 export default class TutorPreview extends Component {
 	constructor() {
@@ -60,7 +59,6 @@ export default class TutorPreview extends Component {
 	}
 
 	cancelRequest = () => {
-		// console.log('cancel');
 		this.requestRef
 			.delete()
 			.then((docRef) => {
@@ -86,9 +84,7 @@ export default class TutorPreview extends Component {
 						this.cancelRequest();
 					}}
 				/>
-				<View style={LoadingStyle.loadingIcon}>
-					<ActivityIndicator size="large" color="#0000ff" />
-				</View>
+				<Loading />
 			</View>
 		);
 	}

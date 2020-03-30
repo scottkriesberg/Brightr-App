@@ -1,18 +1,8 @@
 import React, { Component } from 'react';
-import {
-	Alert,
-	View,
-	TextInput,
-	Modal,
-	TouchableWithoutFeedback,
-	Keyboard,
-	StyleSheet,
-	ActivityIndicator,
-	Text
-} from 'react-native';
-import { Button, Icon, AirbnbRating } from 'react-native-elements';
+import { Alert, View, TextInput, Modal, TouchableWithoutFeedback, Keyboard, StyleSheet, Text } from 'react-native';
+import { Button, AirbnbRating } from 'react-native-elements';
 import firebase from '../../firebase';
-import Fire from 'firebase';
+import Loading from '../components/utils.js';
 
 class StudentInProgress extends Component {
 	constructor() {
@@ -88,7 +78,6 @@ class StudentInProgress extends Component {
 				this.addRating('tutors', this.state.session.tutorUid, this.state.rating);
 				this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
 			});
-		// firebase.firestore().collection('tutors').doc(this.state.session.tutourUid).update()
 	};
 
 	componentDidMount() {
@@ -134,11 +123,7 @@ class StudentInProgress extends Component {
 
 	render() {
 		if (this.state.isLoading) {
-			return (
-				<View style={styles.activity}>
-					<ActivityIndicator size="large" color="#0000ff" />
-				</View>
-			);
+			return <Loading />;
 		}
 		return (
 			<View style={styles.container}>

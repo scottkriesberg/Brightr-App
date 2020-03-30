@@ -99,10 +99,4 @@ class Login extends React.Component {
 	}
 }
 
-const styles = StyleSheet.create({
-	buttonSignup: {
-		fontSize: 12
-	}
-});
-
 export default Login;

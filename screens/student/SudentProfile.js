@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Button } from 'react-native-elements';
-import Stars from 'react-native-stars';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from '../../firebase';
-import { StyleSheet, Text, View, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
-import ContainerStyles from '../../styles/container.js';
-import TextStyles from '../../styles/text.js';
-import ButtonStyles from '../../styles/button.js';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import ContainerStyles from '../../styles/container';
+import TextStyles from '../../styles/text';
+import ButtonStyles from '../../styles/button';
 import Rating from '../components/profile';
+import Loading from '../components/utils.js';
 
 export default class Profile extends Component {
 	constructor() {
@@ -40,11 +40,7 @@ export default class Profile extends Component {
 	};
 	render() {
 		if (this.state.isLoading) {
-			return (
-				<View style={styles.activity}>
-					<ActivityIndicator size="large" color="#0000ff" />
-				</View>
-			);
+			return <Loading />;
 		}
 		return (
 			<View style={ContainerStyles.container}>

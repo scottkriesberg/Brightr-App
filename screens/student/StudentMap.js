@@ -15,6 +15,7 @@ import Modal from 'react-native-modal';
 import firebase from '../../firebase';
 import ContainerStyles from '../../styles/container.js';
 import Rating from '../components/profile';
+import Loading from '../components/utils.js';
 
 const map = require('../../images/USC_Map.png');
 
@@ -147,11 +148,7 @@ class StudentMap extends Component {
 
 	render() {
 		if (this.state.isLoading) {
-			return (
-				<View style={styles.activity}>
-					<ActivityIndicator size="large" color="#0000ff" />
-				</View>
-			);
+			return <Loading />;
 		}
 		return (
 			<View style={styles.container}>

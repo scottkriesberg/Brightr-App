@@ -1,21 +1,11 @@
 import React, { Component } from 'react';
 import { Button, Slider } from 'react-native-elements';
-import Stars from 'react-native-stars';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-	StyleSheet,
-	TouchableWithoutFeedback,
-	Keyboard,
-	TextInput,
-	Text,
-	View,
-	Image,
-	ActivityIndicator
-} from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, Keyboard, TextInput, Text, View, Image } from 'react-native';
 import firebase from '../../firebase';
-import Fire from 'firebase';
 import SelectableFlatlist, { STATE } from 'react-native-selectable-flatlist';
 import Rating from '../components/profile';
+import Loading from '../components/utils.js';
 
 export default class TutorPreview extends Component {
 	classSelected = (selectedItem) => {
@@ -94,7 +84,7 @@ export default class TutorPreview extends Component {
 				location: this.state.locationRequest,
 				estTime: this.state.value,
 				className: this.state.classRequest,
-				startCode: this.codeGenerator(),
+				startCode: codeGen(),
 				status: 'pending',
 				messages: [],
 				description: this.state.description
@@ -115,11 +105,7 @@ export default class TutorPreview extends Component {
 	};
 	render() {
 		if (this.state.isLoading) {
-			return (
-				<View style={styles.activity}>
-					<ActivityIndicator size="large" color="#0000ff" />
-				</View>
-			);
+			return <Loading />;
 		}
 		return (
 			<TouchableWithoutFeedback
