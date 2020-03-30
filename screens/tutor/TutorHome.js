@@ -4,6 +4,8 @@ import Stars from 'react-native-stars';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import firebase from '../../firebase';
 import { StyleSheet, Text, View, Image, ActivityIndicator, FlatList } from 'react-native';
+import Rating from '../components/profile';
+import { width } from 'dom-helpers';
 
 class TutorHome extends Component {
 	constructor() {
@@ -94,24 +96,7 @@ class TutorHome extends Component {
 						<Text style={styles.yearMajor}>
 							{this.state.user.year} / {this.state.user.major}
 						</Text>
-						<View style={styles.rating}>
-							<Text style={styles.ratingText}>Rating</Text>
-							<View style={styles.ratingStars}>
-								<Stars
-									default={4.5}
-									count={5}
-									starSize={10000}
-									fullStar={<Icon name={'star'} style={[ styles.myStarStyle ]} />}
-									emptyStar={
-										<Icon
-											name={'star-outline'}
-											style={[ styles.myStarStyle, styles.myEmptyStarStyle ]}
-										/>
-									}
-									halfStar={<Icon name={'star-half'} style={[ styles.myStarStyle ]} />}
-								/>
-							</View>
-						</View>
+						<Rating style={styles.ratingText} rating={this.state.user.rating} />
 					</View>
 				</View>
 
@@ -209,15 +194,6 @@ const styles = StyleSheet.create({
 	ratingStars: {
 		alignSelf: 'center',
 		marginLeft: 5
-	},
-	myStarStyle: {
-		color: 'yellow',
-		backgroundColor: 'transparent',
-		textShadowColor: 'black',
-		textShadowRadius: 2
-	},
-	myEmptyStarStyle: {
-		color: 'white'
 	},
 	stats: {
 		flex: 4,

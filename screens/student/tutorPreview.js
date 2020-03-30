@@ -15,6 +15,7 @@ import {
 import firebase from '../../firebase';
 import Fire from 'firebase';
 import SelectableFlatlist, { STATE } from 'react-native-selectable-flatlist';
+import Rating from '../components/profile';
 
 export default class TutorPreview extends Component {
 	classSelected = (selectedItem) => {
@@ -148,20 +149,7 @@ export default class TutorPreview extends Component {
 						<Text>${this.state.tutor.hourlyRate}/hour</Text>
 						<Text style={styles.description}>{this.state.tutor.bio}</Text>
 						<View style={styles.rating}>
-							<Stars
-								style={styles.rating}
-								default={Number(this.state.tutor.rating)}
-								count={5}
-								starSize={200}
-								fullStar={<Icon name={'star'} style={[ styles.myStarStyle ]} />}
-								emptyStar={
-									<Icon
-										name={'star-outline'}
-										style={[ styles.myStarStyle, styles.myEmptyStarStyle ]}
-									/>
-								}
-								halfStar={<Icon name={'star-half'} style={[ styles.myStarStyle ]} />}
-							/>
+							<Rating rating={this.state.tutor.rating} />
 						</View>
 					</View>
 					<View>
