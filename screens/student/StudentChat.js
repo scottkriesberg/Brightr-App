@@ -3,6 +3,7 @@ import { GiftedChat } from 'react-native-gifted-chat'; // 0.3.0
 import { View, Modal, Button, StyleSheet, Text } from 'react-native';
 import firebase from '../../firebase';
 import Fire from 'firebase';
+import Loading from '../components/utils.js';
 
 export default class Chat extends React.Component {
 	constructor() {
@@ -32,7 +33,6 @@ export default class Chat extends React.Component {
 		// this.setState((previousState) => ({
 		// 	messages: GiftedChat.append(previousState.messages, messages)
 		// }));
-		console.log(messages);
 		this.requestRef.update({
 			messages: Fire.firestore.FieldValue.arrayUnion(messages[0])
 		});
@@ -113,6 +113,9 @@ export default class Chat extends React.Component {
 	};
 	componentWillUnmount() {}
 	render() {
+		if (this.state.isLoading) {
+			return <Loading />;
+		}
 		return (
 			<View style={styles.container}>
 				<Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>

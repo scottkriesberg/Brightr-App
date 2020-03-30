@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import firebase from '../../firebase';
 import Fire from 'firebase';
+import Loading from '../components/utils.js';
 
 export default class Chat extends React.Component {
 	constructor() {
@@ -162,7 +163,6 @@ export default class Chat extends React.Component {
 				messages,
 				isLoading: false
 			});
-			console.log(messages);
 		} else {
 			this.props.navigation.navigate('TutorIncomingRequests', {
 				uid: this.state.uid
@@ -171,9 +171,10 @@ export default class Chat extends React.Component {
 	};
 	componentWillUnmount() {}
 	render() {
+		if (this.state.isLoading) {
+			return <Loading />;
+		}
 		return (
-			// <View styles={styles.container}>
-
 			<View style={styles.container}>
 				<Modal
 					animationType={'slide'}
@@ -227,7 +228,6 @@ export default class Chat extends React.Component {
 					user={this.getUser()}
 				/>
 			</View>
-			// </View>
 		);
 	}
 }

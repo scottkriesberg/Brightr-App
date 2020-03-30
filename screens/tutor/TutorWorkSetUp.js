@@ -10,6 +10,7 @@ import {
 	TouchableWithoutFeedback
 } from 'react-native';
 import firebase from '../../firebase';
+import Loading from '../components/utils.js';
 const map = require('../../images/USC_Map.png');
 
 function Location({ name, addLoc, style }) {
@@ -85,11 +86,7 @@ class TutorWorkSetUp extends Component {
 
 	render() {
 		if (this.state.isLoading) {
-			return (
-				<View style={styles.activity}>
-					<ActivityIndicator size="large" color="#0000ff" />
-				</View>
-			);
+			return <Loading />;
 		}
 		return (
 			<View style={styles.container}>

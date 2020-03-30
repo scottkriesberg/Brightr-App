@@ -13,6 +13,7 @@ import {
 import { Button, Icon, AirbnbRating } from 'react-native-elements';
 import firebase from '../../firebase';
 import Fire from 'firebase';
+import Loading from '../components/utils.js';
 
 class TutorInProgress extends Component {
 	constructor() {
@@ -133,11 +134,7 @@ class TutorInProgress extends Component {
 
 	render() {
 		if (this.state.isLoading) {
-			return (
-				<View style={styles.activity}>
-					<ActivityIndicator size="large" color="#0000ff" />
-				</View>
-			);
+			return <Loading />;
 		}
 		return (
 			<View style={styles.container}>

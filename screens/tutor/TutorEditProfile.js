@@ -4,6 +4,7 @@ import Stars from 'react-native-stars';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import firebase from '../../firebase';
 import { StyleSheet, Text, View, Image, ActivityIndicator, FlatList } from 'react-native';
+import Loading from '../components/utils.js';
 
 class TutorEditProfile extends Component {
 	constructor() {
@@ -55,11 +56,7 @@ class TutorEditProfile extends Component {
 
 	render() {
 		if (this.state.isLoading) {
-			return (
-				<View style={styles.activity}>
-					<ActivityIndicator size="large" color="#0000ff" />
-				</View>
-			);
+			return <Loading />;
 		}
 		return (
 			<View style={styles.container}>

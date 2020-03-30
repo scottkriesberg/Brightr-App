@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, ActivityIndicator, Text } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import firebase from '../../firebase';
+import Loading from '../components/utils.js';
 
 class TutorIncomingRequests extends Component {
 	constructor() {
@@ -17,25 +18,6 @@ class TutorIncomingRequests extends Component {
 	}
 
 	renderItem = ({ item }) => {
-		var studentInfo = {};
-		// this.setState({
-		// 	isLoading: true
-		// });
-		// firebase.firestore().collection('students').doc(item.studentUid).get().then((doc) => {
-		// 	if (doc.exists) {
-		// 		studentInfo = doc.data();
-		// 		// this.setState({
-		// 		// 	isLoading: false
-		// 		// });
-		// 	} else {
-		// 		return (
-		// 			<View>
-		// 				<Text>Error</Text>
-		// 			</View>
-		// 		);
-		// 	}
-		// });
-
 		return (
 			<View style={styles.row}>
 				<View style={styles.requestInfo}>
@@ -69,7 +51,6 @@ class TutorIncomingRequests extends Component {
 			var studentInfo = {};
 			const { studentUid, description, className, estTime, location } = doc.data();
 			firebase.firestore().collection('students').doc(studentUid).get().then((studentDoc) => {
-				console.log('here');
 				if (studentDoc.exists) {
 					studentInfo = studentDoc.data();
 				} else {
@@ -95,7 +76,6 @@ class TutorIncomingRequests extends Component {
 			isLoading: false,
 			numActive: requests.length
 		});
-		console.log(requests);
 	};
 
 	decline = ({ item }) => {
@@ -108,7 +88,6 @@ class TutorIncomingRequests extends Component {
 			.catch((error) => {
 				console.error('Error adding document: ', error);
 			});
-		// console.log(item);
 	};
 
 	accept = ({ item }) => {
@@ -143,11 +122,7 @@ class TutorIncomingRequests extends Component {
 
 	render() {
 		if (this.state.isLoading) {
-			return (
-				<View style={styles.activity}>
-					<ActivityIndicator size="large" color="#0000ff" />
-				</View>
-			);
+			return <Loading />;
 		}
 		return (
 			<View style={styles.container}>
@@ -177,7 +152,6 @@ const styles = StyleSheet.create({
 	headerText: {
 		fontSize: 40
 	},
-	requestInfo: {},
 	requestList: {
 		paddingTop: 10,
 		flex: 15,
