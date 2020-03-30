@@ -7,6 +7,12 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-evenly"
   },
+  landingContainer: {
+    flex: 1,
+    backgroundColor: "#6A7BD6",
+    alignItems: "center",
+    justifyContent: "center"
+  },
   profileHeaderContainer: {
     backgroundColor: "#A8BBFF",
     height: "25%",
@@ -50,5 +56,13 @@ export default StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     borderColor: "#6A7BD6"
+  },
+  midbar: {
+    paddingHorizontal: 15,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#6A7BD6"
   }
 });
