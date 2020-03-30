@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { TouchableWithoutFeedback, Keyboard, View, Image, ActivityIndicator, FlatList } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
 import LoadingStyle from '../../styles/loading';
 

@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet, TouchableWithoutFeedback, Keyboard, TextInput, Text, View, Image } from 'react-native';
 import firebase from '../../firebase';
 import SelectableFlatlist, { STATE } from 'react-native-selectable-flatlist';
-import Rating from '../components/profile';
+import { Rating } from '../components/profile';
 import Loading from '../components/utils.js';
 
 export default class TutorPreview extends Component {

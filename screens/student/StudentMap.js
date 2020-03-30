@@ -5,7 +5,6 @@ import {
 	StyleSheet,
 	ImageBackground,
 	Image,
-	ActivityIndicator,
 	Text,
 	TouchableOpacity,
 	TouchableWithoutFeedback
@@ -14,7 +13,7 @@ import { Button, Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import firebase from '../../firebase';
 import ContainerStyles from '../../styles/container.js';
-import Rating from '../components/profile';
+import { Rating } from '../components/profile';
 import Loading from '../components/utils.js';
 
 const map = require('../../images/USC_Map.png');
@@ -182,19 +181,21 @@ class StudentMap extends Component {
 						</ImageBackground>
 					</TouchableWithoutFeedback>
 				</View>
-
 				<View style={styles.midbar}>
+					<View style={styles.findTutorFilterContainer}>
+						<Text style={styles.findTutorText}>Find Tutor</Text>
+
+						<Icon
+							style={styles.filterButton}
+							name="settings-input-component"
+							type="Octicons"
+							color="black"
+							onPress={this.toggleFilterWindow}
+						/>
+					</View>
 					<Text style={styles.currentLocationText}>
-						{' '}
-						{this.state.location} Tutors: {this.state.numActive}
+						{this.state.location}: {this.state.numActive} Active
 					</Text>
-					<Icon
-						style={styles.filterButton}
-						name="settings-input-component"
-						type="Octicons"
-						color="black"
-						onPress={this.toggleFilterWindow}
-					/>
 				</View>
 
 				<View style={styles.tutorList}>
@@ -207,7 +208,8 @@ class StudentMap extends Component {
 
 const styles = StyleSheet.create({
 	currentLocationText: {
-		flex: 1
+		flex: 1,
+		paddingLeft: 5
 	},
 	filterButton: {
 		flex: 1
@@ -222,8 +224,18 @@ const styles = StyleSheet.create({
 	midbar: {
 		flex: 1,
 		alignSelf: 'stretch',
+		backgroundColor: 'white',
+		borderWidth: 1,
+		borderTopLeftRadius: 25,
+		borderTopRightRadius: 25,
+		borderColor: 'white',
+		paddingTop: 10,
+		paddingLeft: 5,
+		paddingRight: 5
+	},
+	findTutorFilterContainer: {
 		flexDirection: 'row',
-		backgroundColor: 'blue'
+		justifyContent: 'space-between'
 	},
 	village: {
 		width: 20,
@@ -255,14 +267,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		paddingTop: 40
 	},
-	activity: {
-		position: 'absolute',
-		left: 0,
-		right: 0,
-		top: 0,
-		bottom: 0,
-		alignItems: 'center',
-		justifyContent: 'center'
+	findTutorText: {
+		paddingLeft: 5,
+		fontSize: 30
 	}
 });
 

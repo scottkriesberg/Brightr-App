@@ -120,6 +120,7 @@ export default class Chat extends React.Component {
 						studentUid: this.state.request.studentUid,
 						tutorUid: this.state.request.tutorUid,
 						startTime: time,
+						hourlyRate: this.state.user.hourlyRate,
 						location: this.state.request.location,
 						estTime: this.state.request.estTime,
 						className: this.state.request.className,

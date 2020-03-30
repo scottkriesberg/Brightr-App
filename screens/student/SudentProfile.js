@@ -6,7 +6,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import ContainerStyles from '../../styles/container';
 import TextStyles from '../../styles/text';
 import ButtonStyles from '../../styles/button';
-import Rating from '../components/profile';
+import { Rating } from '../components/profile';
 import Loading from '../components/utils.js';
 
 export default class Profile extends Component {
@@ -59,10 +59,7 @@ export default class Profile extends Component {
 					<Text style={styles.description}>
 						I love developing apps in my free time. I interned at Google last summer. I hope can help you.
 					</Text>
-					<View style={styles.rating}>
-						<Rating rating={this.state.user.rating} />
-					</View>
-					<View style={styles.bodyContent} />
+					<Rating style={styles.rating} rating={this.state.user.rating} />
 				</View>
 			</View>
 		);
@@ -70,32 +67,10 @@ export default class Profile extends Component {
 }
 
 const styles = StyleSheet.create({
-	backButton: {
-		marginTop: 30
-	},
-	rating: {
-		paddingTop: 10
-	},
-	myStarStyle: {
-		color: 'yellow',
-		backgroundColor: 'transparent',
-		textShadowColor: 'black',
-		textShadowOffset: { width: 1, height: 1 },
-		textShadowRadius: 2
-	},
-	myEmptyStarStyle: {
-		color: 'white'
-	},
 	body: {
 		marginTop: 10,
 		alignItems: 'center',
 		padding: 60
-	},
-	bodyContent: {
-		flex: 1,
-		alignItems: 'center',
-		padding: 60,
-		backgroundColor: 'white'
 	},
 	info: {
 		fontSize: 16,

@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Icon, Slider } from 'react-native-elements';
-import {
-	Alert,
-	StyleSheet,
-	Text,
-	View,
-	ImageBackground,
-	ActivityIndicator,
-	TouchableWithoutFeedback
-} from 'react-native';
+import { Alert, StyleSheet, Text, View, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 const map = require('../../images/USC_Map.png');
@@ -30,7 +22,7 @@ class TutorWorkSetUp extends Component {
 			user: {},
 			isLoading: true,
 			locations: [],
-			value: 10
+			value: 25
 		};
 	}
 
@@ -43,7 +35,7 @@ class TutorWorkSetUp extends Component {
 					user: doc.data(),
 					key: doc.id,
 					isLoading: false,
-					value: 10
+					value: 25
 				});
 			} else {
 				console.log('No such document!');
@@ -103,22 +95,22 @@ class TutorWorkSetUp extends Component {
 						</ImageBackground>
 					</TouchableWithoutFeedback>
 				</View>
-
-				<View style={styles.slider}>
+				<View style={styles.sliderContainer}>
 					<Slider
-						style={styles.sliderBar}
 						value={this.state.value}
 						maximumValue={100}
 						minimumValue={10}
-						thumbStyle={styles.thumb}
-						trackStyle={styles.track}
 						step={5}
 						onValueChange={(value) => this.setState({ value })}
 					/>
-					<Text style={styles.sliderText}>
-						Hourly Price: $
-						{this.state.value}
-					</Text>
+					<View style={styles.sliderText}>
+						<Text>$10/hr</Text>
+						<Text style={styles.currentRateText}>
+							Hourly Rate: $
+							{this.state.value}
+						</Text>
+						<Text>$100/hr</Text>
+					</View>
 				</View>
 
 				<View style={styles.live}>
@@ -172,21 +164,20 @@ const styles = StyleSheet.create({
 		left: 290,
 		top: 70
 	},
+	sliderContainer: {
+		flex: 1,
+		paddingLeft: 10,
+		paddingRight: 10
+	},
 	slider: {
 		flex: 1
 	},
-	sliderBar: {},
-	thumb: {
-		width: 40,
-		height: 40,
-		borderRadius: 20
-	},
-	track: {
-		height: 30
-	},
 	sliderText: {
-		alignSelf: 'center',
-		fontSize: 25
+		flexDirection: 'row',
+		justifyContent: 'space-between'
+	},
+	currentRateText: {
+		fontSize: 30
 	},
 	live: {
 		flex: 1,

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import firebase from '../../firebase';
-import { StyleSheet, Text, View, Image, ActivityIndicator, FlatList } from 'react-native';
-import Rating from '../components/profile';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { ProfileTopBar, ProfileHeadingInfo } from '../components/profile';
 import Loading from '../components/utils.js';
 
 class TutorHome extends Component {
@@ -38,6 +37,7 @@ class TutorHome extends Component {
 				<Text style={styles.classText}>
 					{item.department}: {item.code}
 				</Text>
+				<Text>{item.name}</Text>
 			</View>
 		);
 	};
@@ -60,46 +60,34 @@ class TutorHome extends Component {
 		}
 		return (
 			<View style={styles.container}>
-				<View style={styles.header}>
-					<Button
-						style={styles.logoutButton}
-						icon={<Icon name="arrow-left" size={15} color="white" />}
-						iconLeft
-						title="Logout"
-						onPress={this.logout}
-					/>
-
-					<Text style={styles.profileText}>Profile</Text>
-					<Icon
-						style={styles.editProfile}
-						name="account-edit"
-						type="MaterialCommunityIcons"
-						color="black"
-						size={50}
-						onPress={this.toEditPage}
-					/>
-				</View>
-
-				<View style={styles.selfInfo}>
-					<Image
-						style={styles.avatar}
-						source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }}
-					/>
-
-					<View style={styles.info}>
-						<Text style={styles.name}>{this.state.user.name}</Text>
-						<Text style={styles.yearMajor}>
-							{this.state.user.year} / {this.state.user.major}
-						</Text>
-						<Rating style={styles.ratingText} rating={this.state.user.rating} />
-					</View>
-				</View>
+				<ProfileTopBar logoutFunction={this.logout} editPageFunction={this.toEditPage} />
+				<ProfileHeadingInfo
+					rating={this.state.user.rating}
+					year={this.state.user.year}
+					major={this.state.user.major}
+					containerStyle={styles.selfInfo}
+					name={this.state.user.name}
+					image={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }}
+				/>
 
 				<View style={styles.bioContainer}>
-					<Text style={styles.bio}>{this.state.user.bio}</Text>
+					<Text adjustsFontSizeToFit style={styles.bio}>
+						{this.state.user.bio}
+					</Text>
 				</View>
 
-				<View style={styles.stats} />
+				<View style={styles.stats}>
+					<Text style={styles.statsHeader}>Stats</Text>
+					<Text style={styles.statsText}>People Helped: {this.state.user.numRatings}</Text>
+					<Text style={styles.statsText}>Time Worked: {this.state.user.timeWorked} minutes</Text>
+					<Text style={styles.statsText}>Money Made: ${this.state.user.moneyMade}</Text>
+					<Text style={styles.statsText}>Top Hourly Rate: ${this.state.user.topHourlyRate}/hr</Text>
+					<Text style={styles.statsText}>
+						Average Hourly Rate: ${Math.round(
+							this.state.user.moneyMade / this.state.user.timeWorked * 60 * 100
+						) / 100}/hr
+					</Text>
+				</View>
 
 				<View style={styles.classes}>
 					<FlatList
@@ -112,91 +100,53 @@ class TutorHome extends Component {
 				<View style={styles.work}>
 					<Button style={styles.workButton} title="Start Tutoring" onPress={this.toWorkPage} />
 				</View>
-
-				<View style={styles.navbar} />
 			</View>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
-	activity: {
-		flex: 1,
-		alignContent: 'center',
-		paddingTop: '100%'
-	},
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		paddingTop: 40
-	},
-	header: {
-		flex: 1,
-		flexDirection: 'row',
-		backgroundColor: 'green',
-		justifyContent: 'space-between'
-	},
-	logoutButton: {
-		alignSelf: 'flex-start'
-	},
-	profileText: {
-		fontSize: 40
-	},
-	editProfile: {
-		alignSelf: 'flex-end'
+		paddingTop: 40,
+		paddingBottom: 20
 	},
 	selfInfo: {
 		flex: 3,
-		backgroundColor: 'black',
+		backgroundColor: 'skyblue',
 		flexDirection: 'row'
-	},
-	avatar: {
-		borderRadius: 63,
-		borderWidth: 4,
-		borderColor: 'white',
-		flex: 1,
-		height: '90%',
-		alignSelf: 'center'
 	},
 	info: {
 		flex: 1,
 		flexDirection: 'column',
 		alignSelf: 'center'
 	},
-	name: {
-		fontSize: 28,
-		color: '#696969',
-		fontWeight: '600'
-	},
-	yearMajor: {
-		fontSize: 28,
-		color: '#696969',
-		fontWeight: '600'
-	},
 	bioContainer: {
-		flex: 2
+		flex: 2,
+		justifyContent: 'center'
 	},
 	bio: {
-		fontSize: 30
-	},
-	rating: {
-		flexDirection: 'row'
-	},
-	ratingText: {
-		fontSize: 20,
-		color: 'white'
-	},
-	ratingStars: {
 		alignSelf: 'center',
-		marginLeft: 5
+		paddingLeft: 5,
+		paddingRight: 5,
+		textAlign: 'center'
 	},
 	stats: {
 		flex: 4,
-		backgroundColor: 'yellow'
+		backgroundColor: 'white',
+		justifyContent: 'space-between'
+	},
+	statsHeader: {
+		alignSelf: 'center',
+		fontSize: 30
+	},
+	statsText: {
+		fontSize: 20
 	},
 	classes: {
 		flex: 5,
-		backgroundColor: 'blue',
+		backgroundColor: 'grey',
 		alignItems: 'stretch'
 	},
 	classRow: {
@@ -205,15 +155,10 @@ const styles = StyleSheet.create({
 		backgroundColor: 'skyblue'
 	},
 	classText: {
-		fontSize: 50
+		fontSize: 30
 	},
 	work: {
-		flex: 1,
-		backgroundColor: 'purple'
-	},
-	navbar: {
-		flex: 1,
-		backgroundColor: 'red'
+		flex: 1
 	}
 });
 
