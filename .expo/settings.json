@@ -3,6 +3,10 @@
   "lanType": "ip",
   "dev": true,
   "minify": false,
+<<<<<<< HEAD
   "urlRandomness": "yu-j7f",
+=======
+  "urlRandomness": "8d-spc",
+>>>>>>> 387118ecb3c7630e33bb9c691a3c8f5158fa634f
   "https": false
 }
