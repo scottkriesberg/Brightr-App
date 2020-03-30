@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, FlatList, StyleSheet, ActivityIndicator, Text } from 'react-native';
-import { Button, Icon } from 'react-native-elements';
+import { View, FlatList, StyleSheet, Text } from 'react-native';
+import { Button } from 'react-native-elements';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 
@@ -22,7 +22,9 @@ class TutorIncomingRequests extends Component {
 			<View style={styles.row}>
 				<View style={styles.requestInfo}>
 					<Text>{item.studentInfo.name}</Text>
-					<Text>Class: {item.className.department}</Text>
+					<Text>
+						Class: {item.className.department} {item.className.code}
+					</Text>
 					<Text>Location: {item.location}</Text>
 					<Text>Estimated Session Time: {item.estTime} minutes</Text>
 					<Text>{item.description}</Text>
@@ -127,7 +129,9 @@ class TutorIncomingRequests extends Component {
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
-					<Text style={styles.headerText}>Incoming Requests</Text>
+					<Text adjustsFontSizeToFit style={styles.headerText}>
+						Incoming Requests
+					</Text>
 				</View>
 				<View style={styles.requestList}>
 					<FlatList
@@ -147,7 +151,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: 'grey'
+		backgroundColor: 'white'
 	},
 	headerText: {
 		fontSize: 40
@@ -155,17 +159,21 @@ const styles = StyleSheet.create({
 	requestList: {
 		paddingTop: 10,
 		flex: 15,
-		backgroundColor: 'grey'
+		backgroundColor: 'white'
+	},
+	requestInfo: {
+		justifyContent: 'space-around'
 	},
 	requestButtons: {
-		justifyContent: 'space-between',
-		alignItems: 'flex-end'
+		paddingBottom: '5%',
+		height: '60%',
+		justifyContent: 'space-between'
 	},
 	button: {
-		height: 40,
-		width: 150,
+		height: '100%',
+		width: '100%',
 		alignSelf: 'flex-end',
-		paddingLeft: 65
+		paddingRight: '5%'
 	},
 	row: {
 		padding: 15,
@@ -173,22 +181,14 @@ const styles = StyleSheet.create({
 		backgroundColor: 'skyblue',
 		color: 'red',
 		flexDirection: 'row',
-		height: 120
+		justifyContent: 'space-between',
+		height: '100%'
 	},
 	container: {
 		flex: 1,
 		flexDirection: 'column',
 		paddingTop: 40,
 		paddingBottom: 40
-	},
-	activity: {
-		position: 'absolute',
-		left: 0,
-		right: 0,
-		top: 0,
-		bottom: 0,
-		alignItems: 'center',
-		justifyContent: 'center'
 	}
 });
 

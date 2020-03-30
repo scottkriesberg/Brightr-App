@@ -1,18 +1,7 @@
 import React, { Component } from 'react';
-import {
-	View,
-	TextInput,
-	Alert,
-	Modal,
-	TouchableWithoutFeedback,
-	Keyboard,
-	StyleSheet,
-	ActivityIndicator,
-	Text
-} from 'react-native';
-import { Button, Icon, AirbnbRating } from 'react-native-elements';
+import { View, Alert, Modal, TouchableWithoutFeedback, Keyboard, StyleSheet, Text } from 'react-native';
+import { Button, AirbnbRating } from 'react-native-elements';
 import firebase from '../../firebase';
-import Fire from 'firebase';
 import Loading from '../components/utils.js';
 
 class TutorInProgress extends Component {
@@ -54,10 +43,24 @@ class TutorInProgress extends Component {
 				var oldRatingTotal = res.data().rating * res.data().numRatings;
 				var newAvgRating = (oldRatingTotal + rating) / newNumRatings;
 
+				//update stats
+				var sessionRate = this.state.session.hourlyRate;
+				var newTopHourlyRate = res.data().topHourlyRate;
+				if (newTopHourlyRate < sessionRate) {
+					newTopHourlyRate = sessionRate;
+				}
+
+				var newTimeWorked = res.data().timeWorked + this.state.hour * 60 + this.state.min;
+				var newMoneyMade =
+					res.data().moneyMade + sessionRate * this.state.hour + sessionRate * this.state.min / 60;
+
 				// Commit to Firestore
 				transaction.update(ref, {
 					numRatings: newNumRatings,
-					rating: newAvgRating
+					rating: newAvgRating,
+					topHourlyRate: newTopHourlyRate,
+					timeWorked: newTimeWorked,
+					moneyMade: newMoneyMade
 				});
 			});
 		});

@@ -3,7 +3,7 @@ import { Button } from 'react-native-elements';
 import Stars from 'react-native-stars';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import firebase from '../../firebase';
-import { StyleSheet, Text, View, Image, ActivityIndicator, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
 import Loading from '../components/utils.js';
 
 class TutorEditProfile extends Component {
