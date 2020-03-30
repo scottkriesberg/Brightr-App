@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Text, Button } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import firebase from '../firebase';
+import { Button } from 'react-native-elements';
 import ButtonStyles from '../styles/button.js';
 import ContainerStyles from '../styles/container.js';
 import InputStyles from '../styles/input.js';
@@ -75,25 +76,28 @@ class Login extends React.Component {
 						placeholderTextColor="white"
 						secureTextEntry={true}
 					/>
-					<TouchableOpacity style={ButtonStyles.normalButton} onPress={this.handleSignIn}>
-						<Text style={ButtonStyles.buttonText}>Login</Text>
-					</TouchableOpacity>
+					<Button type="clear" title="Login" style={ButtonStyles.landingButton} onPress={this.handleSignIn} />
 				</View>
-
-				<Button
-					title="Don't have an account yet? Sign up (to student)"
-					onPress={() =>
-						this.props.navigation.navigate('StudentMap', {
-							uid: 'KE61CyI6GmbCh2SPOtEi'
-						})}
-				/>
-				<Button
-					title="Don't have an account yet? Sign up (to tutor)"
-					onPress={() =>
-						this.props.navigation.navigate('TutorWorkSetUp', {
-							uid: 'usdXvClRwPGhdPgjJomX'
-						})}
-				/>
+				<View style={ContainerStyles.signUpButtonContainer}>
+					<Button
+						type="clear"
+						style={ButtonStyles.landingButton}
+						title="Don't have an account yet? Sign up (to student)"
+						onPress={() =>
+							this.props.navigation.navigate('StudentMap', {
+								uid: 'KE61CyI6GmbCh2SPOtEi'
+							})}
+					/>
+					<Button
+						type="clear"
+						style={ButtonStyles.landingButton}
+						title="Don't have an account yet? Sign up (to tutor)"
+						onPress={() =>
+							this.props.navigation.navigate('TutorWorkSetUp', {
+								uid: 'usdXvClRwPGhdPgjJomX'
+							})}
+					/>
+				</View>
 			</View>
 		);
 	}

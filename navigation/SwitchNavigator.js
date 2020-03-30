@@ -2,13 +2,13 @@ import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import Login from '../screens/Login';
 import Landing from '../screens/Landing';
 import Signup from '../screens/Signup';
-import Profile from '../screens/student/Profile';
+import StudentProfile from '../screens/student/StudentProfile';
 import StudentMap from '../screens/student/StudentMap';
 import TutorPreview from '../screens/student/tutorPreview';
 import RequestWaiting from '../screens/student/RequestWaiting';
 import StudentChat from '../screens/student/StudentChat';
 import StudentInProgress from '../screens/student/StudentInProgress';
-import TutorHome from '../screens/tutor/TutorHome';
+import TutorProfile from '../screens/tutor/TutorProfile';
 import TutorWorkSetUp from '../screens/tutor/TutorWorkSetUp';
 import TutorIncomingRequests from '../screens/tutor/TutorIncomingRequests';
 import TutorChat from '../screens/tutor/TutorChat';
@@ -26,8 +26,8 @@ const SwitchNavigator = createSwitchNavigator(
 		Signup: {
 			screen: Signup
 		},
-		Profile: {
-			screen: Profile
+		StudentProfile: {
+			screen: StudentProfile
 		},
 		StudentMap: {
 			screen: StudentMap
@@ -38,8 +38,8 @@ const SwitchNavigator = createSwitchNavigator(
 		RequestWaiting: {
 			screen: RequestWaiting
 		},
-		TutorHome: {
-			screen: TutorHome
+		TutorProfile: {
+			screen: TutorProfile
 		},
 		TutorWorkSetUp: {
 			screen: TutorWorkSetUp

@@ -4,6 +4,7 @@ import firebase from '../../firebase';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { ProfileTopBar, ProfileHeadingInfo } from '../components/profile';
 import Loading from '../components/utils.js';
+import ButtonStyles from '../../styles/button';
 
 class TutorHome extends Component {
 	constructor() {
@@ -65,17 +66,11 @@ class TutorHome extends Component {
 					rating={this.state.user.rating}
 					year={this.state.user.year}
 					major={this.state.user.major}
-					containerStyle={styles.selfInfo}
 					name={this.state.user.name}
+					containerStyle={styles.basicInfoContainer}
 					image={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }}
+					bio={this.state.user.bio}
 				/>
-
-				<View style={styles.bioContainer}>
-					<Text adjustsFontSizeToFit style={styles.bio}>
-						{this.state.user.bio}
-					</Text>
-				</View>
-
 				<View style={styles.stats}>
 					<Text style={styles.statsHeader}>Stats</Text>
 					<Text style={styles.statsText}>People Helped: {this.state.user.numRatings}</Text>
@@ -97,9 +92,7 @@ class TutorHome extends Component {
 					/>
 				</View>
 
-				<View style={styles.work}>
-					<Button style={styles.workButton} title="Start Tutoring" onPress={this.toWorkPage} />
-				</View>
+				<Button type="outline" title="Start Tutoring" onPress={this.toWorkPage} />
 			</View>
 		);
 	}
@@ -112,10 +105,11 @@ const styles = StyleSheet.create({
 		paddingTop: 40,
 		paddingBottom: 20
 	},
-	selfInfo: {
-		flex: 3,
+	basicInfoContainer: {
+		flex: 5,
 		backgroundColor: 'skyblue',
-		flexDirection: 'row'
+		justifyContent: 'space-around',
+		alignItems: 'center'
 	},
 	info: {
 		flex: 1,

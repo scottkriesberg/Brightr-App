@@ -84,7 +84,7 @@ class StudentMap extends Component {
 
 	componentDidMount() {
 		this.state.uid = this.props.navigation.getParam('uid', '');
-		this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+		this.ref.onSnapshot(this.onCollectionUpdate);
 	}
 
 	onCollectionUpdate = (querySnapshot) => {
@@ -109,7 +109,7 @@ class StudentMap extends Component {
 	};
 
 	toProfile = () => {
-		this.props.navigation.navigate('Profile', { uid: this.state.uid });
+		this.props.navigation.navigate('StudentProfile', { uid: this.state.uid });
 	};
 	clearLocations = () => {
 		this.state.query = {};
@@ -160,13 +160,12 @@ class StudentMap extends Component {
 					</Modal>
 				</View>
 
-				<View style={styles.profileIcon}>
-					<Icon name="person" onPress={this.toProfile} />
-				</View>
-
 				<View style={styles.mapContainer}>
 					<TouchableWithoutFeedback onPress={this.clearLocations}>
 						<ImageBackground source={map} style={styles.map}>
+							<View style={styles.profileIcon}>
+								<Icon name="person" onPress={this.toProfile} />
+							</View>
 							<Location
 								name={'Leavey Library'}
 								style={styles.leavy}
@@ -181,10 +180,9 @@ class StudentMap extends Component {
 						</ImageBackground>
 					</TouchableWithoutFeedback>
 				</View>
-				<View style={styles.midbar}>
+				<View style={ContainerStyles.midbar}>
 					<View style={styles.findTutorFilterContainer}>
 						<Text style={styles.findTutorText}>Find Tutor</Text>
-
 						<Icon
 							style={styles.filterButton}
 							name="settings-input-component"
@@ -197,7 +195,6 @@ class StudentMap extends Component {
 						{this.state.location}: {this.state.numActive} Active
 					</Text>
 				</View>
-
 				<View style={styles.tutorList}>
 					<FlatList
 						ListHeaderComponentStyle={ContainerStyles.tutorList}
@@ -223,19 +220,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white'
 	},
 	mapContainer: {
-		flex: 7
-	},
-	midbar: {
-		flex: 1,
-		alignSelf: 'stretch',
-		backgroundColor: 'white',
-		borderWidth: 1,
-		borderTopLeftRadius: 25,
-		borderTopRightRadius: 25,
-		borderColor: 'white',
-		paddingTop: 10,
-		paddingLeft: 5,
-		paddingRight: 5
+		flex: 8
 	},
 	findTutorFilterContainer: {
 		flexDirection: 'row',
@@ -256,14 +241,9 @@ const styles = StyleSheet.create({
 		left: 290,
 		top: 70
 	},
-	profileIcon: {
-		alignSelf: 'flex-start',
-		flex: 0.5,
-		backgroundColor: 'green'
-	},
 	map: {
-		alignItems: 'stretch',
-		justifyContent: 'center',
+		alignItems: 'flex-start',
+		justifyContent: 'space-between',
 		flexGrow: 1
 	},
 	container: {

@@ -50,7 +50,7 @@ class TutorWorkSetUp extends Component {
 	);
 
 	cancel = () => {
-		this.props.navigation.navigate('TutorHome', { uid: this.state.uid });
+		this.props.navigation.navigate('TutorProfile', { uid: this.state.uid });
 	};
 
 	goLive = () => {
@@ -68,7 +68,6 @@ class TutorWorkSetUp extends Component {
 	};
 
 	toggleLoc = (name) => {
-		console.log(name);
 		if (this.state.locations.includes(name)) {
 			this.state.locations = this.state.locations.filter((x) => x != name);
 		} else {
@@ -82,13 +81,12 @@ class TutorWorkSetUp extends Component {
 		}
 		return (
 			<View style={styles.container}>
-				<View style={styles.profileIcon}>
-					<Icon name="person" onPress={this.cancel} />
-				</View>
-
 				<View style={styles.mapContainer}>
 					<TouchableWithoutFeedback onPress={this.clearLocations}>
 						<ImageBackground source={map} style={styles.map}>
+							<View style={styles.profileIcon}>
+								<Icon name="person" onPress={this.cancel} />
+							</View>
 							<Location name="Leavey Library" addLoc={this.toggleLoc} style={styles.leavy} />
 							<Location name="Cafe 84" addLoc={this.toggleLoc} style={styles.cafe84} />
 							<Location name="USC Village Tables" addLoc={this.toggleLoc} style={styles.village} />
@@ -122,11 +120,6 @@ class TutorWorkSetUp extends Component {
 }
 
 const styles = StyleSheet.create({
-	activity: {
-		flex: 1,
-		alignContent: 'center',
-		paddingTop: '100%'
-	},
 	container: {
 		flex: 1,
 		flexDirection: 'column',
@@ -145,8 +138,8 @@ const styles = StyleSheet.create({
 		flex: 5
 	},
 	map: {
-		alignItems: 'stretch',
-		justifyContent: 'center',
+		alignItems: 'flex-start',
+		justifyContent: 'space-between',
 		flexGrow: 1
 	},
 	village: {

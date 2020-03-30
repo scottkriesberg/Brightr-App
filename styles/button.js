@@ -1,29 +1,33 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  normalButton: {
-    marginTop: 30,
-    marginBottom: 20,
-    paddingVertical: 5,
-    alignSelf: "center",
-    backgroundColor: "white",
-    borderColor: "#6A7BD6",
-    borderWidth: 1,
-    borderRadius: 15,
-    width: "50%"
-  },
-  buttonText: {
-    margin: 5,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#6A7BD6",
-    alignSelf: "center"
-  },
-  clearButton: {
-    color: "white",
-    paddingTop: 40,
-    paddingLeft: "90%",
-    position: "relative",
-    backgroundColor: "#A8BBFF"
-  }
+	normalButton: {
+		backgroundColor: '#6A7BD6',
+		borderColor: '#6A7BD6',
+		borderWidth: 1,
+		borderRadius: 15,
+		width: '50%'
+	},
+	landingButton: {
+		backgroundColor: 'white',
+		borderColor: 'white',
+		borderWidth: 1,
+		borderRadius: 15,
+		width: '75%',
+		margin: '5%'
+	},
+	buttonText: {
+		margin: 5,
+		fontSize: 20,
+		fontWeight: 'bold',
+		color: '#6A7BD6',
+		alignSelf: 'center'
+	},
+	clearButton: {
+		color: 'white',
+		paddingTop: 40,
+		paddingLeft: '90%',
+		position: 'relative',
+		backgroundColor: '#A8BBFF'
+	}
 });

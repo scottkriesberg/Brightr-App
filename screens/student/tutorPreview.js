@@ -4,8 +4,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet, TouchableWithoutFeedback, Keyboard, TextInput, Text, View, Image } from 'react-native';
 import firebase from '../../firebase';
 import SelectableFlatlist, { STATE } from 'react-native-selectable-flatlist';
-import { Rating } from '../components/profile';
+import { Rating, ProfileHeadingInfo } from '../components/profile';
 import Loading from '../components/utils.js';
+import ButtonStyles from '../../styles/button.js';
 
 export default class TutorPreview extends Component {
 	classSelected = (selectedItem) => {
@@ -123,24 +124,20 @@ export default class TutorPreview extends Component {
 							onPress={this.toStudentMap}
 						/>
 					</View>
-					<View style={styles.tutorInfo}>
-						<Image
-							style={styles.avatar}
-							source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }}
-						/>
-						<Text style={styles.name}>{this.state.tutor.name}</Text>
-						<Text style={styles.info}>
-							{this.state.tutor.year} / {this.state.tutor.major}
-						</Text>
-						<Text>${this.state.tutor.hourlyRate}/hour</Text>
-						<Text style={styles.description}>{this.state.tutor.bio}</Text>
-						<View style={styles.rating}>
-							<Rating rating={this.state.tutor.rating} />
-						</View>
-					</View>
+					<ProfileHeadingInfo
+						rating={this.state.tutor.rating}
+						year={this.state.tutor.year}
+						major={this.state.tutor.major}
+						containerStyle={styles.tutorInfo}
+						name={this.state.tutor.name}
+						bio={this.state.tutor.bio}
+						image={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }}
+					/>
 					<View>
 						<TextInput
+							style={styles.description}
 							style={{ height: 40 }}
+							multiline={true}
 							placeholder="Description"
 							onChangeText={(description) => this.setState({ description })}
 							value={this.state.description}
@@ -183,14 +180,7 @@ export default class TutorPreview extends Component {
 						/>
 					</View>
 
-					<View style={styles.button}>
-						<Button
-							style={styles.requestButton}
-							color="#6A7BD6"
-							title="Request Tutor"
-							onPress={this.requestTutor}
-						/>
-					</View>
+					<Button type="solid" title="Request Tutor" onPress={this.requestTutor} />
 				</View>
 			</TouchableWithoutFeedback>
 		);
@@ -201,7 +191,8 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		paddingTop: 40
+		paddingTop: 40,
+		paddingBottom: 10
 	},
 	classList: {
 		flex: 4
@@ -214,16 +205,6 @@ const styles = StyleSheet.create({
 	},
 	rating: {
 		paddingTop: 10
-	},
-	myStarStyle: {
-		color: 'yellow',
-		backgroundColor: 'transparent',
-		textShadowColor: 'black',
-		textShadowOffset: { width: 1, height: 1 },
-		textShadowRadius: 2
-	},
-	myEmptyStarStyle: {
-		color: 'white'
 	},
 	header: {
 		backgroundColor: '#6A7BD6',
@@ -240,17 +221,9 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		marginTop: -70
 	},
-	name: {
-		margin: 'auto',
-		fontSize: 22,
-		color: '#FFFFFF',
-		fontWeight: '600'
-	},
 	tutorInfo: {
-		marginTop: 10,
 		alignItems: 'center',
-		padding: 60,
-		flex: 5
+		flex: 8
 	},
 	name: {
 		fontSize: 28,
@@ -266,7 +239,8 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		color: '#696969',
 		marginTop: 10,
-		textAlign: 'center'
+		textAlign: 'center',
+		width: '90%'
 	},
 	backButton: {
 		marginTop: 10,
@@ -277,16 +251,5 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 		width: 250,
 		borderRadius: 30
-	},
-	requestButton: {
-		marginTop: 10,
-		height: 45,
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignSelf: 'center',
-		marginBottom: 20,
-		width: 250,
-		borderRadius: 30,
-		backgroundColor: '#6A7BD6'
 	}
 });

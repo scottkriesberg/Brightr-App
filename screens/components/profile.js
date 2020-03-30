@@ -28,18 +28,28 @@ export class ProfileHeadingInfo extends Component {
 		bio: PropTypes.any,
 		name: PropTypes.any,
 		image: PropTypes.any,
-		year: PropTypes.any
+		year: PropTypes.any,
+		bio: PropTypes.any
 	};
 	render() {
 		return (
-			<View style={this.props.containerStyle}>
-				<Image style={styles.avatar} source={this.props.image} />
-				<View>
-					<Text style={styles.profileNameText}>{this.props.name}</Text>
-					<Text style={styles.profileInfoText}>
+			<View style={this.props.containerStyle || styles.container}>
+				<View style={styles.basicText}>
+					<Image resizeMode="stretch" style={styles.avatar} source={this.props.image} />
+
+					<Text adjustsFontSizeToFit style={styles.profileNameText}>
+						{this.props.name}
+					</Text>
+					<Text adjustsFontSizeToFit style={styles.profileInfoText}>
 						{this.props.year} / {this.props.major}
 					</Text>
 					<Rating style={styles.profileInfoText} rating={this.props.rating} />
+				</View>
+
+				<View style={styles.bioContainer}>
+					<Text adjustsFontSizeToFit style={styles.bio}>
+						{this.props.bio}
+					</Text>
 				</View>
 			</View>
 		);
@@ -50,7 +60,8 @@ export class ProfileTopBar extends Component {
 	static props = {
 		containerStyle: PropTypes.any,
 		editPageFunction: PropTypes.any,
-		logoutFunction: PropTypes.any
+		logoutFunction: PropTypes.any,
+		name: PropTypes.any
 	};
 	render() {
 		return (
@@ -62,8 +73,6 @@ export class ProfileTopBar extends Component {
 					title="Logout"
 					onPress={this.props.logoutFunction}
 				/>
-
-				<Text style={styles.profileText}>Profile</Text>
 				<Icon
 					style={styles.editProfile}
 					name="account-edit"
@@ -79,19 +88,43 @@ export class ProfileTopBar extends Component {
 
 const styles = StyleSheet.create({
 	//ProfileHeaderInfo Styles
+	container: {
+		flex: 1,
+		flexDirection: 'column'
+	},
 	avatar: {
-		borderRadius: 63,
+		borderRadius: 45,
 		borderWidth: 4,
 		borderColor: 'white',
-		flex: 1,
-		height: '90%',
-		alignSelf: 'center'
+		flex: 3,
+		alignSelf: 'center',
+		aspectRatio: 1
+	},
+	basicText: {
+		flex: 3,
+		alignItems: 'center'
 	},
 	profileInfoText: {
 		fontSize: 20
 	},
 	profileNameText: {
 		fontSize: 40
+	},
+	selfInfo: {
+		flex: 3,
+		backgroundColor: 'skyblue',
+		flexDirection: 'column',
+		backgroundColor: 'black'
+	},
+	bioContainer: {
+		flex: 2,
+		justifyContent: 'center'
+	},
+	bio: {
+		alignSelf: 'center',
+		paddingLeft: 5,
+		paddingRight: 5,
+		textAlign: 'center'
 	},
 	//ProfileTopBar Styles
 	header: {
