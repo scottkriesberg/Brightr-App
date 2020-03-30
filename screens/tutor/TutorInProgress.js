@@ -43,24 +43,10 @@ class TutorInProgress extends Component {
 				var oldRatingTotal = res.data().rating * res.data().numRatings;
 				var newAvgRating = (oldRatingTotal + rating) / newNumRatings;
 
-				//update stats
-				var sessionRate = this.state.session.hourlyRate;
-				var newTopHourlyRate = res.data().topHourlyRate;
-				if (newTopHourlyRate < sessionRate) {
-					newTopHourlyRate = sessionRate;
-				}
-
-				var newTimeWorked = res.data().timeWorked + this.state.hour * 60 + this.state.min;
-				var newMoneyMade =
-					res.data().moneyMade + sessionRate * this.state.hour + sessionRate * this.state.min / 60;
-
 				// Commit to Firestore
 				transaction.update(ref, {
 					numRatings: newNumRatings,
-					rating: newAvgRating,
-					topHourlyRate: newTopHourlyRate,
-					timeWorked: newTimeWorked,
-					moneyMade: newMoneyMade
+					rating: newAvgRating
 				});
 			});
 		});

@@ -85,7 +85,7 @@ export default class TutorPreview extends Component {
 				location: this.state.locationRequest,
 				estTime: this.state.value,
 				className: this.state.classRequest,
-				startCode: codeGen(),
+				startCode: this.codeGenerator(),
 				status: 'pending',
 				messages: [],
 				description: this.state.description
