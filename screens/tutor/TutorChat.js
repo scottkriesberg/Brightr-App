@@ -14,6 +14,7 @@ import {
 import firebase from '../../firebase';
 import Fire from 'firebase';
 import Loading from '../components/utils.js';
+import { ChatHeader } from '../components/chat';
 
 export default class Chat extends React.Component {
 	constructor() {
@@ -193,6 +194,7 @@ export default class Chat extends React.Component {
 						<View style={styles.modal}>
 							<Text style={styles.modalHeader}>Begin Session</Text>
 							<TextInput
+								placeholderTextColor="white"
 								keyboardType="numeric"
 								returnKeyType="done"
 								style={styles.codeInput}
@@ -219,10 +221,7 @@ export default class Chat extends React.Component {
 					</TouchableWithoutFeedback>
 				</Modal>
 
-				<View styel={styles.top}>
-					<Button style={styles.button} title="Start Session" onPress={() => this.start()} />
-					<Button style={styles.button} title="Cancel Session" onPress={() => this.cancel()} />
-				</View>
+				<ChatHeader startFunction={this.start} cancelFunction={this.cancel} />
 				<GiftedChat
 					messages={this.state.messages}
 					onSend={(messages) => this.onSend(messages)}
@@ -239,15 +238,9 @@ const styles = StyleSheet.create({
 		paddingBottom: 10,
 		flex: 1
 	},
-	top: {
-		flex: 1,
-		flexDirection: 'row',
-		backgroundColor: 'black'
-	},
 	chatView: {
 		flex: 1
 	},
-	button: {},
 	modal: {
 		flex: 1,
 		flexDirection: 'column',
@@ -263,6 +256,7 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		width: '75%',
 		backgroundColor: 'skyblue',
-		height: '5%'
+		height: '5%',
+		color: 'white'
 	}
 });

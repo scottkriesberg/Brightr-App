@@ -1,9 +1,11 @@
 import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat'; // 0.3.0
-import { View, Modal, Button, StyleSheet, Text } from 'react-native';
+import { View, Modal, StyleSheet, Text } from 'react-native';
+import { Button } from 'react-native-elements';
 import firebase from '../../firebase';
 import Fire from 'firebase';
 import Loading from '../components/utils.js';
+import { ChatHeader } from '../components/chat';
 
 export default class Chat extends React.Component {
 	constructor() {
@@ -119,24 +121,19 @@ export default class Chat extends React.Component {
 		return (
 			<View style={styles.container}>
 				<Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
-					<View style={{ marginTop: 22 }}>
-						<View>
-							<Text style={styles.modalHeader}>Start Code: {this.state.request.startCode}</Text>
-
-							<Button
-								title="Back to chat"
-								onPress={() => {
-									this.setState({ modalVisible: false });
-								}}
-							/>
-						</View>
+					<View style={styles.modalContainer}>
+						<Text style={styles.modalHeader}>Begin Session</Text>
+						<Text style={styles.codeText}>Start Code: {this.state.request.startCode}</Text>
+						<Button
+							style={styles.backToChatButton}
+							title="Back to chat"
+							onPress={() => {
+								this.setState({ modalVisible: false });
+							}}
+						/>
 					</View>
 				</Modal>
-
-				<View styel={styles.top}>
-					<Button style={styles.button} title="Start Session" onPress={() => this.start()} />
-					<Button style={styles.button} title="Cancel Session" onPress={() => this.cancel()} />
-				</View>
+				<ChatHeader startFunction={this.start} cancelFunction={this.cancel} />
 				<GiftedChat
 					messages={this.state.messages}
 					onSend={(messages) => this.onSend(messages)}
@@ -153,16 +150,21 @@ const styles = StyleSheet.create({
 		paddingBottom: 10,
 		flex: 1
 	},
-	top: {
-		flex: 1,
-		flexDirection: 'row',
-		backgroundColor: 'black'
-	},
 	chatView: {
 		flex: 1
+	},
+	modalContainer: {
+		flex: 1,
+		paddingTop: 40,
+		justifyContent: 'space-between'
 	},
 	modalHeader: {
 		fontSize: 30,
 		alignSelf: 'center'
-	}
+	},
+	codeText: {
+		fontSize: 30,
+		alignSelf: 'center'
+	},
+	backToChatButton: {}
 });

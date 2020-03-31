@@ -75,16 +75,17 @@ export default class TutorPreview extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Button
-					style={ButtonStyle.normalButton}
-					icon={<Icon name="arrow-left" size={20} color="white" />}
-					iconLeft
-					title="Cancel"
-					onPress={() => {
-						this.cancelRequest();
-					}}
-				/>
+				<Text style={styles.holdText}>Please hold while your tutor responds</Text>
 				<Loading />
+				<View style={styles.button}>
+					<Button
+						iconLeft
+						title="Cancel Request"
+						onPress={() => {
+							this.cancelRequest();
+						}}
+					/>
+				</View>
 			</View>
 		);
 	}
@@ -95,6 +96,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'column',
 		alignItems: 'center',
+		alignContent: 'stretch',
+		justifyContent: 'space-between',
 		paddingTop: 40
+	},
+	button: {
+		width: '100%'
+	},
+	holdText: {
+		fontSize: 20
 	}
 });
