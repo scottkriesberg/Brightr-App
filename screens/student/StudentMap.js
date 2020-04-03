@@ -203,7 +203,7 @@ class StudentMap extends Component {
 				op: 'array-contains',
 				val: name
 			};
-			this.state.locationColor[name] = 'red';
+			this.state.locationColor[name] = '#6A7BD6';
 			this.setState({ updateColor: true });
 		}
 		this.updateRef();
@@ -255,7 +255,9 @@ class StudentMap extends Component {
 				</View>
 				<View style={ContainerStyles.midbar}>
 					<View style={styles.findTutorFilterContainer}>
-						<Text style={styles.findTutorText}>Find Tutor</Text>
+						<Text style={styles.findTutorText} adjustsFontSizeToFit>
+							Find Tutor
+						</Text>
 						<Icon
 							style={styles.filterButton}
 							name="settings-input-component"
@@ -264,7 +266,7 @@ class StudentMap extends Component {
 							onPress={this.toggleFilterWindow}
 						/>
 					</View>
-					<Text style={styles.currentLocationText}>
+					<Text style={styles.currentLocationText} adjustsFontSizeToFit>
 						{this.state.location}: {this.state.numActive} Active
 					</Text>
 				</View>

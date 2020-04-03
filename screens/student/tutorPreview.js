@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import { Button, Slider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StyleSheet, Picker, TouchableWithoutFeedback, Keyboard, TextInput, Text, View, Image } from 'react-native';
+import {
+	StyleSheet,
+	Picker,
+	TouchableWithoutFeedback,
+	Keyboard,
+	TextInput,
+	Text,
+	View,
+	TouchableOpacity
+} from 'react-native';
 import firebase from '../../firebase';
 import { Rating, ProfileHeadingInfo } from '../components/profile';
 import Loading from '../components/utils.js';
@@ -63,7 +72,7 @@ export default class TutorPreview extends Component {
 					tutor: doc.data(),
 					id: doc.id,
 					isLoading: false,
-					locationRequest: Object.keys(doc.data().locations)[0],
+					locationRequest: doc.data().locations[0],
 					classRequest: Object.keys(doc.data().classes)[0]
 				});
 			} else {
@@ -116,14 +125,10 @@ export default class TutorPreview extends Component {
 			>
 				<View style={styles.container}>
 					<View style={styles.header}>
-						<Button
-							containerStyle={styles.backButtonContainter}
-							buttonStyle={styles.backButton}
-							icon={<Icon name="arrow-left" size={20} color="white" />}
-							iconLeft
-							title="Back"
-							onPress={this.toStudentMap}
-						/>
+						<TouchableOpacity style={styles.backButton} onPress={this.toStudentMap}>
+							<Icon name="arrow-left" size={30} color={'white'} />
+							<Text style={styles.backButtonText}>Back</Text>
+						</TouchableOpacity>
 					</View>
 					<ProfileHeadingInfo
 						rating={this.state.tutor.rating}
@@ -167,7 +172,7 @@ export default class TutorPreview extends Component {
 							}}
 						>
 							{this.state.tutor.locations.map((item, index) => {
-								return <Picker.Item label={item} value={index} key={index} />;
+								return <Picker.Item label={item} value={item} key={index} />;
 							})}
 						</Picker>
 					</View>
@@ -187,7 +192,11 @@ export default class TutorPreview extends Component {
 						</Picker>
 					</View>
 
-					<Button type="solid" title="Request Tutor" onPress={this.requestTutor} />
+					<View style={styles.live}>
+						<TouchableOpacity style={styles.liveButton} onPress={this.requestTutor}>
+							<Text style={styles.liveButtonText}>Request Tutor</Text>
+						</TouchableOpacity>
+					</View>
 				</View>
 			</TouchableWithoutFeedback>
 		);
@@ -216,7 +225,8 @@ const styles = StyleSheet.create({
 	},
 	sliderContainer: {
 		flex: 2,
-		alignItems: 'center'
+		alignItems: 'center',
+		justifyContent: 'flex-end'
 	},
 	header: {
 		backgroundColor: '#6A7BD6',
@@ -240,10 +250,13 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		color: '#696969',
 		marginTop: 10,
-		textAlign: 'center',
 		width: '90%',
 		borderColor: 'grey',
-		borderWidth: 1
+		borderWidth: 1,
+		borderRadius: 15,
+		textAlign: 'left',
+		height: '100%',
+		padding: 10
 	},
 	backButtonContainter: {
 		height: '100%',
@@ -251,6 +264,33 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-start'
 	},
 	backButton: {
-		height: '100%'
+		height: '100%',
+		width: '25%',
+		alignContent: 'center',
+		justifyContent: 'center',
+		alignItems: 'center',
+		flexDirection: 'row'
+	},
+	backButtonText: {
+		fontSize: 30,
+		color: 'white'
+	},
+	live: {
+		marginTop: 5,
+		flex: 1,
+		alignItems: 'center'
+	},
+	liveButton: {
+		backgroundColor: '#6A7BD6',
+		height: '100%',
+		width: '75%',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 15
+	},
+	liveButtonText: {
+		fontSize: 40,
+		fontWeight: 'bold',
+		color: 'white'
 	}
 });

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, Button, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, Button, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
 
@@ -36,7 +36,6 @@ export class ProfileHeadingInfo extends Component {
 			<View style={this.props.containerStyle || styles.container}>
 				<View style={styles.basicText}>
 					<Image resizeMode="stretch" style={styles.avatar} source={this.props.image} />
-
 					<Text adjustsFontSizeToFit style={styles.profileNameText}>
 						{this.props.name}
 					</Text>
@@ -48,6 +47,7 @@ export class ProfileHeadingInfo extends Component {
 
 				<View style={styles.bioContainer}>
 					<Text adjustsFontSizeToFit style={styles.bio}>
+						<Text style={{ fontWeight: 'bold' }}> Bio: </Text>
 						{this.props.bio}
 					</Text>
 				</View>
@@ -66,20 +66,16 @@ export class ProfileTopBar extends Component {
 	render() {
 		return (
 			<View style={styles.header}>
-				<Button
-					style={styles.logoutButton}
-					icon={<Icon name="arrow-left" size={15} color="white" />}
-					iconLeft
-					title="Logout"
-					onPress={this.props.logoutFunction}
-				/>
+				<TouchableOpacity style={styles.logoutButton} onPress={this.props.logoutFunction}>
+					<Text style={styles.logoutButtonText}>Logout</Text>
+				</TouchableOpacity>
 				<Icon
 					style={styles.editProfile}
 					name="account-edit"
 					type="MaterialCommunityIcons"
 					color="black"
-					size={50}
-					onPress={this.props.editPageFunction}
+					size={40}
+					// onPress={this.props.editPageFunction}
 				/>
 			</View>
 		);
@@ -93,7 +89,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'column'
 	},
 	avatar: {
-		borderRadius: 45,
+		borderRadius: 55,
 		borderWidth: 4,
 		borderColor: 'white',
 		flex: 3,
@@ -101,14 +97,15 @@ const styles = StyleSheet.create({
 		aspectRatio: 1
 	},
 	basicText: {
-		flex: 3,
+		flex: 5,
 		alignItems: 'center'
 	},
 	profileInfoText: {
 		fontSize: 20
 	},
 	profileNameText: {
-		fontSize: 40
+		fontSize: 40,
+		fontWeight: 'bold'
 	},
 	selfInfo: {
 		flex: 3,
@@ -131,15 +128,31 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		backgroundColor: '#6A7BD6',
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
+		alignItems: 'center'
 	},
 	logoutButton: {
-		alignSelf: 'flex-start'
+		alignSelf: 'flex-start',
+		borderRadius: 15,
+		borderColor: 'white',
+		borderWidth: 1,
+		width: '20%',
+		height: '75%',
+		alignItems: 'center',
+		justifyContent: 'center',
+		margin: 2,
+		marginLeft: 5
+	},
+	logoutButtonText: {
+		color: 'white',
+		fontSize: 20
 	},
 	profileText: {
 		fontSize: 50
 	},
 	editProfile: {
-		alignSelf: 'flex-end'
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginBottom: 15
 	}
 });

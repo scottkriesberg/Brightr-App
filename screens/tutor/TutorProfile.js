@@ -38,7 +38,7 @@ class TutorHome extends Component {
 				<Text style={styles.classText}>
 					{this.state.user.classes[item].department}: {this.state.user.classes[item].code}
 				</Text>
-				<Text>{this.state.user.classes[item].name}</Text>
+				<Text style={styles.classNameText}>{this.state.user.classes[item].name}</Text>
 			</View>
 		);
 	};
@@ -138,14 +138,17 @@ const styles = StyleSheet.create({
 	},
 	statsHeader: {
 		alignSelf: 'center',
-		fontSize: 30
+		fontSize: 30,
+		fontWeight: 'bold'
 	},
 	statsText: {
-		fontSize: 20
+		fontSize: 20,
+		marginLeft: '4%'
 	},
 	classesHeader: {
 		alignSelf: 'center',
-		fontSize: 30
+		fontSize: 30,
+		fontWeight: 'bold'
 	},
 	classes: {
 		flex: 5,
@@ -154,12 +157,21 @@ const styles = StyleSheet.create({
 	},
 	classRow: {
 		height: 60,
-		marginBottom: 5,
-		backgroundColor: '#6A7BD6'
+		marginBottom: 7,
+		marginHorizontal: 10,
+		backgroundColor: '#6A7BD6',
+		borderRadius: 5
 	},
 	classText: {
 		fontSize: 30,
-		color: 'white'
+		color: 'white',
+		fontWeight: 'bold',
+		marginLeft: '2%'
+	},
+	classNameText: {
+		marginLeft: '2%',
+		fontWeight: 'bold',
+		color: 'lightgrey'
 	},
 	live: {
 		marginTop: 5,

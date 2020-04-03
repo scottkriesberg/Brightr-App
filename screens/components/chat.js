@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
@@ -11,9 +11,13 @@ export class ChatHeader extends Component {
 	render() {
 		return (
 			<View style={styles.top}>
-				<Button title="Cancel Session" onPress={this.props.cancelFunction} />
+				<TouchableOpacity style={styles.cancelButton} onPress={this.props.cancelFunction}>
+					<Text style={styles.cancelButtonText}>Cancel Session</Text>
+				</TouchableOpacity>
 				<Text style={styles.chatTitle}>Chat</Text>
-				<Button title="Start Session" onPress={this.props.startFunction} />
+				<TouchableOpacity style={styles.cancelButton} onPress={this.props.startFunction}>
+					<Text style={styles.cancelButtonText}>Start Session</Text>
+				</TouchableOpacity>
 			</View>
 		);
 	}
@@ -24,5 +28,17 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between'
 	},
-	chatTitle: { fontSize: 40 }
+	chatTitle: { fontSize: 40, color: '#6A7BD6', fontWeight: 'bold' },
+	cancelButton: {
+		borderRadius: 15,
+		borderWidth: 1,
+		borderColor: '#6A7BD6',
+		justifyContent: 'center',
+		alignContent: 'center',
+		paddingHorizontal: 10
+	},
+	cancelButtonText: {
+		fontSize: 20,
+		color: '#6A7BD6'
+	}
 });

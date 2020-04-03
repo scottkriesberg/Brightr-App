@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import firebase from '../firebase';
 import { Button } from 'react-native-elements';
 import ButtonStyles from '../styles/button.js';
 import ContainerStyles from '../styles/container.js';
+const logo = require('../assets/logo-09.png');
 
 class Login extends React.Component {
 	handleSignIn = () => {
@@ -124,6 +125,7 @@ class Login extends React.Component {
 		return (
 			<View style={styles.screenContainer}>
 				<View style={styles.titleContainer}>
+					<Image style={styles.logoImage} source={logo} />
 					<Text h1 style={styles.title}>
 						Brightr
 					</Text>
@@ -184,8 +186,14 @@ const styles = StyleSheet.create({
 		alignItems: 'stretch'
 	},
 	titleContainer: {
-		flex: 1,
-		justifyContent: 'flex-end'
+		flex: 2,
+		justifyContent: 'flex-end',
+		alignItems: 'center'
+	},
+	logoImage: {
+		height: '35%',
+		width: '35%',
+		resizeMode: 'contain'
 	},
 	title: {
 		color: '#FFFFFF',

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Text } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import firebase from '../../firebase';
 import ButtonStyle from '../../styles/button.js';
 import Loading from '../components/utils.js';
@@ -75,16 +75,14 @@ export default class TutorPreview extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Text style={styles.holdText}>Please hold while your tutor responds</Text>
+				<View style={styles.holdTextContainer}>
+					<Text style={styles.holdText}>Please hold while your tutor responds</Text>
+				</View>
 				<Loading />
-				<View style={styles.button}>
-					<Button
-						iconLeft
-						title="Cancel Request"
-						onPress={() => {
-							this.cancelRequest();
-						}}
-					/>
+				<View style={styles.live}>
+					<TouchableOpacity style={styles.liveButton} onPress={this.cancelRequest}>
+						<Text style={styles.liveButtonText}>Cancel Request</Text>
+					</TouchableOpacity>
 				</View>
 			</View>
 		);
@@ -100,10 +98,31 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		paddingTop: 40
 	},
-	button: {
-		width: '100%'
+	live: {
+		marginTop: 5,
+		flex: 1,
+		alignItems: 'center'
+	},
+	liveButton: {
+		backgroundColor: '#6A7BD6',
+		height: '85%',
+		width: '75%',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 15
+	},
+	liveButtonText: {
+		fontSize: 40,
+		fontWeight: 'bold',
+		color: 'white'
+	},
+	holdTextContainer: {
+		flex: 8,
+		justifyContent: 'center',
+		marginBottom: '15%'
 	},
 	holdText: {
-		fontSize: 20
+		fontSize: 20,
+		fontWeight: 'bold'
 	}
 });
