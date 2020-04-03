@@ -14,6 +14,7 @@ import TutorIncomingRequests from '../screens/tutor/TutorIncomingRequests';
 import TutorChat from '../screens/tutor/TutorChat';
 import TutorInProgress from '../screens/tutor/TutorInProgress';
 import TutorEditProfile from '../screens/tutor/TutorEditProfile';
+import TutorRequestPreview from '../screens/tutor/TutorRequestPreview';
 
 const SwitchNavigator = createSwitchNavigator(
 	{
@@ -61,10 +62,13 @@ const SwitchNavigator = createSwitchNavigator(
 		},
 		TutorEditProfile: {
 			screen: TutorEditProfile
+		},
+		TutorRequestPreview: {
+			screen: TutorRequestPreview
 		}
 	},
 	{
-		initialRouteName: 'Landing'
+		initialRouteName: 'Login'
 	}
 );
 

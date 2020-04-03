@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
 	header: {
 		flex: 1,
 		flexDirection: 'row',
-		backgroundColor: 'skyblue',
+		backgroundColor: '#6A7BD6',
 		justifyContent: 'space-between'
 	},
 	logoutButton: {

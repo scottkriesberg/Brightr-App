@@ -18,10 +18,18 @@ import Loading from '../components/utils.js';
 
 const map = require('../../images/USC_Map.png');
 
-function Location({ name, locationFilter, style }) {
+function Location({ name, locationFilter, style, locationColor }) {
 	return (
 		<View style={style}>
-			<Icon name="location-on" type="MaterialIcons" onPress={() => locationFilter(name)} />
+			<Text style={{ fontSize: 10 }} allowFontScaling={true}>
+				{name}
+			</Text>
+			<Icon
+				name="location-on"
+				type="MaterialIcons"
+				onPress={() => locationFilter(name)}
+				color={locationColor[name]}
+			/>
 		</View>
 	);
 }
@@ -38,7 +46,12 @@ class StudentMap extends Component {
 			query: {},
 			location: 'All Locations',
 			numActive: 0,
-			isFilterVisable: false
+			isFilterVisable: false,
+			locationColor: {
+				'Cafe 84': 'black',
+				'Leavy Library': 'black',
+				'Village Tables': 'black'
+			}
 		};
 	}
 	toggleFilterWindow = () => {
@@ -50,6 +63,11 @@ class StudentMap extends Component {
 	};
 
 	renderItem = ({ item }) => {
+		var classList = '';
+		Object.keys(item.classes).map((item, index) => {
+			classList += item + ', ';
+		});
+		classList = classList.substring(0, classList.length - 2);
 		return (
 			<TouchableOpacity
 				style={ContainerStyles.tutorPreviewContainer}
@@ -70,13 +88,40 @@ class StudentMap extends Component {
 					/>
 				</View>
 				{/* Tutor Info */}
-				<View>
-					<Text>{item.name}</Text>
+				<View
+					style={{
+						flex: 1
+					}}
+				>
+					<Text
+						style={{
+							fontSize: 20
+						}}
+					>
+						{item.name}
+					</Text>
 					<Rating rating={item.rating} />
 					<Text>
 						{item.major} / {item.year}
 					</Text>
 					<Text>${item.hourlyRate}/hour</Text>
+				</View>
+				<View
+					style={{
+						flex: 2,
+						alignSelf: 'flex-start',
+						marginTop: '3%',
+						marginRight: '2%'
+					}}
+				>
+					<Text
+						style={{
+							fontSize: 20
+						}}
+					>
+						Classes
+					</Text>
+					<Text>{classList}</Text>
 				</View>
 			</TouchableOpacity>
 		);
@@ -84,7 +129,17 @@ class StudentMap extends Component {
 
 	componentDidMount() {
 		this.state.uid = this.props.navigation.getParam('uid', '');
-		this.ref.onSnapshot(this.onCollectionUpdate);
+		firebase.firestore().collection('students').doc(this.state.uid).get().then((doc) => {
+			if (doc.exists) {
+				this.setState({
+					user: doc.data()
+				});
+				this.updateRef();
+				this.ref.onSnapshot(this.onCollectionUpdate);
+			} else {
+				console.log('No such document!');
+			}
+		});
 	}
 
 	onCollectionUpdate = (querySnapshot) => {
@@ -116,6 +171,13 @@ class StudentMap extends Component {
 		this.updateRef();
 		this.ref.onSnapshot(this.onCollectionUpdate);
 		this.state.location = 'All Locations';
+		this.setState({
+			locationColor: {
+				'Cafe 84': 'black',
+				'Leavy Library': 'black',
+				'Village Tables': 'black'
+			}
+		});
 	};
 
 	updateRef() {
@@ -133,12 +195,16 @@ class StudentMap extends Component {
 				op: 'array-contains',
 				val: name
 			};
+			this.state.locationColor[name] = 'black';
+			this.setState({ updateColor: true });
 		} else {
 			this.state.query['location'] = {
 				field: 'locations',
 				op: 'array-contains',
 				val: name
 			};
+			this.state.locationColor[name] = 'red';
+			this.setState({ updateColor: true });
 		}
 		this.updateRef();
 		this.ref.onSnapshot(this.onCollectionUpdate);
@@ -170,12 +236,19 @@ class StudentMap extends Component {
 								name={'Leavey Library'}
 								style={styles.leavy}
 								locationFilter={this.locationFilter}
+								locationColor={this.state.locationColor}
 							/>
-							<Location name={'Cafe 84'} style={styles.cafe84} locationFilter={this.locationFilter} />
+							<Location
+								name={'Cafe 84'}
+								style={styles.cafe84}
+								locationFilter={this.locationFilter}
+								locationColor={this.state.locationColor}
+							/>
 							<Location
 								name={'USC Village Tables'}
 								style={styles.village}
 								locationFilter={this.locationFilter}
+								locationColor={this.state.locationColor}
 							/>
 						</ImageBackground>
 					</TouchableWithoutFeedback>
@@ -227,17 +300,17 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between'
 	},
 	village: {
-		width: 20,
+		width: 40,
 		left: 209,
 		top: -136
 	},
 	cafe84: {
-		width: 20,
+		width: 40,
 		left: 20,
 		top: 70
 	},
 	leavy: {
-		width: 20,
+		width: 40,
 		left: 290,
 		top: 70
 	},

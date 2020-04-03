@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Button, Slider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StyleSheet, TouchableWithoutFeedback, Keyboard, TextInput, Text, View, Image } from 'react-native';
+import { StyleSheet, Picker, TouchableWithoutFeedback, Keyboard, TextInput, Text, View, Image } from 'react-native';
 import firebase from '../../firebase';
-import SelectableFlatlist, { STATE } from 'react-native-selectable-flatlist';
 import { Rating, ProfileHeadingInfo } from '../components/profile';
 import Loading from '../components/utils.js';
-import ButtonStyles from '../../styles/button.js';
 
 export default class TutorPreview extends Component {
 	classSelected = (selectedItem) => {
@@ -64,7 +62,9 @@ export default class TutorPreview extends Component {
 				this.setState({
 					tutor: doc.data(),
 					id: doc.id,
-					isLoading: false
+					isLoading: false,
+					locationRequest: Object.keys(doc.data().locations)[0],
+					classRequest: Object.keys(doc.data().classes)[0]
 				});
 			} else {
 				console.log('No such document!');
@@ -117,7 +117,8 @@ export default class TutorPreview extends Component {
 				<View style={styles.container}>
 					<View style={styles.header}>
 						<Button
-							style={styles.backButton}
+							containerStyle={styles.backButtonContainter}
+							buttonStyle={styles.backButton}
 							icon={<Icon name="arrow-left" size={20} color="white" />}
 							iconLeft
 							title="Back"
@@ -133,51 +134,57 @@ export default class TutorPreview extends Component {
 						bio={this.state.tutor.bio}
 						image={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }}
 					/>
-					<View>
+					<View style={styles.descriptionContainer}>
 						<TextInput
 							style={styles.description}
-							style={{ height: 40 }}
 							multiline={true}
 							placeholder="Description"
 							onChangeText={(description) => this.setState({ description })}
 							value={this.state.description}
 						/>
 					</View>
-					<View style={styles.slider}>
+					<View style={styles.sliderContainer}>
 						<Slider
+							style={styles.slider}
 							value={this.state.value}
 							maximumValue={90}
 							minimumValue={15}
 							step={15}
+							thumbTintColor="#6A7BD6"
+							trackStyle={styles.trackSlider}
 							onValueChange={(value) => this.setState({ value })}
 						/>
 						<Text>Estimated Session Time: {this.state.value} minutes</Text>
 					</View>
 
-					<View style={styles.locationList}>
-						<SelectableFlatlist
-							data={this.state.tutor.locations}
-							state={STATE.EDIT}
-							multiSelect={false}
-							itemsSelected={(selectedItem) => {
-								this.locationSelected(selectedItem);
+					<View style={styles.locationPickerContainer}>
+						<Picker
+							styles={styles.locationsPicker}
+							mode="dropdown"
+							selectedValue={this.state.selected}
+							onValueChange={(value) => {
+								this.setState({ locationRequest: value });
 							}}
-							initialSelectedIndex={[ 0 ]}
-							cellItemComponent={(item, otherProps) => this.rowItem(item)}
-						/>
+						>
+							{this.state.tutor.locations.map((item, index) => {
+								return <Picker.Item label={item} value={index} key={index} />;
+							})}
+						</Picker>
 					</View>
 
-					<View style={styles.classList}>
-						<SelectableFlatlist
-							data={this.state.tutor.classes}
-							state={STATE.EDIT}
-							multiSelect={false}
-							itemsSelected={(selectedItem) => {
-								this.classSelected(selectedItem);
+					<View style={styles.classPickerContainer}>
+						<Picker
+							styles={styles.classPicker}
+							mode="dropdown"
+							selectedValue={this.state.classRequest}
+							onValueChange={(value) => {
+								this.setState({ classRequest: value });
 							}}
-							initialSelectedIndex={[ 0 ]}
-							cellItemComponent={(item, otherProps) => this.rowItem(item.department + ': ' + item.code)}
-						/>
+						>
+							{Object.keys(this.state.tutor.classes).map((item, index) => {
+								return <Picker.Item label={item} value={item} key={index} />;
+							})}
+						</Picker>
 					</View>
 
 					<Button type="solid" title="Request Tutor" onPress={this.requestTutor} />
@@ -191,35 +198,30 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		paddingTop: 40,
-		paddingBottom: 10
+		marginTop: '8%'
 	},
-	classList: {
-		flex: 4
-	},
-	locationList: {
-		flex: 4
+	trackSlider: {
+		height: 10
 	},
 	slider: {
-		flex: 2
+		width: '90%'
 	},
-	rating: {
-		paddingTop: 10
+	locationPickerContainer: {
+		flex: 2,
+		justifyContent: 'center'
+	},
+	classPickerContainer: {
+		flex: 2,
+		justifyContent: 'center'
+	},
+	sliderContainer: {
+		flex: 2,
+		alignItems: 'center'
 	},
 	header: {
 		backgroundColor: '#6A7BD6',
-		height: 200,
-		flex: 2
-	},
-	avatar: {
-		width: 130,
-		height: 130,
-		borderRadius: 63,
-		borderWidth: 4,
-		borderColor: 'white',
-		alignSelf: 'center',
-		position: 'absolute',
-		marginTop: -70
+		flex: 1,
+		justifyContent: 'flex-start'
 	},
 	tutorInfo: {
 		alignItems: 'center',
@@ -230,26 +232,25 @@ const styles = StyleSheet.create({
 		color: '#696969',
 		fontWeight: '600'
 	},
-	info: {
-		fontSize: 16,
-		color: '#00BFFF',
-		marginTop: 10
+	descriptionContainer: {
+		flex: 1,
+		alignItems: 'center'
 	},
 	description: {
 		fontSize: 16,
 		color: '#696969',
 		marginTop: 10,
 		textAlign: 'center',
-		width: '90%'
+		width: '90%',
+		borderColor: 'grey',
+		borderWidth: 1
+	},
+	backButtonContainter: {
+		height: '100%',
+		flexDirection: 'row',
+		justifyContent: 'flex-start'
 	},
 	backButton: {
-		marginTop: 10,
-		height: 45,
-		flexDirection: 'row',
-		justifyContent: 'flex-start',
-		alignSelf: 'flex-start',
-		marginBottom: 20,
-		width: 250,
-		borderRadius: 30
+		height: '100%'
 	}
 });

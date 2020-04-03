@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, StyleSheet, Text } from 'react-native';
+import { View, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
@@ -19,21 +19,40 @@ class TutorIncomingRequests extends Component {
 
 	renderItem = ({ item }) => {
 		return (
-			<View style={styles.row}>
+			<TouchableOpacity
+				style={styles.row}
+				onPress={() =>
+					this.props.navigation.navigate('TutorRequestPreview', {
+						tutorUid: this.state.uid,
+						studentUid: item.studentUid
+					})}
+			>
 				<View style={styles.requestInfo}>
-					<Text>{item.studentInfo.name}</Text>
-					<Text>
+					<Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }} allowFontScaling={true}>
+						{item.studentInfo.name}
+					</Text>
+					<Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>
 						Class: {item.className.department} {item.className.code}
 					</Text>
-					<Text>Location: {item.location}</Text>
-					<Text>Estimated Session Time: {item.estTime} minutes</Text>
-					<Text>{item.description}</Text>
+					<Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>Location: {item.location}</Text>
+					<Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }} numberOfLines={1}>
+						Estimated Time: {item.estTime} min
+					</Text>
+					<Text
+						style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}
+						minimumFontScale={0.4}
+						adjustsFontSizeToFit={true}
+						numberOfLines={2}
+						allowFontScaling={true}
+					>
+						Description: {item.description}
+					</Text>
 				</View>
 				<View style={styles.requestButtons}>
-					<Button style={styles.button} title="Decline" onPress={() => this.decline({ item })} />
-					<Button style={styles.button} title="Accept" onPress={() => this.accept({ item })} />
+					<Button type="clear" style={styles.button} title="Accept" onPress={() => this.accept({ item })} />
+					<Button type="clear" style={styles.button} title="Decline" onPress={() => this.decline({ item })} />
 				</View>
-			</View>
+			</TouchableOpacity>
 		);
 	};
 
@@ -140,7 +159,11 @@ class TutorIncomingRequests extends Component {
 						keyExtractor={(item, index) => index.toString()}
 					/>
 				</View>
-				<Button style={styles.endButton} title="End Live" onPress={this.stopLive} />
+				<View style={styles.live}>
+					<TouchableOpacity style={styles.liveButton} onPress={this.stopLive}>
+						<Text style={styles.liveButtonText}>End Live</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		);
 	}
@@ -162,33 +185,50 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white'
 	},
 	requestInfo: {
-		justifyContent: 'space-around'
+		flex: 2,
+		justifyContent: 'space-around',
+		margin: 10
 	},
 	requestButtons: {
-		paddingBottom: '5%',
-		height: '60%',
-		justifyContent: 'space-between'
+		flex: 1,
+		justifyContent: 'space-around',
+		alignItems: 'stretch',
+		margin: 10
 	},
 	button: {
-		height: '100%',
-		width: '100%',
-		alignSelf: 'flex-end',
-		paddingRight: '5%'
+		alignSelf: 'center',
+		width: '85%',
+		backgroundColor: 'white',
+		borderRadius: 15
 	},
 	row: {
-		padding: 15,
-		marginBottom: 5,
-		backgroundColor: 'skyblue',
-		color: 'red',
+		backgroundColor: '#6A7BD6',
 		flexDirection: 'row',
-		justifyContent: 'space-between',
-		height: '100%'
+		marginBottom: '2%',
+		marginHorizontal: 16,
+		borderRadius: 20
 	},
 	container: {
 		flex: 1,
 		flexDirection: 'column',
 		paddingTop: 40,
 		paddingBottom: 40
+	},
+	live: {
+		flex: 1,
+		alignItems: 'center'
+	},
+	liveButton: {
+		backgroundColor: '#6A7BD6',
+		height: '100%',
+		width: '75%',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 15
+	},
+	liveButtonText: {
+		fontSize: 40,
+		color: 'white'
 	}
 });
 

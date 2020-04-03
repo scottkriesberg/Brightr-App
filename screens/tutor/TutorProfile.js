@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'react-native-elements';
 import firebase from '../../firebase';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { ProfileTopBar, ProfileHeadingInfo } from '../components/profile';
 import Loading from '../components/utils.js';
 import ButtonStyles from '../../styles/button';
@@ -36,9 +36,9 @@ class TutorHome extends Component {
 		return (
 			<View style={styles.classRow}>
 				<Text style={styles.classText}>
-					{item.department}: {item.code}
+					{this.state.user.classes[item].department}: {this.state.user.classes[item].code}
 				</Text>
-				<Text>{item.name}</Text>
+				<Text>{this.state.user.classes[item].name}</Text>
 			</View>
 		);
 	};
@@ -85,14 +85,19 @@ class TutorHome extends Component {
 				</View>
 
 				<View style={styles.classes}>
+					<Text style={styles.classesHeader}>Classes</Text>
 					<FlatList
-						data={this.state.user.classes}
+						data={Object.keys(this.state.user.classes)}
 						renderItem={this.renderItem}
 						keyExtractor={(item, index) => index.toString()}
 					/>
 				</View>
 
-				<Button type="outline" title="Start Tutoring" onPress={this.toWorkPage} />
+				<View style={styles.live}>
+					<TouchableOpacity style={styles.liveButton} onPress={this.toWorkPage}>
+						<Text style={styles.liveButtonText}>Set Up Live</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		);
 	}
@@ -107,7 +112,7 @@ const styles = StyleSheet.create({
 	},
 	basicInfoContainer: {
 		flex: 5,
-		backgroundColor: 'skyblue',
+		backgroundColor: '#6A7BD6',
 		justifyContent: 'space-around',
 		alignItems: 'center'
 	},
@@ -138,21 +143,41 @@ const styles = StyleSheet.create({
 	statsText: {
 		fontSize: 20
 	},
+	classesHeader: {
+		alignSelf: 'center',
+		fontSize: 30
+	},
 	classes: {
 		flex: 5,
-		backgroundColor: 'grey',
+		backgroundColor: 'white',
 		alignItems: 'stretch'
 	},
 	classRow: {
 		height: 60,
 		marginBottom: 5,
-		backgroundColor: 'skyblue'
+		backgroundColor: '#6A7BD6'
 	},
 	classText: {
-		fontSize: 30
+		fontSize: 30,
+		color: 'white'
 	},
-	work: {
-		flex: 1
+	live: {
+		marginTop: 5,
+		flex: 1,
+		alignItems: 'center'
+	},
+	liveButton: {
+		backgroundColor: '#6A7BD6',
+		height: '100%',
+		width: '75%',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 15
+	},
+	liveButtonText: {
+		fontSize: 40,
+		fontWeight: 'bold',
+		color: 'white'
 	}
 });
 

@@ -1,14 +1,25 @@
 import React, { Component } from 'react';
 import { Button, Icon, Slider } from 'react-native-elements';
-import { Alert, StyleSheet, Text, View, ImageBackground, TouchableWithoutFeedback } from 'react-native';
+import {
+	Alert,
+	StyleSheet,
+	Text,
+	View,
+	ImageBackground,
+	TouchableWithoutFeedback,
+	TouchableOpacity
+} from 'react-native';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 const map = require('../../images/USC_Map.png');
 
-function Location({ name, addLoc, style }) {
+function Location({ name, addLoc, style, locationColor }) {
 	return (
 		<View style={style}>
-			<Icon name="location-on" type="MaterialIcons" onPress={() => addLoc(name)} />
+			<Text style={{ fontSize: 10 }} allowFontScaling={true}>
+				{name}
+			</Text>
+			<Icon name="location-on" type="MaterialIcons" onPress={() => addLoc(name)} color={locationColor[name]} />
 		</View>
 	);
 }
@@ -22,7 +33,12 @@ class TutorWorkSetUp extends Component {
 			user: {},
 			isLoading: true,
 			locations: [],
-			value: 25
+			value: 25,
+			locationColor: {
+				'Cafe 84': 'black',
+				'Leavy Library': 'black',
+				'Village Tables': 'black'
+			}
 		};
 	}
 
@@ -70,8 +86,12 @@ class TutorWorkSetUp extends Component {
 	toggleLoc = (name) => {
 		if (this.state.locations.includes(name)) {
 			this.state.locations = this.state.locations.filter((x) => x != name);
+			this.state.locationColor[name] = 'black';
+			this.setState({ updateColor: true });
 		} else {
 			this.state.locations.push(name);
+			this.state.locationColor[name] = '#6A7BD6';
+			this.setState({ updateColor: true });
 		}
 	};
 
@@ -87,9 +107,24 @@ class TutorWorkSetUp extends Component {
 							<View style={styles.profileIcon}>
 								<Icon name="person" onPress={this.cancel} />
 							</View>
-							<Location name="Leavey Library" addLoc={this.toggleLoc} style={styles.leavy} />
-							<Location name="Cafe 84" addLoc={this.toggleLoc} style={styles.cafe84} />
-							<Location name="USC Village Tables" addLoc={this.toggleLoc} style={styles.village} />
+							<Location
+								name="Leavey Library"
+								addLoc={this.toggleLoc}
+								style={styles.leavy}
+								locationColor={this.state.locationColor}
+							/>
+							<Location
+								name="Cafe 84"
+								addLoc={this.toggleLoc}
+								style={styles.cafe84}
+								locationColor={this.state.locationColor}
+							/>
+							<Location
+								name="USC Village Tables"
+								addLoc={this.toggleLoc}
+								style={styles.village}
+								locationColor={this.state.locationColor}
+							/>
 						</ImageBackground>
 					</TouchableWithoutFeedback>
 				</View>
@@ -99,6 +134,8 @@ class TutorWorkSetUp extends Component {
 						maximumValue={100}
 						minimumValue={10}
 						step={5}
+						thumbTintColor="#6A7BD6"
+						trackStyle={styles.trackSlider}
 						onValueChange={(value) => this.setState({ value })}
 					/>
 					<View style={styles.sliderText}>
@@ -112,7 +149,9 @@ class TutorWorkSetUp extends Component {
 				</View>
 
 				<View style={styles.live}>
-					<Button style={styles.button} title="Go Live" onPress={this.goLive} />
+					<TouchableOpacity style={styles.liveButton} onPress={this.goLive}>
+						<Text style={styles.liveButtonText}>Go Live</Text>
+					</TouchableOpacity>
 				</View>
 			</View>
 		);
@@ -143,17 +182,17 @@ const styles = StyleSheet.create({
 		flexGrow: 1
 	},
 	village: {
-		width: 20,
+		width: 40,
 		left: 209,
 		top: -136
 	},
 	cafe84: {
-		width: 20,
+		width: 40,
 		left: 20,
 		top: 70
 	},
 	leavy: {
-		width: 20,
+		width: 40,
 		left: 290,
 		top: 70
 	},
@@ -173,8 +212,23 @@ const styles = StyleSheet.create({
 		fontSize: 30
 	},
 	live: {
-		flex: 1,
-		justifyContent: 'center'
+		flex: 0.75,
+		alignItems: 'center'
+	},
+	liveButton: {
+		backgroundColor: '#6A7BD6',
+		height: '75%',
+		width: '75%',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 15
+	},
+	liveButtonText: {
+		fontSize: 40,
+		color: 'white'
+	},
+	trackSlider: {
+		height: 10
 	}
 });
 

@@ -26,7 +26,7 @@ class Landing extends React.Component {
 					</Text>
 				</View>
 				{/* Button container */}
-				<View style={ContainerStyles.inputContainer}>
+				{/* <View style={ContainerStyles.inputContainer}>
 					<Button
 						type="clear"
 						style={ButtonStyles.landingButton}
@@ -39,7 +39,7 @@ class Landing extends React.Component {
 						onPress={() => this.props.navigation.navigate('Login')}
 						title="Sign Up"
 					/>
-				</View>
+				</View> */}
 			</View>
 		);
 	}
