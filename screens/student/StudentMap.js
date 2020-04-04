@@ -9,7 +9,7 @@ import {
 	TouchableOpacity,
 	TouchableWithoutFeedback
 } from 'react-native';
-import { Button, Icon } from 'react-native-elements';
+import { Button, Icon, Slider } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import firebase from '../../firebase';
 import ContainerStyles from '../../styles/container.js';
@@ -44,7 +44,9 @@ class StudentMap extends Component {
 			isLoading: true,
 			data: [],
 			query: {},
-			location: 'All Locations',
+			locationFilter: 'All Locations',
+			ratingFilter: 0,
+			gpaFilter: 0,
 			numActive: 0,
 			isFilterVisable: false,
 			locationColor: {
@@ -53,16 +55,33 @@ class StudentMap extends Component {
 				'Village Tables': 'black'
 			}
 		};
+		this.filter = this.filter.bind(this);
 	}
 	toggleFilterWindow = () => {
 		this.setState({ isFilterVisable: !this.state.isFilterVisable });
 	};
+	filter(tutor) {
+		if (tutor.rating < this.state.ratingFilter) {
+			return false;
+		}
+		if (!tutor.locations.includes(this.state.locationFilter) && this.state.locationFilter != 'All Locations') {
+			return false;
+		}
+		if (tutor.gpa < this.state.gpaFilter) {
+			return false;
+		}
+		return true;
+	}
 
 	applyFilter = () => {
+		this.setState({ update: true });
 		this.toggleFilterWindow();
 	};
 
 	renderItem = ({ item }) => {
+		if (!this.filter(item)) {
+			return;
+		}
 		var classList = '';
 		Object.keys(item.classes).map((item, index) => {
 			classList += item + ', ';
@@ -134,7 +153,7 @@ class StudentMap extends Component {
 				this.setState({
 					user: doc.data()
 				});
-				this.updateRef();
+				this.ref = this.ref.where('classesArray', 'array-contains-any', this.state.user.classes);
 				this.ref.onSnapshot(this.onCollectionUpdate);
 			} else {
 				console.log('No such document!');
@@ -145,16 +164,9 @@ class StudentMap extends Component {
 	onCollectionUpdate = (querySnapshot) => {
 		const data = [];
 		querySnapshot.forEach((doc) => {
-			const { name, major, rating, year, hourlyRate, classes } = doc.data();
-			data.push({
-				name,
-				major,
-				rating,
-				year,
-				hourlyRate,
-				classes,
-				id: doc.id
-			});
+			const tutor = doc.data();
+			tutor.id = doc.id;
+			data.push(tutor);
 		});
 		this.setState({
 			data,
@@ -163,52 +175,29 @@ class StudentMap extends Component {
 		});
 	};
 
+	locationFilter = (name) => {
+		(this.state.locationColor = {
+			'Cafe 84': 'black',
+			'Leavy Library': 'black',
+			'Village Tables': 'black'
+		}),
+			(this.state.locationColor[name] = '#6A7BD6');
+		this.setState({ locationFilter: name });
+	};
+
 	toProfile = () => {
 		this.props.navigation.navigate('StudentProfile', { uid: this.state.uid });
 	};
 	clearLocations = () => {
-		this.state.query = {};
-		this.updateRef();
-		this.ref.onSnapshot(this.onCollectionUpdate);
 		this.state.location = 'All Locations';
 		this.setState({
 			locationColor: {
 				'Cafe 84': 'black',
 				'Leavy Library': 'black',
 				'Village Tables': 'black'
-			}
+			},
+			locationFilter: 'All Locations'
 		});
-	};
-
-	updateRef() {
-		var newRef = firebase.firestore().collection('tutors').where('isLive', '==', true);
-		for (var i in this.state.query) {
-			newRef = newRef.where(this.state.query[i].field, this.state.query[i].op, this.state.query[i].val);
-		}
-		this.ref = newRef;
-	}
-
-	locationFilter = (name) => {
-		if (this.state.query.hasOwnProperty('location')) {
-			this.state.query['location'] = {
-				field: 'locations',
-				op: 'array-contains',
-				val: name
-			};
-			this.state.locationColor[name] = 'black';
-			this.setState({ updateColor: true });
-		} else {
-			this.state.query['location'] = {
-				field: 'locations',
-				op: 'array-contains',
-				val: name
-			};
-			this.state.locationColor[name] = '#6A7BD6';
-			this.setState({ updateColor: true });
-		}
-		this.updateRef();
-		this.ref.onSnapshot(this.onCollectionUpdate);
-		this.state.location = name;
 	};
 
 	render() {
@@ -217,11 +206,43 @@ class StudentMap extends Component {
 		}
 		return (
 			<View style={styles.container}>
-				<View style={styles.filterModal}>
+				<View>
 					<Modal isVisible={this.state.isFilterVisable}>
-						<View>
-							<Text>Filter</Text>
-							<Button title="Apply" onPress={this.applyFilter} />
+						<View style={styles.filterModal}>
+							<Text style={styles.filterTitle}>Filter</Text>
+							<View style={styles.filtersContainer}>
+								<Slider
+									value={this.state.gpaFilter}
+									maximumValue={4}
+									minimumValue={0}
+									step={0.25}
+									thumbTintColor="#6A7BD6"
+									trackStyle={styles.trackSlider}
+									onValueChange={(value) => this.setState({ gpaFilter: value })}
+								/>
+								<Text>Minimum GPA: {this.state.gpaFilter}</Text>
+								<Slider
+									value={this.state.ratingFilter}
+									maximumValue={5}
+									minimumValue={0}
+									step={0.25}
+									thumbTintColor="#6A7BD6"
+									trackStyle={styles.trackSlider}
+									onValueChange={(value) => this.setState({ ratingFilter: value })}
+								/>
+								<Text>Minimum Rating: {this.state.ratingFilter}</Text>
+							</View>
+							<View style={styles.filterButtonsContainer}>
+								<TouchableOpacity
+									style={styles.filterButtons}
+									onPress={() => this.setState({ ratingFilter: 0, gpaFilter: 0 })}
+								>
+									<Text style={styles.filterButtonsText}>Clear</Text>
+								</TouchableOpacity>
+								<TouchableOpacity style={styles.filterButtons} onPress={this.applyFilter}>
+									<Text style={styles.filterButtonsText}>Apply</Text>
+								</TouchableOpacity>
+							</View>
 						</View>
 					</Modal>
 				</View>
@@ -267,7 +288,7 @@ class StudentMap extends Component {
 						/>
 					</View>
 					<Text style={styles.currentLocationText} adjustsFontSizeToFit>
-						{this.state.location}: {this.state.numActive} Active
+						{this.state.locationFilter}
 					</Text>
 				</View>
 				<View style={styles.tutorList}>
@@ -275,6 +296,7 @@ class StudentMap extends Component {
 						ListHeaderComponentStyle={ContainerStyles.tutorList}
 						data={this.state.data}
 						renderItem={this.renderItem}
+						keyExtractor={(item) => item.toString()}
 					/>
 				</View>
 			</View>
@@ -329,6 +351,40 @@ const styles = StyleSheet.create({
 	findTutorText: {
 		paddingLeft: 5,
 		fontSize: 30
+	},
+	filterModal: {
+		backgroundColor: 'rgba(255,255,255,0.8)',
+		height: '50%',
+		borderRadius: 15,
+		padding: 10,
+		justifyContent: 'space-around'
+	},
+	filterButtonsContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		flex: 1
+	},
+	filterButtons: {
+		borderRadius: 10,
+		borderWidth: 1,
+		backgroundColor: '#6A7BD6',
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: '40%',
+		height: '100%'
+	},
+	filterButtonsText: {
+		fontSize: 30,
+		color: 'white'
+	},
+	filterTitle: {
+		flex: 1,
+		fontSize: 30,
+		alignSelf: 'center'
+	},
+	filtersContainer: {
+		flex: 4,
+		justifyContent: 'center'
 	}
 });
 
