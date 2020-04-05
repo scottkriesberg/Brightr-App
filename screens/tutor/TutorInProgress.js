@@ -18,8 +18,8 @@ class TutorInProgress extends Component {
 			min: 0,
 			sec: 0,
 			hour: 0,
-			modalVisible: false,
-			code: '',
+			ratingModalVisible: false,
+			waitingModalVisible: false,
 			rating: 0,
 			finish: false
 		};
@@ -52,29 +52,7 @@ class TutorInProgress extends Component {
 		});
 	}
 
-	toggleModal(visible) {
-		this.setState({ modalVisible: visible });
-	}
-
 	padToTwo = (number) => (number <= 9 ? `0${number}` : number);
-
-	finish = () => {
-		if (this.state.rating == 0) {
-			Alert.alert('No Rating', 'Please rate your student', [ { text: 'OK' } ], {
-				cancelable: false
-			});
-			return;
-		}
-		this.sessionRef
-			.update({
-				studentRating: this.state.rating
-			})
-			.then(() => {
-				this.state.finish = true;
-				this.toggleModal(false);
-				this.sessionRef.onSnapshot(this.onCollectionUpdate);
-			});
-	};
 
 	componentDidMount() {
 		this.state.uid = this.props.navigation.getParam('uid', '');
@@ -104,16 +82,28 @@ class TutorInProgress extends Component {
 
 	componentWillUnmount() {
 		clearInterval(this.interval);
+		this.unsubscribe();
+		this.setState({ waitingModalVisible: false });
+		this.setState({ ratingModalVisible: false });
 	}
 
 	onCollectionUpdate = (doc) => {
 		if (doc.exists) {
 			this.state.session = doc.data();
-			if (this.state.session.status == 'completed' && this.state.finish) {
-				this.addRating('students', this.state.session.studentUid, this.state.rating);
-				this.state.code = '';
-				this.state.rating = 0;
-				this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
+			if (doc.data().tutorDone) {
+				this.setState({ waitingModalVisible: true });
+			}
+			if (doc.data().tutorDone && doc.data().studentDone) {
+				this.setState({ waitingModalVisible: false });
+				this.setState({ ratingModalVisible: false });
+				this.sessionRef
+					.update({
+						studentRating: this.state.rating
+					})
+					.then(() => {
+						this.addRating('students', this.state.session.studentUid, this.state.rating);
+						this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
+					});
 			}
 		}
 		this.setState({
@@ -130,40 +120,61 @@ class TutorInProgress extends Component {
 				<Modal
 					animationType={'slide'}
 					transparent={false}
-					visible={this.state.modalVisible}
+					visible={this.state.ratingModalVisible}
 					onRequestClose={() => {
 						console.log('Modal has been closed.');
 					}}
 				>
-					<TouchableWithoutFeedback
-						onPress={() => {
-							Keyboard.dismiss();
-						}}
-					>
-						<View style={styles.modal}>
-							<Text style={styles.modalHeader}>End Session Code: {this.state.session.endCode}</Text>
+					<View style={styles.modal}>
+						<View>
+							<Text style={styles.rateText}>Please rate the student</Text>
 
-							<View>
-								<Text style={styles.rateText}>Please rate the student</Text>
-
-								<AirbnbRating
-									count={5}
-									defaultRating={0}
-									reviews={[]}
-									onFinishRating={(rating) => {
-										this.state.rating = rating;
-									}}
-								/>
-							</View>
-
-							<Button
-								title="Finish"
-								onPress={() => {
-									this.finish();
+							<AirbnbRating
+								count={5}
+								defaultRating={0}
+								reviews={[]}
+								onFinishRating={(rating) => {
+									this.state.rating = rating;
 								}}
 							/>
 						</View>
-					</TouchableWithoutFeedback>
+
+						<Button
+							title="Finish"
+							onPress={() => {
+								if (this.state.rating == 0) {
+									Alert.alert('No Rating', 'Please rate your tutor', [ { text: 'OK' } ], {
+										cancelable: false
+									});
+									return;
+								}
+								this.sessionRef.update({ tutorDone: true }).then(() => {
+									this.setState({ ratingModalVisible: false });
+								});
+							}}
+						/>
+					</View>
+				</Modal>
+
+				<Modal
+					animationType={'slide'}
+					transparent={true}
+					visible={this.state.waitingModalVisible}
+					onRequestClose={() => {
+						console.log('Modal has been closed.');
+					}}
+				>
+					<Loading />
+					<Button
+						style={styles.cancelEndingButton}
+						title="Cancel"
+						onPress={() => {
+							this.requestRef.update({ tutorDone: false }).then(() => {
+								this.setState({ ratingModalVisible: false });
+								this.setState({ waitingModalVisible: false });
+							});
+						}}
+					/>
 				</Modal>
 
 				<Text style={styles.heading}>Session Time</Text>
@@ -172,7 +183,13 @@ class TutorInProgress extends Component {
 					<Text style={styles.child}>{this.padToTwo(this.state.min) + ' : '}</Text>
 					<Text style={styles.child}>{this.padToTwo(this.state.sec)}</Text>
 				</View>
-				<Button style={styles.button} title="End Session" onPress={() => this.toggleModal(true)} />
+				<Button
+					style={styles.button}
+					title="End Session"
+					onPress={() => {
+						this.setState({ ratingModalVisible: true });
+					}}
+				/>
 			</View>
 		);
 	}
@@ -232,6 +249,10 @@ const styles = StyleSheet.create({
 	},
 	heading: {
 		fontSize: 50,
+		alignSelf: 'center'
+	},
+	cancelEndingButton: {
+		justifyContent: 'center',
 		alignSelf: 'center'
 	}
 });

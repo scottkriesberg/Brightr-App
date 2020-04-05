@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Text } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Text } from 'react-native-elements';
+import { Alert, StyleSheet, View, TouchableOpacity } from 'react-native';
 import firebase from '../../firebase';
-import ButtonStyle from '../../styles/button.js';
 import Loading from '../components/utils.js';
 
 export default class TutorPreview extends Component {
@@ -12,6 +10,7 @@ export default class TutorPreview extends Component {
 		this.tutorRef = firebase.firestore().collection('tutors');
 		this.studentRef = firebase.firestore().collection('students');
 		this.requestRef = firebase.firestore().collection('requests');
+		this.unsubscribe = null;
 		this.state = {
 			id: '',
 			tutorId: '',
@@ -40,7 +39,19 @@ export default class TutorPreview extends Component {
 					requestUid: this.state.requestUid
 				});
 			} else if (doc.data().status == 'declined') {
-				this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
+				Alert.alert(
+					'Tutor Unavailable',
+					'Please request a different tutor',
+					[
+						{
+							text: 'OK',
+							onPress: () => this.props.navigation.navigate('StudentMap', { uid: this.state.uid })
+						}
+					],
+					{
+						cancelable: false
+					}
+				);
 			}
 		} else {
 			this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
@@ -52,6 +63,10 @@ export default class TutorPreview extends Component {
 			clearInterval(this.interval);
 			// this.props.navigation.navigate('StudentChat', { uid: this.state.uid });
 		}
+	}
+
+	componentWillUnmount() {
+		this.unsubscribe();
 	}
 
 	componentWillUnmount() {

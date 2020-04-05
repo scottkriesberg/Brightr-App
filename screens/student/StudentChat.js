@@ -11,6 +11,7 @@ export default class Chat extends React.Component {
 	constructor() {
 		super();
 		this.requestRef = firebase.firestore().collection('requests');
+		this.unsubscribe = null;
 		this.state = {
 			requestUid: '',
 			uid: '',
@@ -87,8 +88,9 @@ export default class Chat extends React.Component {
 	};
 
 	start = () => {
-		console.log('mod on');
-		this.setState({ modalVisible: true });
+		this.requestRef.update({ studentReady: true }).then(() => {
+			this.setState({ modalVisible: true });
+		});
 	};
 
 	onCollectionUpdate = (doc) => {
@@ -104,8 +106,10 @@ export default class Chat extends React.Component {
 			});
 			if (doc.data().status == 'declined') {
 				this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
-			} else if (doc.data().status == 'started') {
-				this.props.navigation.navigate('StudentInProgress', { uid: this.state.uid });
+			} else if (doc.data().tutorReady && doc.data().studentReady) {
+				this.requestRef.update({ status: 'started' }).then(() => {
+					this.props.navigation.navigate('StudentInProgress', { uid: this.state.uid });
+				});
 			}
 		} else {
 			this.props.navigation.navigate('StudentMap', {
@@ -113,7 +117,10 @@ export default class Chat extends React.Component {
 			});
 		}
 	};
-	componentWillUnmount() {}
+	componentWillUnmount() {
+		this.unsubscribe();
+	}
+
 	render() {
 		if (this.state.isLoading) {
 			return <Loading />;
@@ -122,13 +129,14 @@ export default class Chat extends React.Component {
 			<View style={styles.container}>
 				<Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
 					<View style={styles.modalContainer}>
-						<Text style={styles.modalHeader}>Begin Session</Text>
-						<Text style={styles.codeText}>Start Code: {this.state.request.startCode}</Text>
+						<Loading />
 						<Button
 							style={styles.backToChatButton}
 							title="Back to chat"
 							onPress={() => {
-								this.setState({ modalVisible: false });
+								this.requestRef.update({ studentReady: false }).then(() => {
+									this.setState({ modalVisible: false });
+								});
 							}}
 						/>
 					</View>

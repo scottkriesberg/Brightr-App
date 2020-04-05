@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
-import {
-	View,
-	FlatList,
-	StyleSheet,
-	ImageBackground,
-	Image,
-	Text,
-	TouchableOpacity,
-	TouchableWithoutFeedback
-} from 'react-native';
-import { Button, Icon, Slider } from 'react-native-elements';
+import { View, FlatList, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
+import { Icon, Slider } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import firebase from '../../firebase';
 import ContainerStyles from '../../styles/container.js';
@@ -31,12 +22,7 @@ class StudentMap extends Component {
 			ratingFilter: 0,
 			gpaFilter: 0,
 			numActive: 0,
-			isFilterVisable: false,
-			locationColor: {
-				'Cafe 84': 'black',
-				'Leavy Library': 'black',
-				'Village Tables': 'black'
-			}
+			isFilterVisable: false
 		};
 		this.filter = this.filter.bind(this);
 	}
@@ -137,11 +123,15 @@ class StudentMap extends Component {
 					user: doc.data()
 				});
 				this.ref = this.ref.where('classesArray', 'array-contains-any', this.state.user.classes);
-				this.ref.onSnapshot(this.onCollectionUpdate);
+				this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
 			} else {
 				console.log('No such document!');
 			}
 		});
+	}
+
+	componentWillUnmount() {
+		this.unsubscribe();
 	}
 
 	onCollectionUpdate = (querySnapshot) => {
@@ -244,7 +234,7 @@ class StudentMap extends Component {
 						ListHeaderComponentStyle={ContainerStyles.tutorList}
 						data={this.state.data}
 						renderItem={this.renderItem}
-						keyExtractor={(item) => item.toString()}
+						keyExtractor={(item) => item.id}
 					/>
 				</View>
 			</View>

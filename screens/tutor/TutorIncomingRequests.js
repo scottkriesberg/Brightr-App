@@ -63,6 +63,10 @@ class TutorIncomingRequests extends Component {
 		this.unsubscribe = this.requestRef.onSnapshot(this.onCollectionUpdate);
 	}
 
+	componentWillUnmount() {
+		this.unsubscribe();
+	}
+
 	onCollectionUpdate = (querySnapshot) => {
 		const requests = [];
 		querySnapshot.forEach((doc) => {

@@ -1,29 +1,9 @@
 import React, { Component } from 'react';
-import { Button, Icon, Slider } from 'react-native-elements';
-import {
-	Alert,
-	StyleSheet,
-	Text,
-	View,
-	ImageBackground,
-	TouchableWithoutFeedback,
-	TouchableOpacity
-} from 'react-native';
+import { Icon, Slider } from 'react-native-elements';
+import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 import { Map } from '../components/map';
-const map = require('../../images/USC_Map.png');
-
-function Location({ name, addLoc, style, locationColor }) {
-	return (
-		<View style={style}>
-			<Text style={{ fontSize: 10 }} allowFontScaling={true}>
-				{name}
-			</Text>
-			<Icon name="location-on" type="MaterialIcons" onPress={() => addLoc(name)} color={locationColor[name]} />
-		</View>
-	);
-}
 
 class TutorWorkSetUp extends Component {
 	constructor() {
@@ -34,12 +14,7 @@ class TutorWorkSetUp extends Component {
 			user: {},
 			isLoading: true,
 			locations: [],
-			value: 25,
-			locationColor: {
-				'Cafe 84': 'black',
-				'Leavy Library': 'black',
-				'Village Tables': 'black'
-			}
+			value: 25
 		};
 	}
 
@@ -60,12 +35,6 @@ class TutorWorkSetUp extends Component {
 		});
 	}
 
-	renderItem = ({ item }) => (
-		<View style={styles.classRow}>
-			<Text style={styles.classText}>{item}</Text>
-		</View>
-	);
-
 	toProfile = () => {
 		this.props.navigation.navigate('TutorProfile', { uid: this.state.uid });
 	};
@@ -83,18 +52,6 @@ class TutorWorkSetUp extends Component {
 				this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
 			});
 	};
-
-	// toggleLoc = (name) => {
-	// 	if (this.state.locations.includes(name)) {
-	// 		this.state.locations = this.state.locations.filter((x) => x != name);
-	// 		this.state.locationColor[name] = 'black';
-	// 		this.setState({ updateColor: true });
-	// 	} else {
-	// 		this.state.locations.push(name);
-	// 		this.state.locationColor[name] = '#6A7BD6';
-	// 		this.setState({ updateColor: true });
-	// 	}
-	// };
 
 	toggleLoc = (pin) => {
 		if (this.state.locations.includes(pin.title)) {
@@ -119,31 +76,6 @@ class TutorWorkSetUp extends Component {
 					<View style={{ position: 'absolute', marginTop: '6%', marginLeft: '1%' }}>
 						<Icon size={35} name="person" onPress={this.toProfile} />
 					</View>
-					{/* <TouchableWithoutFeedback onPress={this.clearLocations}>
-						<ImageBackground source={map} style={styles.map}>
-							<View style={styles.profileIcon}>
-								<Icon name="person" onPress={this.cancel} />
-							</View>
-							<Location
-								name="Leavey Library"
-								addLoc={this.toggleLoc}
-								style={styles.leavy}
-								locationColor={this.state.locationColor}
-							/>
-							<Location
-								name="Cafe 84"
-								addLoc={this.toggleLoc}
-								style={styles.cafe84}
-								locationColor={this.state.locationColor}
-							/>
-							<Location
-								name="USC Village Tables"
-								addLoc={this.toggleLoc}
-								style={styles.village}
-								locationColor={this.state.locationColor}
-							/>
-						</ImageBackground>
-					</TouchableWithoutFeedback> */}
 				</View>
 				<View style={styles.sliderContainer}>
 					<Slider

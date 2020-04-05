@@ -104,6 +104,7 @@ export class Map extends Component {
 				>
 					{this.state.markers.map((marker, index) => (
 						<Marker
+							key={index}
 							coordinate={marker.latlng}
 							title={marker.title}
 							pinColor={index == this.state.selectedMarkerIndex ? 'blue' : 'red'}
@@ -122,6 +123,7 @@ export class Map extends Component {
 				>
 					{this.state.markers.map((marker, index) => (
 						<Marker
+							key={index}
 							coordinate={marker.latlng}
 							title={marker.title}
 							pinColor={this.state.selectedMarkerIndexs.includes(index) ? 'blue' : 'red'}

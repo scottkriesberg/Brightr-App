@@ -1,16 +1,6 @@
 import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat'; // 0.3.0
-import {
-	View,
-	Alert,
-	Button,
-	StyleSheet,
-	TouchableWithoutFeedback,
-	Keyboard,
-	Modal,
-	Text,
-	TextInput
-} from 'react-native';
+import { View, Alert, Button, StyleSheet, TouchableWithoutFeedback, Keyboard, Modal, Text } from 'react-native';
 import firebase from '../../firebase';
 import Fire from 'firebase';
 import Loading from '../components/utils.js';
@@ -20,6 +10,7 @@ export default class Chat extends React.Component {
 	constructor() {
 		super();
 		this.requestRef = firebase.firestore().collection('requests');
+		this.unsubscribe = null;
 		this.state = {
 			requestUid: '',
 			uid: '',
@@ -31,14 +22,6 @@ export default class Chat extends React.Component {
 			modalVisible: false
 		};
 	}
-
-	codeGenerator = () => {
-		const num1 = Math.floor(Math.random() * 10);
-		const num2 = Math.floor(Math.random() * 10);
-		const num3 = Math.floor(Math.random() * 10);
-		const num4 = Math.floor(Math.random() * 10);
-		return num1.toString() + num2.toString() + num3.toString() + num4.toString();
-	};
 
 	getUser() {
 		return {
@@ -98,53 +81,37 @@ export default class Chat extends React.Component {
 	};
 
 	start = () => {
-		this.setState({ modalVisible: true });
+		this.requestRef.update({ tutorReady: true }).then(() => {
+			this.setState({ modalVisible: true });
+		});
 	};
 
 	begin = () => {
-		if (this.state.code != this.state.request.startCode) {
-			Alert.alert('Wrong Code', 'Please try again', [ { text: 'OK' } ], {
-				cancelable: false
-			});
-			return;
-		}
 		const time = Date.now();
-		this.requestRef
-			.update({
-				status: 'started'
+		firebase
+			.firestore()
+			.collection('sessions')
+			.add({
+				studentUid: this.state.request.studentUid,
+				tutorUid: this.state.request.tutorUid,
+				startTime: time,
+				hourlyRate: this.state.user.hourlyRate,
+				location: this.state.request.location,
+				estTime: this.state.request.estTime,
+				className: this.state.request.className,
+				status: 'in progress',
+				date: new Date(),
+				tutorRating: 0.0,
+				studentRating: 0.0,
+				sessionTime: 0.0,
+				studentDone: false,
+				tutorDone: false
 			})
 			.then((docRef) => {
-				firebase
-					.firestore()
-					.collection('sessions')
-					.add({
-						studentUid: this.state.request.studentUid,
-						tutorUid: this.state.request.tutorUid,
-						startTime: time,
-						hourlyRate: this.state.user.hourlyRate,
-						location: this.state.request.location,
-						estTime: this.state.request.estTime,
-						className: this.state.request.className,
-						startCode: this.state.request.startCode,
-						status: 'in progress',
-						date: new Date(),
-						tutorRating: 0.0,
-						studentRating: 0.0,
-						sessionTime: 0.0,
-						endCode: this.codeGenerator()
-					})
-					.then((docRef) => {
-						this.props.navigation.navigate('TutorInProgress', {
-							uid: this.state.uid,
-							sessionUid: docRef.id
-						});
-					})
-					.catch((error) => {
-						console.error('Error adding document: ', error);
-						this.setState({
-							isLoading: false
-						});
-					});
+				this.props.navigation.navigate('TutorInProgress', {
+					uid: this.state.uid,
+					sessionUid: docRef.id
+				});
 			})
 			.catch((error) => {
 				console.error('Error adding document: ', error);
@@ -165,13 +132,19 @@ export default class Chat extends React.Component {
 				messages,
 				isLoading: false
 			});
+			if (doc.data().status == 'started') {
+				console.log('called');
+				this.begin();
+			}
 		} else {
 			this.props.navigation.navigate('TutorIncomingRequests', {
 				uid: this.state.uid
 			});
 		}
 	};
-	componentWillUnmount() {}
+	componentWillUnmount() {
+		this.unsubscribe();
+	}
 	render() {
 		if (this.state.isLoading) {
 			return <Loading />;
@@ -192,29 +165,14 @@ export default class Chat extends React.Component {
 						}}
 					>
 						<View style={styles.modal}>
-							<Text style={styles.modalHeader}>Begin Session</Text>
-							<TextInput
-								placeholderTextColor="white"
-								keyboardType="numeric"
-								returnKeyType="done"
-								style={styles.codeInput}
-								placeholder="Type code to begin session"
-								onChangeText={(code) => this.setState({ code })}
-								value={this.state.code}
-							/>
-
-							<Button
-								title="Begin Session"
-								onPress={() => {
-									this.begin();
-									this.state.code = '';
-									this.state.rating = 3;
-								}}
-							/>
+							<Text style={styles.modalHeader}>Waiting for student...</Text>
+							<Loading />
 							<Button
 								title="Back to Chat"
 								onPress={() => {
-									this.setState({ modalVisible: false });
+									this.requestRef.update({ tutorReady: false }).then(() => {
+										this.setState({ modalVisible: false });
+									});
 								}}
 							/>
 						</View>

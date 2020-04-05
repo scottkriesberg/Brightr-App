@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Slider } from 'react-native-elements';
+import { Slider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
 	StyleSheet,
@@ -12,7 +12,7 @@ import {
 	TouchableOpacity
 } from 'react-native';
 import firebase from '../../firebase';
-import { Rating, ProfileHeadingInfo } from '../components/profile';
+import { ProfileHeadingInfo } from '../components/profile';
 import Loading from '../components/utils.js';
 import ModalSelector from 'react-native-modal-selector';
 
@@ -50,6 +50,7 @@ export default class TutorPreview extends Component {
 		super();
 		this.tutorRef = firebase.firestore().collection('tutors');
 		this.requestRef = firebase.firestore().collection('requests');
+		this.unsubscribe = null;
 		this.state = {
 			id: '',
 			tutorId: '',
@@ -80,6 +81,10 @@ export default class TutorPreview extends Component {
 		});
 	}
 
+	componentWillUnmount() {
+		// this.unsubscribe();
+	}
+
 	toStudentMap = () => {
 		this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
 	};
@@ -107,6 +112,8 @@ export default class TutorPreview extends Component {
 				className: this.state.classRequest,
 				startCode: this.codeGenerator(),
 				status: 'pending',
+				studentReady: false,
+				tutorReady: false,
 				messages: [],
 				description: this.state.description
 			})
@@ -176,18 +183,6 @@ export default class TutorPreview extends Component {
 					</View>
 
 					<View style={styles.locationPickerContainer}>
-						{/* <Picker
-							styles={styles.locationsPicker}
-							mode="dropdown"
-							selectedValue={this.state.locationRequest}
-							onValueChange={(value) => {
-								this.setState({ locationRequest: value });
-							}}
-						>
-							{this.state.tutor.locations.map((item, index) => {
-								return <Picker.Item label={item} value={item} key={index} />;
-							})}
-						</Picker> */}
 						<ModalSelector
 							data={this.state.tutor.locations}
 							accessible={true}
@@ -195,7 +190,6 @@ export default class TutorPreview extends Component {
 							keyExtractor={(item) => item}
 							labelExtractor={(item) => item}
 							optionStyle={{ marginTop: 10, backgroundColor: 'white' }}
-							optionContainerStyle={{ backgroundColor: 'clear' }}
 							cancelStyle={{ width: '90%', alignSelf: 'center' }}
 							style={{ width: '90%' }}
 							initValueTextStyle={{ color: 'black' }}
@@ -213,7 +207,6 @@ export default class TutorPreview extends Component {
 							keyExtractor={(item) => item}
 							labelExtractor={(item) => item}
 							optionStyle={{ marginTop: 10, backgroundColor: 'white' }}
-							optionContainerStyle={{ backgroundColor: 'clear' }}
 							cancelStyle={{ width: '90%', alignSelf: 'center' }}
 							style={{ width: '90%' }}
 							initValueTextStyle={{ color: 'black' }}
