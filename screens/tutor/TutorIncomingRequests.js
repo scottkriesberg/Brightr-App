@@ -224,7 +224,8 @@ const styles = StyleSheet.create({
 		width: '75%',
 		alignItems: 'center',
 		justifyContent: 'center',
-		borderRadius: 15
+		borderRadius: 15,
+		alignContent: 'center'
 	},
 	liveButtonText: {
 		fontSize: 40,

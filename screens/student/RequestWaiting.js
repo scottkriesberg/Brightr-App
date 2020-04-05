@@ -81,7 +81,9 @@ export default class TutorPreview extends Component {
 				<Loading />
 				<View style={styles.live}>
 					<TouchableOpacity style={styles.liveButton} onPress={this.cancelRequest}>
-						<Text style={styles.liveButtonText}>Cancel Request</Text>
+						<Text adjustsFontSizeToFit style={styles.liveButtonText}>
+							Cancel Request
+						</Text>
 					</TouchableOpacity>
 				</View>
 			</View>

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
+import { Map } from '../components/map';
 const map = require('../../images/USC_Map.png');
 
 function Location({ name, addLoc, style, locationColor }) {
@@ -65,7 +66,7 @@ class TutorWorkSetUp extends Component {
 		</View>
 	);
 
-	cancel = () => {
+	toProfile = () => {
 		this.props.navigation.navigate('TutorProfile', { uid: this.state.uid });
 	};
 
@@ -83,16 +84,28 @@ class TutorWorkSetUp extends Component {
 			});
 	};
 
-	toggleLoc = (name) => {
-		if (this.state.locations.includes(name)) {
-			this.state.locations = this.state.locations.filter((x) => x != name);
-			this.state.locationColor[name] = 'black';
-			this.setState({ updateColor: true });
+	// toggleLoc = (name) => {
+	// 	if (this.state.locations.includes(name)) {
+	// 		this.state.locations = this.state.locations.filter((x) => x != name);
+	// 		this.state.locationColor[name] = 'black';
+	// 		this.setState({ updateColor: true });
+	// 	} else {
+	// 		this.state.locations.push(name);
+	// 		this.state.locationColor[name] = '#6A7BD6';
+	// 		this.setState({ updateColor: true });
+	// 	}
+	// };
+
+	toggleLoc = (pin) => {
+		if (this.state.locations.includes(pin.title)) {
+			this.state.locations = this.state.locations.filter((x) => x != pin.title);
 		} else {
-			this.state.locations.push(name);
-			this.state.locationColor[name] = '#6A7BD6';
-			this.setState({ updateColor: true });
+			this.state.locations.push(pin.title);
 		}
+	};
+
+	clearLocations = () => {
+		this.state.locations = [];
 	};
 
 	render() {
@@ -102,7 +115,11 @@ class TutorWorkSetUp extends Component {
 		return (
 			<View style={styles.container}>
 				<View style={styles.mapContainer}>
-					<TouchableWithoutFeedback onPress={this.clearLocations}>
+					<Map locationPressFunc={this.toggleLoc} mapPressFunc={this.clearLocations} isStudent={false} />
+					<View style={{ position: 'absolute', marginTop: '6%', marginLeft: '1%' }}>
+						<Icon size={35} name="person" onPress={this.toProfile} />
+					</View>
+					{/* <TouchableWithoutFeedback onPress={this.clearLocations}>
 						<ImageBackground source={map} style={styles.map}>
 							<View style={styles.profileIcon}>
 								<Icon name="person" onPress={this.cancel} />
@@ -126,7 +143,7 @@ class TutorWorkSetUp extends Component {
 								locationColor={this.state.locationColor}
 							/>
 						</ImageBackground>
-					</TouchableWithoutFeedback>
+					</TouchableWithoutFeedback> */}
 				</View>
 				<View style={styles.sliderContainer}>
 					<Slider
@@ -161,8 +178,7 @@ class TutorWorkSetUp extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		flexDirection: 'column',
-		paddingTop: 40
+		flexDirection: 'column'
 	},
 	header: {
 		flex: 1,
@@ -180,21 +196,6 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-start',
 		justifyContent: 'space-between',
 		flexGrow: 1
-	},
-	village: {
-		width: 40,
-		left: 209,
-		top: -136
-	},
-	cafe84: {
-		width: 40,
-		left: 20,
-		top: 70
-	},
-	leavy: {
-		width: 40,
-		left: 290,
-		top: 70
 	},
 	sliderContainer: {
 		flex: 1,

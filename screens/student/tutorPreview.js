@@ -3,7 +3,7 @@ import { Button, Slider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
 	StyleSheet,
-	Picker,
+	Alert,
 	TouchableWithoutFeedback,
 	Keyboard,
 	TextInput,
@@ -14,6 +14,7 @@ import {
 import firebase from '../../firebase';
 import { Rating, ProfileHeadingInfo } from '../components/profile';
 import Loading from '../components/utils.js';
+import ModalSelector from 'react-native-modal-selector';
 
 export default class TutorPreview extends Component {
 	classSelected = (selectedItem) => {
@@ -71,9 +72,7 @@ export default class TutorPreview extends Component {
 				this.setState({
 					tutor: doc.data(),
 					id: doc.id,
-					isLoading: false,
-					locationRequest: doc.data().locations[0],
-					classRequest: Object.keys(doc.data().classes)[0]
+					isLoading: false
 				});
 			} else {
 				console.log('No such document!');
@@ -85,6 +84,18 @@ export default class TutorPreview extends Component {
 		this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
 	};
 	requestTutor = () => {
+		if (this.state.classRequest == '') {
+			Alert.alert('No Class', 'Please select a class', [ { text: 'OK' } ], {
+				cancelable: false
+			});
+			return;
+		}
+		if (this.state.locationRequest == '') {
+			Alert.alert('No Location', 'Please select a location', [ { text: 'OK' } ], {
+				cancelable: false
+			});
+			return;
+		}
 		const time = Date.now();
 		this.requestRef
 			.add({
@@ -138,6 +149,7 @@ export default class TutorPreview extends Component {
 						name={this.state.tutor.name}
 						bio={this.state.tutor.bio}
 						image={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }}
+						gpa={this.state.tutor.gpa}
 					/>
 					<View style={styles.descriptionContainer}>
 						<TextInput
@@ -159,14 +171,15 @@ export default class TutorPreview extends Component {
 							trackStyle={styles.trackSlider}
 							onValueChange={(value) => this.setState({ value })}
 						/>
+
 						<Text>Estimated Session Time: {this.state.value} minutes</Text>
 					</View>
 
 					<View style={styles.locationPickerContainer}>
-						<Picker
+						{/* <Picker
 							styles={styles.locationsPicker}
 							mode="dropdown"
-							selectedValue={this.state.selected}
+							selectedValue={this.state.locationRequest}
 							onValueChange={(value) => {
 								this.setState({ locationRequest: value });
 							}}
@@ -174,22 +187,40 @@ export default class TutorPreview extends Component {
 							{this.state.tutor.locations.map((item, index) => {
 								return <Picker.Item label={item} value={item} key={index} />;
 							})}
-						</Picker>
+						</Picker> */}
+						<ModalSelector
+							data={this.state.tutor.locations}
+							accessible={true}
+							initValue="Select a location"
+							keyExtractor={(item) => item}
+							labelExtractor={(item) => item}
+							optionStyle={{ marginTop: 10, backgroundColor: 'white' }}
+							optionContainerStyle={{ backgroundColor: 'clear' }}
+							cancelStyle={{ width: '90%', alignSelf: 'center' }}
+							style={{ width: '90%' }}
+							initValueTextStyle={{ color: 'black' }}
+							onChange={(option) => {
+								this.setState({ locationRequest: option });
+							}}
+						/>
 					</View>
 
 					<View style={styles.classPickerContainer}>
-						<Picker
-							styles={styles.classPicker}
-							mode="dropdown"
-							selectedValue={this.state.classRequest}
-							onValueChange={(value) => {
-								this.setState({ classRequest: value });
+						<ModalSelector
+							data={this.state.tutor.classesArray}
+							accessible={true}
+							initValue="Select a class"
+							keyExtractor={(item) => item}
+							labelExtractor={(item) => item}
+							optionStyle={{ marginTop: 10, backgroundColor: 'white' }}
+							optionContainerStyle={{ backgroundColor: 'clear' }}
+							cancelStyle={{ width: '90%', alignSelf: 'center' }}
+							style={{ width: '90%' }}
+							initValueTextStyle={{ color: 'black' }}
+							onChange={(option) => {
+								this.setState({ classRequest: this.state.tutor.classes[option] });
 							}}
-						>
-							{Object.keys(this.state.tutor.classes).map((item, index) => {
-								return <Picker.Item label={item} value={item} key={index} />;
-							})}
-						</Picker>
+						/>
 					</View>
 
 					<View style={styles.live}>
@@ -217,16 +248,18 @@ const styles = StyleSheet.create({
 	},
 	locationPickerContainer: {
 		flex: 2,
-		justifyContent: 'center'
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	classPickerContainer: {
 		flex: 2,
-		justifyContent: 'center'
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	sliderContainer: {
 		flex: 2,
 		alignItems: 'center',
-		justifyContent: 'flex-end'
+		justifyContent: 'center'
 	},
 	header: {
 		backgroundColor: '#6A7BD6',

@@ -42,6 +42,7 @@ export class ProfileHeadingInfo extends Component {
 					<Text adjustsFontSizeToFit style={styles.profileInfoText}>
 						{this.props.year} / {this.props.major}
 					</Text>
+					<Text style={styles.profileInfoText}>GPA: {this.props.gpa}</Text>
 					<Rating style={styles.profileInfoText} rating={this.props.rating} />
 				</View>
 

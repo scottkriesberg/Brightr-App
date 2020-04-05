@@ -15,24 +15,7 @@ import firebase from '../../firebase';
 import ContainerStyles from '../../styles/container.js';
 import { Rating } from '../components/profile';
 import Loading from '../components/utils.js';
-
-const map = require('../../images/USC_Map.png');
-
-function Location({ name, locationFilter, style, locationColor }) {
-	return (
-		<View style={style}>
-			<Text style={{ fontSize: 10 }} allowFontScaling={true}>
-				{name}
-			</Text>
-			<Icon
-				name="location-on"
-				type="MaterialIcons"
-				onPress={() => locationFilter(name)}
-				color={locationColor[name]}
-			/>
-		</View>
-	);
-}
+import { Map } from '../components/map';
 
 class StudentMap extends Component {
 	constructor() {
@@ -175,29 +158,15 @@ class StudentMap extends Component {
 		});
 	};
 
-	locationFilter = (name) => {
-		(this.state.locationColor = {
-			'Cafe 84': 'black',
-			'Leavy Library': 'black',
-			'Village Tables': 'black'
-		}),
-			(this.state.locationColor[name] = '#6A7BD6');
-		this.setState({ locationFilter: name });
+	locationFilter = (pin) => {
+		this.setState({ locationFilter: pin.title });
 	};
 
 	toProfile = () => {
 		this.props.navigation.navigate('StudentProfile', { uid: this.state.uid });
 	};
 	clearLocations = () => {
-		this.state.location = 'All Locations';
-		this.setState({
-			locationColor: {
-				'Cafe 84': 'black',
-				'Leavy Library': 'black',
-				'Village Tables': 'black'
-			},
-			locationFilter: 'All Locations'
-		});
+		this.setState({ locationFilter: 'All Locations' });
 	};
 
 	render() {
@@ -248,31 +217,10 @@ class StudentMap extends Component {
 				</View>
 
 				<View style={styles.mapContainer}>
-					<TouchableWithoutFeedback onPress={this.clearLocations}>
-						<ImageBackground source={map} style={styles.map}>
-							<View style={styles.profileIcon}>
-								<Icon name="person" onPress={this.toProfile} />
-							</View>
-							<Location
-								name={'Leavey Library'}
-								style={styles.leavy}
-								locationFilter={this.locationFilter}
-								locationColor={this.state.locationColor}
-							/>
-							<Location
-								name={'Cafe 84'}
-								style={styles.cafe84}
-								locationFilter={this.locationFilter}
-								locationColor={this.state.locationColor}
-							/>
-							<Location
-								name={'USC Village Tables'}
-								style={styles.village}
-								locationFilter={this.locationFilter}
-								locationColor={this.state.locationColor}
-							/>
-						</ImageBackground>
-					</TouchableWithoutFeedback>
+					<Map locationPressFunc={this.locationFilter} mapPressFunc={this.clearLocations} isStudent={true} />
+					<View style={{ position: 'absolute', marginTop: '6%', marginLeft: '1%' }}>
+						<Icon size={35} name="person" onPress={this.toProfile} />
+					</View>
 				</View>
 				<View style={ContainerStyles.midbar}>
 					<View style={styles.findTutorFilterContainer}>
@@ -323,21 +271,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between'
 	},
-	village: {
-		width: 40,
-		left: 209,
-		top: -136
-	},
-	cafe84: {
-		width: 40,
-		left: 20,
-		top: 70
-	},
-	leavy: {
-		width: 40,
-		left: 290,
-		top: 70
-	},
 	map: {
 		alignItems: 'flex-start',
 		justifyContent: 'space-between',
@@ -345,8 +278,7 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
-		flexDirection: 'column',
-		paddingTop: 40
+		flexDirection: 'column'
 	},
 	findTutorText: {
 		paddingLeft: 5,
