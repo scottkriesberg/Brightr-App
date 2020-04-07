@@ -72,7 +72,30 @@ export default class TutorPreview extends Component {
 				console.log('No such document!');
 			}
 		});
+		this.unsubscribe = this.tutorRef.onSnapshot(this.onCollectionUpdate);
 	}
+
+	onCollectionUpdate = (doc) => {
+		if (doc.exists) {
+			if (doc.data().isLive == false) {
+				Alert.alert(
+					'Tutor Unavailable',
+					'Please request a different tutor',
+					[
+						{
+							text: 'OK',
+							onPress: () => this.props.navigation.navigate('StudentMap', { uid: this.state.uid })
+						}
+					],
+					{
+						cancelable: false
+					}
+				);
+			}
+		} else {
+			this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
+		}
+	};
 
 	componentWillUnmount() {
 		this.unsubscribe();
@@ -103,7 +126,6 @@ export default class TutorPreview extends Component {
 				location: this.state.locationRequest,
 				estTime: this.state.value,
 				className: this.state.classRequest,
-				startCode: this.codeGenerator(),
 				status: 'pending',
 				studentReady: false,
 				tutorReady: false,

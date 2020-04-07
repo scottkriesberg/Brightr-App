@@ -119,10 +119,16 @@ class StudentInProgress extends Component {
 		this.setState({ waitingModalVisible: false });
 		this.setState({ ratingModalVisible: false });
 		this.unsubscribe();
+		clearInterval(this.interval);
 	}
 
-	componentWillUnmount() {
-		clearInterval(this.interval);
+	calcSessionCost(sessionTime, hourlyRate) {
+		const timeHours = sessionTime / 1000 / 60 / 60;
+		if (timeHours < 0.25) {
+			return 0.25 * hourlyRate;
+		} else {
+			return Math.round(timeHours * hourlyRate * 100) / 100;
+		}
 	}
 
 	onCollectionUpdate = (querySnapshot) => {
@@ -137,11 +143,14 @@ class StudentInProgress extends Component {
 				if (doc.data().tutorDone && doc.data().studentDone) {
 					this.setState({ waitingModalVisible: false });
 					this.setState({ ratingModalVisible: false });
+					const sessionTime = Date.now() - this.state.session.startTime;
+					const sessionCost = this.calcSessionCost(sessionTime, this.state.session.hourlyRate);
 					this.sessionRef
 						.update({
 							tutorRating: this.state.rating,
-							sessionTime: Date.now() - this.state.session.startTime,
-							status: 'completed'
+							sessionTime: sessionTime,
+							status: 'completed',
+							sessionCost: sessionCost
 						})
 						.then(() => {
 							this.addRating('tutors', this.state.session.tutorUid, this.state.rating);
