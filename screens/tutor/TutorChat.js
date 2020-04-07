@@ -133,8 +133,23 @@ export default class Chat extends React.Component {
 				isLoading: false
 			});
 			if (doc.data().status == 'started') {
-				console.log('called');
 				this.begin();
+			} else if (doc.data().status == 'cancelled') {
+				Alert.alert(
+					'Request Cancelled',
+					'This student has cancelled their request',
+					[
+						{
+							text: 'OK',
+							onPress: () => {
+								this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
+							}
+						}
+					],
+					{
+						cancelable: false
+					}
+				);
 			}
 		} else {
 			this.props.navigation.navigate('TutorIncomingRequests', {

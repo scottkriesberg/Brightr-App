@@ -1,6 +1,6 @@
 import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat'; // 0.3.0
-import { View, Modal, StyleSheet, Text } from 'react-native';
+import { View, Modal, StyleSheet, Text, Alert } from 'react-native';
 import { Button } from 'react-native-elements';
 import firebase from '../../firebase';
 import Fire from 'firebase';
@@ -68,7 +68,7 @@ export default class Chat extends React.Component {
 
 	cancel = () => {
 		this.requestRef
-			.delete()
+			.update({ status: 'cancelled' })
 			.then((docRef) => {
 				this.props.navigation.navigate('StudentMap', {
 					uid: this.state.uid
@@ -100,7 +100,19 @@ export default class Chat extends React.Component {
 				isLoading: false
 			});
 			if (doc.data().status == 'declined') {
-				this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
+				Alert.alert(
+					'Tutor Canceled Request',
+					'Please request a different tutor',
+					[
+						{
+							text: 'OK',
+							onPress: () => this.props.navigation.navigate('StudentMap', { uid: this.state.uid })
+						}
+					],
+					{
+						cancelable: false
+					}
+				);
 			} else if (doc.data().tutorReady && doc.data().studentReady) {
 				this.requestRef.update({ status: 'started' }).then(() => {
 					this.props.navigation.navigate('StudentInProgress', { uid: this.state.uid });

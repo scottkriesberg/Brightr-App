@@ -24,7 +24,8 @@ class TutorIncomingRequests extends Component {
 				onPress={() =>
 					this.props.navigation.navigate('TutorRequestPreview', {
 						tutorUid: this.state.uid,
-						studentUid: item.studentUid
+						studentUid: item.studentUid,
+						requestUid: item.id
 					})}
 			>
 				<View style={styles.requestInfo}>
@@ -32,7 +33,7 @@ class TutorIncomingRequests extends Component {
 						{item.studentInfo.name}
 					</Text>
 					<Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>
-						Class: {item.className.department} {item.className.code}
+						Class: {item.classObj.department} {item.classObj.code}
 					</Text>
 					<Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>Location: {item.location}</Text>
 					<Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }} numberOfLines={1}>
@@ -74,7 +75,7 @@ class TutorIncomingRequests extends Component {
 				isLoading: true
 			});
 			var studentInfo = {};
-			const { studentUid, description, className, estTime, location } = doc.data();
+			const { studentUid, description, classObj, estTime, location } = doc.data();
 			firebase.firestore().collection('students').doc(studentUid).get().then((studentDoc) => {
 				if (studentDoc.exists) {
 					studentInfo = studentDoc.data();
@@ -82,7 +83,7 @@ class TutorIncomingRequests extends Component {
 				}
 				requests.push({
 					studentUid,
-					className,
+					classObj,
 					estTime,
 					location,
 					description,

@@ -67,15 +67,12 @@ export default class TutorPreview extends Component {
 
 	componentWillUnmount() {
 		this.unsubscribe();
-	}
-
-	componentWillUnmount() {
 		clearInterval(this.interval);
 	}
 
 	cancelRequest = () => {
 		this.requestRef
-			.delete()
+			.update({ status: 'cancelled' })
 			.then((docRef) => {
 				this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
 			})

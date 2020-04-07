@@ -125,7 +125,7 @@ export default class TutorPreview extends Component {
 				timestamp: time,
 				location: this.state.locationRequest,
 				estTime: this.state.value,
-				className: this.state.classRequest,
+				classObj: this.state.classRequest,
 				status: 'pending',
 				studentReady: false,
 				tutorReady: false,
