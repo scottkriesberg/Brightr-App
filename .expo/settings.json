@@ -3,6 +3,10 @@
   "lanType": "ip",
   "dev": true,
   "minify": false,
+<<<<<<< HEAD
   "urlRandomness": "j3-hkq",
+=======
+  "urlRandomness": "z2-ci9",
+>>>>>>> Cleaning up the student profile page. Formatted the page to look more like the wireframes with styles in house.
   "https": false
 }
