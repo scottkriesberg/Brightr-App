@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, View, TextInput, Modal, TouchableOpacity, Keyboard, StyleSheet, Text } from 'react-native';
-import { Button, AirbnbRating } from 'react-native-elements';
+import { Alert, View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 import { RatingModal, WaitingModal } from '../components/inProgress';
@@ -19,7 +18,6 @@ class StudentInProgress extends Component {
 			hour: 0,
 			ratingModalVisible: false,
 			waitingModalVisible: false,
-			code: '',
 			rating: 0,
 			sessionUid: '',
 			session: {}
@@ -224,35 +222,6 @@ const styles = StyleSheet.create({
 		paddingTop: 40,
 		justifyContent: 'space-between',
 		paddingBottom: 40
-	},
-	modal: {
-		flex: 1,
-		flexDirection: 'column',
-		paddingTop: 40,
-		justifyContent: 'space-between',
-		paddingBottom: 40
-	},
-	modalHeader: {
-		fontSize: 40,
-		alignSelf: 'center'
-	},
-	codeInput: {
-		alignSelf: 'center',
-		width: '75%',
-		backgroundColor: 'skyblue',
-		height: '5%'
-	},
-	rateText: {
-		alignSelf: 'center'
-	},
-	activity: {
-		position: 'absolute',
-		left: 0,
-		right: 0,
-		top: 0,
-		bottom: 0,
-		alignItems: 'center',
-		justifyContent: 'center'
 	},
 	clockContainer: {
 		flex: 1,

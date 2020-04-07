@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from '../../firebase';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ContainerStyles from '../../styles/container';
-import TextStyles from '../../styles/text';
 import ButtonStyles from '../../styles/button';
 import { Rating, ProfileHeadingInfo } from '../components/profile';
 import Loading from '../components/utils';

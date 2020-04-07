@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from '../../firebase';
 import { StyleSheet, Text, View, Image } from 'react-native';
@@ -23,7 +22,6 @@ export default class RequestPreview extends Component {
 		this.state.studentUid = this.props.navigation.getParam('studentUid', '');
 		this.state.tutorUid = this.props.navigation.getParam('tutorUid', '');
 		const ref = firebase.firestore().collection('students').doc(this.state.studentUid);
-		console.log(this.state.studentUid);
 		ref.get().then((doc) => {
 			if (doc.exists) {
 				this.setState({

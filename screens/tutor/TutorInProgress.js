@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { View, Alert, Modal, TouchableOpacity, Keyboard, StyleSheet, Text } from 'react-native';
-import { Button, AirbnbRating } from 'react-native-elements';
+import { View, Alert, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 import { RatingModal, WaitingModal } from '../components/inProgress';

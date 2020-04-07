@@ -23,13 +23,6 @@ export default class TutorPreview extends Component {
 	locationSelected = (selectedItem) => {
 		this.state.locationRequest = selectedItem[0];
 	};
-	codeGenerator = () => {
-		const num1 = Math.floor(Math.random() * 10);
-		const num2 = Math.floor(Math.random() * 10);
-		const num3 = Math.floor(Math.random() * 10);
-		const num4 = Math.floor(Math.random() * 10);
-		return num1.toString() + num2.toString() + num3.toString() + num4.toString();
-	};
 
 	rowItem = (item) => (
 		<View
@@ -82,7 +75,7 @@ export default class TutorPreview extends Component {
 	}
 
 	componentWillUnmount() {
-		// this.unsubscribe();
+		this.unsubscribe();
 	}
 
 	toStudentMap = () => {
