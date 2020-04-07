@@ -1,7 +1,6 @@
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, Button, FlatList, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
 
 export class Map extends Component {
@@ -45,6 +44,30 @@ export class Map extends Component {
 						longitude: -118.282791
 					},
 					title: 'Leavey  Library',
+					description: 'description'
+				},
+				{
+					latlng: {
+						latitude: 34.025347,
+						longitude: -118.284961
+					},
+					title: 'USC Village Tables',
+					description: 'description'
+				},
+				{
+					latlng: {
+						latitude: 34.020292,
+						longitude: -118.286084
+					},
+					title: 'RTH Campus Center Tables',
+					description: 'description'
+				},
+				{
+					latlng: {
+						latitude: 34.018724,
+						longitude: -118.282418
+					},
+					title: 'Fertitta Hall',
 					description: 'description'
 				}
 			],

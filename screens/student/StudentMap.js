@@ -22,7 +22,7 @@ class StudentMap extends Component {
 			ratingFilter: 0,
 			gpaFilter: 0,
 			numActive: 0,
-			isFilterVisable: false
+			isFilterVisable: true
 		};
 		this.filter = this.filter.bind(this);
 	}
@@ -168,6 +168,14 @@ class StudentMap extends Component {
 				<View>
 					<Modal isVisible={this.state.isFilterVisable}>
 						<View style={styles.filterModal}>
+							{/* <View style={styles.filterCancelButtonContainer}>
+								<TouchableOpacity
+									style={styles.filterCancelButton}
+									onPress={() => this.toggleFilterWindow()}
+								>
+									<Text style={styles.filterCancelButtonText}>Cancel</Text>
+								</TouchableOpacity>
+							</View> */}
 							<Text style={styles.filterTitle}>Filter</Text>
 							<View style={styles.filtersContainer}>
 								<Slider
@@ -194,7 +202,10 @@ class StudentMap extends Component {
 							<View style={styles.filterButtonsContainer}>
 								<TouchableOpacity
 									style={styles.filterButtons}
-									onPress={() => this.setState({ ratingFilter: 0, gpaFilter: 0 })}
+									onPress={() => {
+										this.setState({ ratingFilter: 0, gpaFilter: 0 });
+										this.toggleFilterWindow();
+									}}
 								>
 									<Text style={styles.filterButtonsText}>Clear</Text>
 								</TouchableOpacity>
@@ -301,12 +312,27 @@ const styles = StyleSheet.create({
 	},
 	filterTitle: {
 		flex: 1,
-		fontSize: 30,
+		fontSize: 40,
 		alignSelf: 'center'
 	},
 	filtersContainer: {
-		flex: 4,
+		flex: 5,
 		justifyContent: 'center'
+	},
+	filterCancelButtonContainer: {
+		flex: 1
+	},
+	filterCancelButton: {
+		backgroundColor: 'white',
+		width: '20%',
+		height: '100%',
+		borderRadius: 10,
+		borderWidth: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	filterCancelButtonText: {
+		color: '#6A7BD6'
 	}
 });
 
