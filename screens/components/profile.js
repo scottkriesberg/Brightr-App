@@ -102,9 +102,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   avatar: {
-    height: 100,
-    width: 100,
-    borderRadius: 100,
+    position: "absolute",
+    zIndex: 1,
+    top: -110,
+    height: 160,
+    width: 160,
+    borderRadius: 80,
     borderWidth: 4,
     borderColor: "white",
     flex: 2,
@@ -112,15 +115,18 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
   basicText: {
+    marginTop: 60,
     flex: 5,
     alignItems: "center",
   },
   profileInfoText: {
     fontSize: 20,
+    color: "#6A7BD6",
   },
   profileNameText: {
-    fontSize: 40,
+    fontSize: 30,
     fontWeight: "bold",
+    color: "#6A7BD6",
   },
   selfInfo: {
     flex: 3,
