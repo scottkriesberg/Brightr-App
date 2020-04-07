@@ -22,7 +22,7 @@ class StudentMap extends Component {
 			ratingFilter: 0,
 			gpaFilter: 0,
 			numActive: 0,
-			isFilterVisable: true
+			isFilterVisable: false
 		};
 		this.filter = this.filter.bind(this);
 	}
