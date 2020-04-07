@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Alert, View, TextInput, Modal, TouchableWithoutFeedback, Keyboard, StyleSheet, Text } from 'react-native';
+import { Alert, View, TextInput, Modal, TouchableOpacity, Keyboard, StyleSheet, Text } from 'react-native';
 import { Button, AirbnbRating } from 'react-native-elements';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
+import { RatingModal, WaitingModal } from '../components/inProgress';
 
 class StudentInProgress extends Component {
 	constructor() {
@@ -163,79 +164,54 @@ class StudentInProgress extends Component {
 		}
 		return (
 			<View style={styles.container}>
-				<Modal
-					animationType={'slide'}
-					transparent={false}
+				<RatingModal
 					visible={this.state.ratingModalVisible}
-					onRequestClose={() => {
-						console.log('Modal has been closed.');
-					}}
-				>
-					<View style={styles.modal}>
-						<Text style={styles.modalHeader}>End Session</Text>
-
-						<View>
-							<Text style={styles.rateText}>Please rate the tutor</Text>
-
-							<AirbnbRating
-								count={5}
-								defaultRating={0}
-								reviews={[]}
-								onFinishRating={(rating) => {
-									this.state.rating = rating;
-								}}
-							/>
-						</View>
-
-						<Button
-							title="Finish"
-							onPress={() => {
-								if (this.state.rating == 0) {
-									Alert.alert('No Rating', 'Please rate your tutor', [ { text: 'OK' } ], {
-										cancelable: false
-									});
-									return;
-								}
-								console.log(this.sessionRef);
-								this.sessionRef.update({ studentDone: true }).then(() => {
-									this.setState({ ratingModalVisible: false });
-								});
-							}}
-						/>
-					</View>
-				</Modal>
-
-				<Modal
-					animationType={'slide'}
-					transparent={true}
-					visible={this.state.waitingModalVisible}
-					onRequestClose={() => {
-						console.log('Modal has been closed.');
-					}}
-				>
-					<Loading />
-					<Button
-						style={styles.cancelEndingButton}
-						title="Cancel"
-						onPress={() => {
-							this.sessionRef.update({ studentDone: false }).then(() => {
-								this.setState({ waitingModalVisible: false });
+					dismissFunc={() => {
+						if (this.state.rating == 0) {
+							Alert.alert('No Rating', 'Please rate your tutor', [ { text: 'OK' } ], {
+								cancelable: false
 							});
-						}}
-					/>
-				</Modal>
+							return;
+						}
+						this.sessionRef.update({ studentDone: true }).then(() => {
+							this.setState({ ratingModalVisible: false });
+						});
+					}}
+					text={'Please rate the tutor'}
+					ratingFunc={(rating) => {
+						this.state.rating = rating;
+					}}
+				/>
+
+				<WaitingModal
+					visible={this.state.waitingModalVisible}
+					dismissFunc={() => {
+						this.sessionRef.update({ studentDone: false }).then(() => {
+							this.setState({ ratingModalVisible: false });
+							this.setState({ waitingModalVisible: false });
+						});
+					}}
+					text={'Waiting for tutor to finish session...'}
+				/>
 
 				<Text style={styles.heading}>Session Time</Text>
-				<View style={styles.clock}>
-					<Text style={styles.child}>{this.padToTwo(this.state.hour) + ' : '}</Text>
-					<Text style={styles.child}>{this.padToTwo(this.state.min) + ' : '}</Text>
-					<Text style={styles.child}>{this.padToTwo(this.state.sec)}</Text>
+				<View style={styles.clockContainer}>
+					<View style={styles.clock}>
+						<Text style={styles.child}>{this.padToTwo(this.state.hour) + ' : '}</Text>
+						<Text style={styles.child}>{this.padToTwo(this.state.min) + ' : '}</Text>
+						<Text style={styles.child}>{this.padToTwo(this.state.sec)}</Text>
+					</View>
 				</View>
-				<Button
-					style={styles.button}
-					title="End Session"
-					onPress={() => this.setState({ ratingModalVisible: true })}
-				/>
+				<View style={styles.live}>
+					<TouchableOpacity
+						style={styles.liveButton}
+						onPress={() => {
+							this.setState({ ratingModalVisible: true });
+						}}
+					>
+						<Text style={styles.liveButtonText}>End Session</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		);
 	}
@@ -278,16 +254,20 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
+	clockContainer: {
+		flex: 1,
+		justifyContent: 'flex-end'
+	},
 	clock: {
 		flexDirection: 'row',
 		alignSelf: 'center',
 		borderWidth: 1,
 		borderRadius: 125,
 		borderColor: 'black',
-		backgroundColor: 'skyblue',
+		justifyContent: 'center',
+		backgroundColor: '#6A7BD6',
 		width: 250,
 		height: 250,
-		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	child: {
@@ -300,6 +280,24 @@ const styles = StyleSheet.create({
 	cancelEndingButton: {
 		justifyContent: 'center',
 		alignSelf: 'center'
+	},
+	live: {
+		flex: 0.75,
+		alignItems: 'center',
+		justifyContent: 'flex-end'
+	},
+	liveButton: {
+		backgroundColor: '#6A7BD6',
+		alignSelf: 'center',
+		height: '25%',
+		width: '85%',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 15
+	},
+	liveButtonText: {
+		fontSize: 40,
+		color: 'white'
 	}
 });
 

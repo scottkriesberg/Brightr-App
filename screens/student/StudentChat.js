@@ -5,7 +5,7 @@ import { Button } from 'react-native-elements';
 import firebase from '../../firebase';
 import Fire from 'firebase';
 import Loading from '../components/utils.js';
-import { ChatHeader } from '../components/chat';
+import { ChatHeader, StartWaiting } from '../components/chat';
 
 export default class Chat extends React.Component {
 	constructor() {
@@ -33,13 +33,9 @@ export default class Chat extends React.Component {
 	}
 
 	onSend(messages) {
-		// this.setState((previousState) => ({
-		// 	messages: GiftedChat.append(previousState.messages, messages)
-		// }));
 		this.requestRef.update({
 			messages: Fire.firestore.FieldValue.arrayUnion(messages[0])
 		});
-		// this.unsubscribe = this.requestRef.onSnapshot(this.onCollectionUpdate);
 	}
 
 	componentDidMount() {
@@ -67,7 +63,6 @@ export default class Chat extends React.Component {
 				console.log('No such document!');
 			}
 		});
-
 		this.unsubscribe = this.requestRef.onSnapshot(this.onCollectionUpdate);
 	}
 
@@ -127,20 +122,15 @@ export default class Chat extends React.Component {
 		}
 		return (
 			<View style={styles.container}>
-				<Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
-					<View style={styles.modalContainer}>
-						<Loading />
-						<Button
-							style={styles.backToChatButton}
-							title="Back to chat"
-							onPress={() => {
-								this.requestRef.update({ studentReady: false }).then(() => {
-									this.setState({ modalVisible: false });
-								});
-							}}
-						/>
-					</View>
-				</Modal>
+				<StartWaiting
+					visible={this.state.modalVisible}
+					text={'Waiting for tutor to start session...'}
+					dismissFunc={() => {
+						this.requestRef.update({ studentReady: false }).then(() => {
+							this.setState({ modalVisible: false });
+						});
+					}}
+				/>
 				<ChatHeader startFunction={this.start} cancelFunction={this.cancel} />
 				<GiftedChat
 					messages={this.state.messages}

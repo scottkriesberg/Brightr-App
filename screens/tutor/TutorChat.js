@@ -4,7 +4,7 @@ import { View, Alert, Button, StyleSheet, TouchableWithoutFeedback, Keyboard, Mo
 import firebase from '../../firebase';
 import Fire from 'firebase';
 import Loading from '../components/utils.js';
-import { ChatHeader } from '../components/chat';
+import { ChatHeader, StartWaiting } from '../components/chat';
 
 export default class Chat extends React.Component {
 	constructor() {
@@ -151,34 +151,15 @@ export default class Chat extends React.Component {
 		}
 		return (
 			<View style={styles.container}>
-				<Modal
-					animationType={'slide'}
-					transparent={false}
+				<StartWaiting
 					visible={this.state.modalVisible}
-					onRequestClose={() => {
-						console.log('Modal has been closed.');
+					text={'Waiting for student to start session...'}
+					dismissFunc={() => {
+						this.requestRef.update({ tutorReady: false }).then(() => {
+							this.setState({ modalVisible: false });
+						});
 					}}
-				>
-					<TouchableWithoutFeedback
-						onPress={() => {
-							Keyboard.dismiss();
-						}}
-					>
-						<View style={styles.modal}>
-							<Text style={styles.modalHeader}>Waiting for student...</Text>
-							<Loading />
-							<Button
-								title="Back to Chat"
-								onPress={() => {
-									this.requestRef.update({ tutorReady: false }).then(() => {
-										this.setState({ modalVisible: false });
-									});
-								}}
-							/>
-						</View>
-					</TouchableWithoutFeedback>
-				</Modal>
-
+				/>
 				<ChatHeader startFunction={this.start} cancelFunction={this.cancel} />
 				<GiftedChat
 					messages={this.state.messages}
