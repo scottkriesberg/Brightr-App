@@ -52,9 +52,9 @@ class StudentMap extends Component {
 			return;
 		}
 		var classList = '';
-		Object.keys(item.classes).map((item, index) => {
-			classList += item + ', ';
-		});
+		for (var i = 0; i < item.classesArray.length; i++) {
+			classList += item.classesArray[i] + ', ';
+		}
 		classList = classList.substring(0, classList.length - 2);
 		return (
 			<TouchableOpacity
@@ -89,8 +89,8 @@ class StudentMap extends Component {
 						{item.name}
 					</Text>
 					<Rating rating={item.rating} />
-					<Text>
-						{item.major} / {item.year}
+					<Text adjustsFontSizeToFit={true} numberOfLines={2}>
+						{item.major.code} / {item.year}
 					</Text>
 					<Text>${item.hourlyRate}/hour</Text>
 				</View>
@@ -99,7 +99,7 @@ class StudentMap extends Component {
 						flex: 2,
 						alignSelf: 'flex-start',
 						marginTop: '3%',
-						marginRight: '2%'
+						margin: '8%'
 					}}
 				>
 					<Text
@@ -109,20 +109,22 @@ class StudentMap extends Component {
 					>
 						Classes
 					</Text>
-					<Text>{classList}</Text>
+					<Text adjustsFontSizeToFit={true} numberOfLines={3}>
+						{classList}
+					</Text>
 				</View>
 			</TouchableOpacity>
 		);
 	};
 
 	componentDidMount() {
-		this.state.uid = this.props.navigation.getParam('uid', '');
+		this.state.uid = this.props.navigation.dangerouslyGetParent().getParam('uid');
 		firebase.firestore().collection('students').doc(this.state.uid).get().then((doc) => {
 			if (doc.exists) {
 				this.setState({
 					user: doc.data()
 				});
-				this.ref = this.ref.where('classesArray', 'array-contains-any', this.state.user.classes);
+				this.ref = this.ref.where('classesArray', 'array-contains-any', this.state.user.classesArray);
 				this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
 			} else {
 				console.log('No such document!');
@@ -168,14 +170,6 @@ class StudentMap extends Component {
 				<View>
 					<Modal isVisible={this.state.isFilterVisable}>
 						<View style={styles.filterModal}>
-							{/* <View style={styles.filterCancelButtonContainer}>
-								<TouchableOpacity
-									style={styles.filterCancelButton}
-									onPress={() => this.toggleFilterWindow()}
-								>
-									<Text style={styles.filterCancelButtonText}>Cancel</Text>
-								</TouchableOpacity>
-							</View> */}
 							<Text style={styles.filterTitle}>Filter</Text>
 							<View style={styles.filtersContainer}>
 								<Slider
@@ -236,9 +230,6 @@ class StudentMap extends Component {
 							onPress={this.toggleFilterWindow}
 						/>
 					</View>
-					<Text style={styles.currentLocationText} adjustsFontSizeToFit>
-						{this.state.locationFilter}
-					</Text>
 				</View>
 				<View style={styles.tutorList}>
 					<FlatList

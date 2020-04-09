@@ -19,7 +19,7 @@ class TutorWorkSetUp extends Component {
 	}
 
 	componentDidMount() {
-		this.state.uid = this.props.navigation.getParam('uid', '');
+		this.state.uid = this.props.navigation.dangerouslyGetParent().getParam('uid');
 		this.tutorRef = this.tutorRef.doc(this.state.uid);
 		this.tutorRef.get().then((doc) => {
 			if (doc.exists) {

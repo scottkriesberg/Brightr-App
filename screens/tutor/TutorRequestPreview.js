@@ -112,7 +112,7 @@ export default class RequestPreview extends Component {
 				<ProfileHeadingInfo
 					rating={this.state.student.rating}
 					year={this.state.student.year}
-					major={this.state.student.major}
+					major={this.state.student.major.code}
 					name={this.state.student.name}
 					containerStyle={styles.basicInfoContainer}
 					image={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }}

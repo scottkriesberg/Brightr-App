@@ -1,39 +1,11 @@
 import React from 'react';
-import {
-	View,
-	TextInput,
-	StyleSheet,
-	TouchableOpacity,
-	Text,
-	TouchableWithoutFeedback,
-	Keyboard,
-	Alert
-} from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import { Dropdown, SearchableDropdown } from './components/dropdown';
 
-import firebase from '../firebase';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 class SignUpBasicInfo extends React.Component {
-	// handleSignUp = () => {
-	// 	const { name, email, password } = this.state;
-	// 	firebase
-	// 		.auth()
-	// 		.createUserWithEmailAndPassword(email, password)
-	// 		.then((result) => {
-	// 			// var db = firebase.firestore();
-	// 			// db.collection("students").doc(result.user.uid).updateData({
-	// 			//     name: name,
-	// 			// }).then(function() {
-	// 			//     console.log("Document successfully written!");
-	// 			// }).catch(function(error) {
-	// 			//     console.error("Error writing document: ", error);
-	// 			// });
-	// 			this.props.navigation.navigate('Profile');
-	// 		})
-	// 		.catch((error) => console.log(error));
-	// };
-
 	static navigationOptions = {
 		title: 'Basic Information',
 		headerStyle: {
@@ -42,7 +14,7 @@ class SignUpBasicInfo extends React.Component {
 		headerTintColor: '#6A7BD6',
 		headerTitleStyle: {
 			fontWeight: 'bold',
-			fontSize: 30
+			fontSize: 20
 		}
 	};
 
@@ -50,41 +22,41 @@ class SignUpBasicInfo extends React.Component {
 		super(props);
 		this.majors = [
 			{
-				title: 'Computer Science',
+				name: 'Computer Science',
 				code: 'CSCI'
 			},
 			{
-				title: 'Computer Science Business Administration',
+				name: 'Computer Science Business Administration',
 				code: 'CSBA'
 			},
 			{
-				title: 'Business Administration',
+				name: 'Business Administration',
 				code: 'BUAD'
 			},
 			{
-				title: 'Economics',
+				name: 'Economics',
 				code: 'ECON'
 			}
 		];
 		this.years = [
 			{
-				title: 'Freshman',
+				name: 'Freshman',
 				value: 'Freshman'
 			},
 			{
-				title: 'Sophmore',
+				name: 'Sophmore',
 				value: 'Sophmore'
 			},
 			{
-				title: 'Junior',
+				name: 'Junior',
 				value: 'Junior'
 			},
 			{
-				title: 'Senior',
+				name: 'Senior',
 				value: 'Senior'
 			},
 			{
-				title: 'Graduate',
+				name: 'Graduate',
 				value: 'Graduate'
 			}
 		];
@@ -119,7 +91,7 @@ class SignUpBasicInfo extends React.Component {
 			gpaError: '',
 			typeError: ''
 		});
-		if (this.state.gpa < 0 || this.state.gpa > 4 || !gpaReg.test(this.state.gpa)) {
+		if ((this.state.gpa < 0 || this.state.gpa > 4 || !gpaReg.test(this.state.gpa)) && this.state.tutor) {
 			this.setState({ gpaError: 'Please input a GPA between 0 and 4' });
 			valid = false;
 		}
@@ -147,7 +119,7 @@ class SignUpBasicInfo extends React.Component {
 			this.setState({ typeError: 'Please select at least one' });
 			valid = false;
 		}
-		if (!valid) {
+		if (valid) {
 			this.props.navigation.navigate('SignUpBioClasses', { basicInfo: this.state });
 		}
 	}
@@ -159,7 +131,7 @@ class SignUpBasicInfo extends React.Component {
 					Keyboard.dismiss();
 				}}
 			>
-				<View style={styles.container}>
+				<SafeAreaView style={styles.container}>
 					<View style={styles.textInputContainer}>
 						<Text style={styles.textInputHeadingText}>Full Name</Text>
 						<TextInput
@@ -202,7 +174,7 @@ class SignUpBasicInfo extends React.Component {
 						<Dropdown
 							items={this.years}
 							getSelectedItem={(i) => {
-								this.setState({ year: i });
+								this.setState({ year: i.value });
 							}}
 							modalHeaderText={'Please select your year'}
 							intitalValue={'Super Senior'}
@@ -211,26 +183,31 @@ class SignUpBasicInfo extends React.Component {
 						<Text style={styles.errorText} adjustsFontSizeToFit={true} numberOfLines={1}>
 							{this.state.yearError}
 						</Text>
+						{this.state.tutor ? <Text style={styles.textInputGPAHeadingText}>GPA</Text> : null}
 
-						<Text style={styles.textInputGPAHeadingText}>GPA</Text>
-						<TextInput
-							style={styles.gpaInput}
-							value={this.state.gpa}
-							placeholderTextColor={'#6A7BD6'}
-							onChangeText={(gpa) => {
-								this.setState({ gpa });
-							}}
-							placeholder="3.5"
-							keyboardType={'decimal-pad'}
-							enablesReturnKeyAutomatically={true}
-						/>
+						{this.state.tutor ? (
+							<TextInput
+								style={styles.gpaInput}
+								value={this.state.gpa}
+								placeholderTextColor={'#6A7BD6'}
+								onChangeText={(gpa) => {
+									this.setState({ gpa });
+								}}
+								placeholder="3.5"
+								keyboardType={'decimal-pad'}
+								enablesReturnKeyAutomatically={true}
+							/>
+						) : null}
+
 						<Text style={styles.errorText} adjustsFontSizeToFit={true} numberOfLines={1}>
 							{this.state.gpaError}
 						</Text>
+
 						<SearchableDropdown
 							items={this.majors}
 							getSelectedItem={(item) => {
 								this.setState({ major: { name: item.name, code: item.code } });
+								console.log(item);
 							}}
 							modalHeaderText={'Please select your major'}
 							intitalValue={'Basket Weaving'}
@@ -262,7 +239,8 @@ class SignUpBasicInfo extends React.Component {
 							}}
 							onClick={() => {
 								this.setState({
-									tutor: !this.state.tutor
+									tutor: !this.state.tutor,
+									gpaError: ''
 								});
 							}}
 							isChecked={this.state.tutor}
@@ -276,10 +254,12 @@ class SignUpBasicInfo extends React.Component {
 					</Text>
 					<View style={styles.buttonContainer}>
 						<TouchableOpacity style={styles.button} onPress={() => this.informationValidation()}>
-							<Text style={styles.buttonText}>Continue</Text>
+							<Text style={styles.buttonText} adjustsFontSizeToFit={true} numberOfLines={1}>
+								Continue
+							</Text>
 						</TouchableOpacity>
 					</View>
-				</View>
+				</SafeAreaView>
 			</TouchableWithoutFeedback>
 		);
 	}
@@ -299,7 +279,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	textInputContainer: {
-		marginTop: 6,
 		flex: 3,
 		alignItems: 'center',
 		width: '100%'
@@ -310,8 +289,8 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold'
 	},
 	inputBox: {
-		width: '90%%',
-		margin: '2%',
+		width: '90%',
+		height: '15%',
 		padding: '3%',
 		fontSize: 16,
 		backgroundColor: 'white',
@@ -328,7 +307,7 @@ const styles = StyleSheet.create({
 		marginLeft: '6%'
 	},
 	dropdownContainer: {
-		flex: 4,
+		flexGrow: 1,
 		justifyContent: 'space-around',
 		width: '100%',
 		alignItems: 'center',
@@ -347,11 +326,9 @@ const styles = StyleSheet.create({
 		textAlign: 'left',
 		alignItems: 'center',
 		justifyContent: 'center',
-		height: '10%',
+		height: '15%',
 		width: '30%',
-		paddingLeft: '3%',
-		margin: '2%',
-		padding: '3%'
+		paddingLeft: '3%'
 	},
 	buttonContainer: {
 		flex: 1,

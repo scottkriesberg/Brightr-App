@@ -1,6 +1,17 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TextInput, Text, TouchableHighlight, TouchableOpacity, Modal, FlatList } from 'react-native';
+import {
+	View,
+	StyleSheet,
+	TextInput,
+	Text,
+	TouchableHighlight,
+	TouchableOpacity,
+	Modal,
+	FlatList,
+	SectionList
+} from 'react-native';
 import PropTypes from 'prop-types';
+import { Icon } from 'react-native-elements';
 import { SearchBar } from 'react-native-elements';
 import Loading from './utils.js';
 
@@ -11,7 +22,11 @@ export class Dropdown extends Component {
 		modalHeaderText: PropTypes.any,
 		dropdownTitle: PropTypes.any,
 		placeholder: PropTypes.any,
-		intitalValue: PropTypes.any
+		intitalValue: PropTypes.any,
+		containerStyle: PropTypes.any,
+		modalStyle: PropTypes.any,
+		titleStyle: PropTypes.any,
+		touchableStyle: PropTypes.any
 	};
 
 	constructor(props) {
@@ -42,21 +57,21 @@ export class Dropdown extends Component {
 			<TouchableOpacity
 				style={styles.row}
 				onPress={() => {
-					this.setPickerValue(item.title);
-					this.props.getSelectedItem(item.title);
+					this.setPickerValue(item.name);
+					this.props.getSelectedItem(item);
 				}}
 			>
-				<Text style={styles.itemText}>{item.title}</Text>
+				<Text style={styles.itemText}>{item.name}</Text>
 			</TouchableOpacity>
 		);
 	};
 
 	render() {
-		const { items, dropdownTitle, modalHeaderText } = this.props;
+		const { containerStyle, modalStyle, titleStyle, items, dropdownTitle, modalHeaderText } = this.props;
 
 		return (
-			<View style={styles.container}>
-				<Text style={styles.dropDownHeaderText}>{dropdownTitle}</Text>
+			<View style={containerStyle || styles.container}>
+				<Text style={titleStyle || styles.dropDownHeaderText}>{dropdownTitle}</Text>
 				<TouchableOpacity style={styles.selectedTouchable} onPress={() => this.togglePicker()}>
 					<Text style={styles.placeHolderText}>{this.state.pickerSelection}</Text>
 				</TouchableOpacity>
@@ -67,7 +82,7 @@ export class Dropdown extends Component {
 					animationType={'slide'}
 					transparent={true}
 				>
-					<View style={styles.modalView}>
+					<View style={modalStyle || styles.modalView}>
 						<Text style={styles.modalTextHeader}>{modalHeaderText}</Text>
 						<FlatList
 							style={styles.list}
@@ -120,19 +135,6 @@ export class SearchableDropdown extends Component {
 		this.togglePicker();
 	}
 
-	renderSeparator = () => {
-		return (
-			<View
-				style={{
-					height: 1,
-					width: '86%',
-					backgroundColor: '#CED0CE',
-					marginLeft: '14%'
-				}}
-			/>
-		);
-	};
-
 	togglePicker() {
 		this.setState({
 			pickerDisplayed: !this.state.pickerDisplayed
@@ -145,7 +147,7 @@ export class SearchableDropdown extends Component {
 		});
 
 		const newData = this.props.items.filter((item) => {
-			const itemData = `${item.title.toUpperCase()}`;
+			const itemData = `${item.name.toUpperCase()}`;
 			const textData = text.toUpperCase();
 
 			return itemData.indexOf(textData) > -1;
@@ -160,12 +162,12 @@ export class SearchableDropdown extends Component {
 			<TouchableOpacity
 				style={styles.row}
 				onPress={() => {
-					this.setPickerValue(item.title);
-					this.props.getSelectedItem(item.title);
+					this.setPickerValue(item.name);
+					this.props.getSelectedItem(item);
 				}}
 			>
-				<Text style={styles.itemText} allowFontScaling>
-					{item.title}
+				<Text style={styles.itemText} adjustsFontSizeToFit={true} numberOfLines={1}>
+					{item.name}
 				</Text>
 			</TouchableOpacity>
 		);
@@ -188,7 +190,6 @@ export class SearchableDropdown extends Component {
 					transparent={true}
 				>
 					<View style={styles.searchModalView}>
-						<Text style={styles.modalTextHeader}>{modalHeaderText}</Text>
 						<TextInput
 							style={styles.searchBar}
 							placeholder="Search"
@@ -241,19 +242,6 @@ export class MultiSelectSearchableDropdown extends Component {
 		};
 	}
 
-	renderSeparator = () => {
-		return (
-			<View
-				style={{
-					height: 1,
-					width: '86%',
-					backgroundColor: '#CED0CE',
-					marginLeft: '14%'
-				}}
-			/>
-		);
-	};
-
 	togglePicker() {
 		this.setState({
 			pickerDisplayed: !this.state.pickerDisplayed
@@ -266,9 +254,8 @@ export class MultiSelectSearchableDropdown extends Component {
 		});
 
 		const newData = this.props.items.filter((item) => {
-			const itemData = `${item.title.toUpperCase()}`;
+			const itemData = item.title.toUpperCase();
 			const textData = text.toUpperCase();
-
 			return itemData.indexOf(textData) > -1;
 		});
 		this.setState({
@@ -278,18 +265,18 @@ export class MultiSelectSearchableDropdown extends Component {
 
 	renderItem = ({ item }) => {
 		if (this.state.selected.includes(item)) {
-			return;
+			return null;
 		}
 		return (
 			<TouchableOpacity
-				style={styles.row}
+				style={styles.multiRow}
 				onPress={() => {
 					this.state.selected.push(item);
 					this.setState({ update: true });
 				}}
 			>
-				<Text style={styles.itemText} allowFontScaling>
-					{item.title}
+				<Text style={styles.itemText} adjustsFontSizeToFit={true} numberOfLines={1}>
+					{item.name}
 				</Text>
 			</TouchableOpacity>
 		);
@@ -297,19 +284,43 @@ export class MultiSelectSearchableDropdown extends Component {
 
 	renderItemSelected = ({ item }) => {
 		return (
-			<TouchableOpacity
-				style={styles.selectedRow}
-				onPress={() => {
-					this.state.selected = this.state.selected.filter((classObj) => {
-						return classObj.title !== item.title;
-					});
-					this.setState({ update: true });
-				}}
-			>
-				<Text style={styles.itemText} allowFontScaling>
+			<View style={styles.selectedRow}>
+				<Text style={styles.itemText} adjustsFontSizeToFit={true} numberOfLines={1}>
 					{item.department} {item.code}
 				</Text>
-			</TouchableOpacity>
+				<Icon
+					name="circle-with-cross"
+					type="entypo"
+					color="white"
+					onPress={() => {
+						this.state.selected = this.state.selected.filter((classObj) => {
+							return classObj.name !== item.name;
+						});
+						this.setState({ update: true });
+					}}
+				/>
+			</View>
+		);
+	};
+
+	renderItemSelectedNonModal = ({ item }) => {
+		return (
+			<View style={styles.selectedRowNonModal}>
+				<Text style={styles.itemTextNonModal} allowFontScaling={true} adjustsFontSizeToFit={true}>
+					{item.department} {item.code}: {item.name}
+				</Text>
+				<Icon
+					name="circle-with-cross"
+					type="entypo"
+					color="white"
+					onPress={() => {
+						this.state.selected = this.state.selected.filter((classObj) => {
+							return classObj.name !== item.name;
+						});
+						this.setState({ update: true });
+					}}
+				/>
+			</View>
 		);
 	};
 
@@ -318,16 +329,17 @@ export class MultiSelectSearchableDropdown extends Component {
 
 		return (
 			<View style={styles.multiContainer}>
-				<Text style={styles.dropDownHeaderText}>{dropdownTitle}</Text>
-				<TouchableOpacity style={styles.selectedTouchable} onPress={() => this.togglePicker()}>
+				<TouchableOpacity style={styles.multiSelectedTouchable} onPress={() => this.togglePicker()}>
+					<Text style={styles.multiDropDownHeaderText}>{dropdownTitle}</Text>
+				</TouchableOpacity>
+				<View style={styles.selectedContainer}>
 					<FlatList
 						style={styles.list}
 						data={this.state.selected}
-						renderItem={this.renderItemSelected}
+						renderItem={this.renderItemSelectedNonModal}
 						keyExtractor={(item, index) => index.toString()}
 					/>
-				</TouchableOpacity>
-
+				</View>
 				<Modal
 					style={styles.searchModalContainer}
 					visible={this.state.pickerDisplayed}
@@ -335,17 +347,18 @@ export class MultiSelectSearchableDropdown extends Component {
 					transparent={true}
 				>
 					<View style={styles.searchModalView}>
-						<View style={styles.selectedContainer}>
-							<FlatList
-								horizontal={true}
-								style={styles.selectedList}
-								data={this.state.selected}
-								renderItem={this.renderItemSelected}
-								keyExtractor={(item, index) => index.toString()}
-							/>
-						</View>
+						{this.state.selected.length > 0 ? (
+							<View style={styles.selectedContainer}>
+								<FlatList
+									horizontal={true}
+									style={styles.selectedList}
+									data={this.state.selected}
+									renderItem={this.renderItemSelected}
+									keyExtractor={(item, index) => index.toString()}
+								/>
+							</View>
+						) : null}
 						<View style={styles.multiHeaderContainer}>
-							<Text style={styles.modalTextHeader}>{modalHeaderText}</Text>
 							<TextInput
 								style={styles.multiSearchBar}
 								placeholder="Search"
@@ -355,11 +368,23 @@ export class MultiSelectSearchableDropdown extends Component {
 							/>
 						</View>
 						<View style={styles.multiOptionsContainer}>
-							<FlatList
+							<SectionList
 								style={styles.multiList}
-								data={this.state.data}
+								sections={this.state.data}
 								renderItem={this.renderItem}
-								keyExtractor={(item, index) => index.toString()}
+								renderSectionHeader={({ section: { title } }) => (
+									<Text
+										style={{
+											fontWeight: 'bold',
+											fontSize: 20,
+											textAlign: 'center',
+											color: '#6A7BD6'
+										}}
+									>
+										{title}
+									</Text>
+								)}
+								keyExtractor={(item, index) => item + index}
 							/>
 						</View>
 						<View style={styles.multiCancelModalButtonContainer}>
@@ -370,7 +395,7 @@ export class MultiSelectSearchableDropdown extends Component {
 								}}
 								style={styles.cancelModalButton}
 							>
-								<Text style={styles.cancelModalButtonText}>Done</Text>
+								<Text style={styles.multiDoneModalButtonText}>Done</Text>
 							</TouchableHighlight>
 						</View>
 					</View>
@@ -388,44 +413,93 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
+
 	multiSelectedTouchable: {
-		width: '100%'
+		backgroundColor: 'white',
+		borderRadius: 15,
+		width: '90%',
+		height: '15%',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	multiDropDownHeaderText: {
+		color: '#6A7BD6',
+		fontSize: 20,
+		fontWeight: 'bold'
 	},
 	selectedList: {
 		flex: 0.25,
-		width: '100%',
-		flexWrap: 'wrap'
+		width: '100%'
 	},
 	selectedRow: {
-		height: 45,
+		borderRadius: 15,
+		borderWidth: 1,
+		backgroundColor: '#6A7BD6',
+		width: 120,
+		alignItems: 'center',
+		justifyContent: 'space-around',
+		flexDirection: 'row'
+	},
+	selectedRowNonModal: {
+		flex: 1,
 		paddingVertical: 10,
 		marginVertical: 5,
 		borderRadius: 15,
 		borderWidth: 1,
 		backgroundColor: '#6A7BD6',
-		width: 100,
+		paddingHorizontal: '3%',
+		width: '90%',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		flexDirection: 'row',
+		alignSelf: 'center'
+	},
+	multiList: {
+		flex: 15,
+		width: '100%'
+	},
+	multiRow: {
+		flex: 1,
+		height: 35,
+		paddingVertical: 8,
+		marginVertical: 2,
+		borderRadius: 15,
+		borderWidth: 1,
+		backgroundColor: '#6A7BD6',
+		width: '100%',
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
-	multiList: {
-		flex: 15
-	},
 	multiCancelModalButtonContainer: {
-		flex: 1,
+		flex: 0.75,
 		width: '100%',
 		alignItems: 'center',
-		justifyContent: 'center',
-		height: 50
+		justifyContent: 'flex-end'
+	},
+	multiDoneModalButtonText: {
+		fontSize: 20,
+		color: '#6A7BD6',
+		alignSelf: 'center'
 	},
 	multiHeaderContainer: {
 		flex: 1,
-		marginBottom: '8%'
+		width: '100%',
+		alignItems: 'center'
 	},
-	selectedContainer: { flex: 1, width: '100%' },
-	multiOptionsContainer: { flex: 4 },
+	selectedContainer: { flex: 1, marginVertical: '1%', width: '100%' },
+	multiOptionsContainer: { flex: 4, width: '100%' },
 	multiSearchBar: {
-		width: '70%',
-		height: 60
+		width: '90%',
+		height: 35,
+		borderRadius: 15,
+		borderWidth: 1,
+		borderColor: 'black',
+		paddingLeft: '2%'
+	},
+	itemTextNonModal: {
+		color: 'white',
+		fontSize: 15,
+		textAlign: 'left'
 	},
 	//StartWaiting Styles
 	container: {
@@ -469,7 +543,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		borderRadius: 15,
 		width: 200,
-		height: '45%',
+		height: '60%',
 		justifyContent: 'center'
 	},
 	list: {
@@ -478,9 +552,9 @@ const styles = StyleSheet.create({
 	},
 	row: {
 		flex: 1,
-		height: 45,
-		paddingVertical: 10,
-		marginVertical: 5,
+		height: 35,
+		paddingHorizontal: '1%',
+		marginVertical: '1%',
 		borderRadius: 15,
 		borderWidth: 1,
 		backgroundColor: '#6A7BD6',
@@ -490,10 +564,11 @@ const styles = StyleSheet.create({
 	},
 	itemText: {
 		color: 'white',
-		fontSize: 20
+		fontSize: 20,
+		fontWeight: 'bold'
 	},
 	cancelModalButtonContainer: {
-		flex: 0.25,
+		flex: 0.15,
 		justifyContent: 'center',
 		alignItems: 'center',
 		width: '100%'
@@ -504,10 +579,10 @@ const styles = StyleSheet.create({
 		borderColor: '#6A7BD6',
 		height: '90%',
 		width: '90%',
-		marginTop: '10%'
+		justifyContent: 'center'
 	},
 	cancelModalButtonText: {
-		fontSize: 40,
+		fontSize: 20,
 		color: '#6A7BD6',
 		alignSelf: 'center'
 	},
@@ -517,10 +592,13 @@ const styles = StyleSheet.create({
 		fontSize: 35,
 		color: '#6A7BD6'
 	},
-
 	searchBar: {
-		width: '100%',
-		height: 50
+		width: '90%',
+		height: 35,
+		borderRadius: 15,
+		borderWidth: 1,
+		borderColor: 'black',
+		paddingLeft: '2%'
 	},
 	searchModalContainer: {
 		flex: 1,

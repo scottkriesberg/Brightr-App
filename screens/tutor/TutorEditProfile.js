@@ -81,7 +81,7 @@ class TutorEditProfile extends Component {
 					<View style={styles.info}>
 						<Text style={styles.name}>{this.state.user.name}</Text>
 						<Text style={styles.yearMajor}>
-							{this.state.user.year} / {this.state.user.major}
+							{this.state.user.year} / {this.state.user.major.code}
 						</Text>
 						<View style={styles.rating}>
 							<Text style={styles.ratingText}>Rating</Text>

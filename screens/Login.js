@@ -1,9 +1,7 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableWithoutFeedback, Keyboard, Text, Image } from 'react-native';
 import firebase from '../firebase';
 import { Button } from 'react-native-elements';
-import ButtonStyles from '../styles/button.js';
-import ContainerStyles from '../styles/container.js';
 const logo = require('../assets/logo-09.png');
 
 class Login extends React.Component {
@@ -21,105 +19,7 @@ class Login extends React.Component {
 		password: ''
 	};
 
-	componentDidMount() {
-		// Create a root reference
-		var storageRef = firebase.storage().ref();
-
-		// Create a reference to 'mountains.jpg'
-		var mountainsRef = storageRef.child('map.jpg');
-
-		// Create a reference to 'images/mountains.jpg'
-		var mountainImagesRef = storageRef.child('images/map.jpg');
-
-		//update demo users
-		// firebase.firestore().collection('tutors').doc('usdXvClRwPGhdPgjJomX').update({
-		// 	classes: {
-		// 		'CSCI 103': {
-		// 			name: 'Intro to programming',
-		// 			code: '103',
-		// 			department: 'CSCI',
-		// 			rating: 0,
-		// 			grade: 'A',
-		// 			verified: false
-		// 		},
-		// 		'CSCI 104': {
-		// 			name: 'Data Structures and Algorithms',
-		// 			code: '104',
-		// 			department: 'CSCI',
-		// 			rating: 0,
-		// 			grade: 'A',
-		// 			verified: true
-		// 		},
-		// 		'CSCI 105': {
-		// 			name: 'Intro to programming',
-		// 			code: '103',
-		// 			department: 'CSCI',
-		// 			rating: 0,
-		// 			grade: 'A',
-		// 			verified: false
-		// 		},
-		// 		'CSCI 106': {
-		// 			name: 'Data Structures and Algorithms',
-		// 			code: '104',
-		// 			department: 'CSCI',
-		// 			rating: 0,
-		// 			grade: 'A',
-		// 			verified: true
-		// 		},
-		// 		'CSCI 103': {
-		// 			name: 'Intro to programming',
-		// 			code: '103',
-		// 			department: 'CSCI',
-		// 			rating: 0,
-		// 			grade: 'A',
-		// 			verified: false
-		// 		},
-		// 		'CSCI 110': {
-		// 			name: 'Data Structures and Algorithms',
-		// 			code: '104',
-		// 			department: 'CSCI',
-		// 			rating: 0,
-		// 			grade: 'A',
-		// 			verified: true
-		// 		},
-		// 		'CSCI 125': {
-		// 			name: 'Intro to programming',
-		// 			code: '103',
-		// 			department: 'CSCI',
-		// 			rating: 0,
-		// 			grade: 'A',
-		// 			verified: false
-		// 		},
-		// 		'CSCI 136': {
-		// 			name: 'Data Structures and Algorithms',
-		// 			code: '104',
-		// 			department: 'CSCI',
-		// 			rating: 0,
-		// 			grade: 'A',
-		// 			verified: true
-		// 		}
-		// 	}
-		// });
-		// firebase.firestore().collection('tutors').doc('usdXvClRwPGhdPgjJomX').update({
-		// 	classes: {
-		// 		'CSCI 103.verified': true
-		// 	}
-		// });
-		// firebase.firestore().collection('tutors').doc('zM9iERetSQBrLlbdxHeR').update({
-		// 	classes: [
-		// 		{
-		// 			name: 'Data Structures and Algorithms',
-		// 			code: '104',
-		// 			department: 'CSCI',
-		// 			rating: 0,
-		// 			grade: 'A',
-		// 			verified: true
-		// 		}
-		// 	]
-		// });
-		// var ref = firebase.firestore().collection('tutors').doc('zM9iERetSQBrLlbdxHeR');
-		// this.addRating(ref, 4);
-	}
+	componentDidMount() {}
 
 	static navigationOptions = {
 		headerShown: false
@@ -127,63 +27,53 @@ class Login extends React.Component {
 
 	render() {
 		return (
-			<View style={styles.screenContainer}>
-				<View style={styles.titleContainer}>
-					<Image style={styles.logoImage} source={logo} />
-					<Text h1 style={styles.title}>
-						Brightr
-					</Text>
+			<TouchableWithoutFeedback
+				onPress={() => {
+					Keyboard.dismiss();
+				}}
+			>
+				<View style={styles.screenContainer}>
+					<View style={styles.titleContainer}>
+						<Image style={styles.logoImage} source={logo} />
+						<Text h1 style={styles.title}>
+							Brightr
+						</Text>
+					</View>
+					<View style={styles.loginInputContainer}>
+						<TextInput
+							style={styles.loginInput}
+							label="Email"
+							value={this.state.email}
+							onChangeText={(email) => this.setState({ email })}
+							placeholder="Email"
+							placeholderTextColor="white"
+							autoCapitalize="none"
+						/>
+						<TextInput
+							style={styles.loginInput}
+							value={this.state.password}
+							onChangeText={(password) => this.setState({ password })}
+							placeholder="Password"
+							placeholderTextColor="white"
+							secureTextEntry={true}
+						/>
+						<Button type="clear" title="Login" style={styles.loginButton} onPress={this.handleSignIn} />
+					</View>
+					<View style={styles.signUpButtonContainer}>
+						<Button
+							type="clear"
+							style={styles.signUpButton}
+							titleStyle={styles.signUpButtonTitle}
+							titleProps={{
+								adjustsFontSizeToFit: true,
+								numberOfLines: 1
+							}}
+							title="Don't have an account yet? Sign up"
+							onPress={() => this.props.navigation.navigate('SignUpBasicInfo')}
+						/>
+					</View>
 				</View>
-				<View style={styles.loginInputContainer}>
-					<TextInput
-						style={styles.loginInput}
-						label="Email"
-						value={this.state.email}
-						onChangeText={(email) => this.setState({ email })}
-						placeholder="Email"
-						placeholderTextColor="white"
-						autoCapitalize="none"
-					/>
-					<TextInput
-						style={styles.loginInput}
-						value={this.state.password}
-						onChangeText={(password) => this.setState({ password })}
-						placeholder="Password"
-						placeholderTextColor="white"
-						secureTextEntry={true}
-					/>
-					<Button type="clear" title="Login" style={styles.loginButton} onPress={this.handleSignIn} />
-				</View>
-				<View style={styles.signUpButtonContainer}>
-					<Button
-						type="clear"
-						style={styles.signUpButton}
-						titleStyle={styles.signUpButtonTitle}
-						title="Don't have an account yet? Sign up (to student)"
-						onPress={() =>
-							this.props.navigation.navigate('StudentMap', {
-								uid: 'KE61CyI6GmbCh2SPOtEi'
-							})}
-					/>
-					<Button
-						type="clear"
-						style={styles.signUpButton}
-						titleStyle={styles.signUpButtonTitle}
-						title="Don't have an account yet? Sign up (to tutor)"
-						onPress={() =>
-							this.props.navigation.navigate('TutorWorkSetUp', {
-								uid: 'usdXvClRwPGhdPgjJomX'
-							})}
-					/>
-					<Button
-						type="clear"
-						style={styles.signUpButton}
-						titleStyle={styles.signUpButtonTitle}
-						title="Don't have an account yet? Sign up"
-						onPress={() => this.props.navigation.navigate('SignUpBasicInfo')}
-					/>
-				</View>
-			</View>
+			</TouchableWithoutFeedback>
 		);
 	}
 }
@@ -216,20 +106,21 @@ const styles = StyleSheet.create({
 	},
 	loginInputContainer: {
 		flex: 1,
-		justifyContent: 'center',
+		justifyContent: 'space-around',
 		width: '100%',
 		alignItems: 'center',
 		alignContent: 'center'
 	},
 	loginInput: {
 		width: '90%%',
-		margin: '2%',
+		marginVertical: '10%',
 		padding: '3%',
 		fontSize: 16,
 		borderColor: 'white',
 		borderRadius: 15,
 		borderWidth: 2,
-		textAlign: 'left'
+		textAlign: 'left',
+		color: 'white'
 	},
 	loginButton: {
 		backgroundColor: 'white',
@@ -237,12 +128,12 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderRadius: 15,
 		width: 100,
-		margin: '5%',
-		alignSelf: 'center'
+		marginTop: '15%'
 	},
 	signUpButtonContainer: {
 		flex: 1.5,
-		alignItems: 'center'
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
 	signUpButton: {
 		borderColor: 'white',
@@ -253,6 +144,7 @@ const styles = StyleSheet.create({
 		alignSelf: 'center'
 	},
 	signUpButtonTitle: {
-		color: 'white'
+		color: 'white',
+		fontSize: 20
 	}
 });

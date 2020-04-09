@@ -21,6 +21,9 @@ import TutorRequestPreview from '../screens/tutor/TutorRequestPreview';
 
 const SignUpStackNavigator = createStackNavigator(
 	{
+		Landing: {
+			screen: Landing
+		},
 		Login: { screen: Login },
 		SignUpBasicInfo: { screen: SignUpBasicInfo },
 		SignUpBioClasses: { screen: SignUpBioClasses }
@@ -30,14 +33,8 @@ const SignUpStackNavigator = createStackNavigator(
 	}
 );
 
-const SwitchNavigator = createSwitchNavigator(
+const StudentNavigator = createSwitchNavigator(
 	{
-		Landing: {
-			screen: Landing
-		},
-		Login: {
-			screen: Login
-		},
 		StudentProfile: {
 			screen: StudentProfile
 		},
@@ -50,6 +47,20 @@ const SwitchNavigator = createSwitchNavigator(
 		RequestWaiting: {
 			screen: RequestWaiting
 		},
+		StudentInProgress: {
+			screen: StudentInProgress
+		},
+		StudentChat: {
+			screen: StudentChat
+		}
+	},
+	{
+		initialRouteName: 'StudentMap'
+	}
+);
+
+const TutorNavigator = createSwitchNavigator(
+	{
 		TutorProfile: {
 			screen: TutorProfile
 		},
@@ -65,19 +76,23 @@ const SwitchNavigator = createSwitchNavigator(
 		TutorInProgress: {
 			screen: TutorInProgress
 		},
-		StudentChat: {
-			screen: StudentChat
-		},
-		StudentInProgress: {
-			screen: StudentInProgress
-		},
 		TutorEditProfile: {
 			screen: TutorEditProfile
 		},
 		TutorRequestPreview: {
 			screen: TutorRequestPreview
-		},
-		SignUpStackNavigator: SignUpStackNavigator
+		}
+	},
+	{
+		initialRouteName: 'TutorWorkSetUp'
+	}
+);
+
+const SwitchNavigator = createSwitchNavigator(
+	{
+		SignUpStackNavigator: SignUpStackNavigator,
+		StudentNavigator: StudentNavigator,
+		TutorNavigator: TutorNavigator
 	},
 	{
 		initialRouteName: 'SignUpStackNavigator'
