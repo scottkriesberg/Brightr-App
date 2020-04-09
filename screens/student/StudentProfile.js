@@ -48,16 +48,16 @@ export default class Profile extends Component {
             style={styles.clearButton}
             onPress={this.toStudentMap}
           >
-            <Icon name="close" size={25} color="white" />
+            <Icon name="close" size={25} color="#6A7BD6" />
           </TouchableOpacity>
         </View>
-
         <ProfileHeadingInfo
           rating={this.state.user.rating}
           year={this.state.user.year}
           major={this.state.user.major}
           name={this.state.user.name}
           containerStyle={styles.basicInfoContainer}
+          avatarStyle={styles.avatar}
           image={{ uri: "https://bootdey.com/img/Content/avatar/avatar6.png" }}
           bio={this.state.user.bio}
         />
@@ -69,29 +69,36 @@ export default class Profile extends Component {
 const styles = StyleSheet.create({
   basicInfoContainer: {
     flex: 5,
-    backgroundColor: "white",
-    alignItems: "center",
+    backgroundColor: "#F8F8FF",
   },
   container: {
     flex: 1,
     backgroundColor: "#6A7BD6",
-    alignItems: "stretch",
     justifyContent: "space-evenly",
   },
   buttonContainer: {
-    height: 200,
     flexDirection: "row",
     justifyContent: "flex-end",
+    alignItems: "center",
+    backgroundColor: "#F8F8FF",
   },
   clearButton: {
-    color: "white",
-    marginRight: 5,
-    marginTop: 30,
+    marginTop: 40,
+    marginRight: 15,
     height: 50,
     width: 50,
     borderRadius: 25,
-    backgroundColor: "#6A7BD6",
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+  },
+  avatar: {
+    height: 150,
+    width: 150,
+    borderRadius: 75,
+    borderWidth: 4,
+    borderColor: "#6A7BD6",
+    alignSelf: "center",
+    aspectRatio: 1,
   },
 });

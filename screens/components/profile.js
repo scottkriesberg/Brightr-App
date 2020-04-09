@@ -32,6 +32,7 @@ export class ProfileHeadingInfo extends Component {
   static props = {
     rating: PropTypes.any,
     containerStyle: PropTypes.any,
+    avatarStyle: PropTypes.any,
     major: PropTypes.any,
     bio: PropTypes.any,
     name: PropTypes.any,
@@ -43,8 +44,8 @@ export class ProfileHeadingInfo extends Component {
     return (
       <View style={this.props.containerStyle || styles.container}>
         <Image
-          resizeMode="cover"
-          style={styles.avatar}
+          resizeMode="stretch"
+          style={this.props.avatarStyle}
           source={this.props.image}
         />
         <View style={styles.basicText}>
@@ -101,21 +102,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
   },
-  avatar: {
-    position: "absolute",
-    zIndex: 1,
-    top: -110,
-    height: 160,
-    width: 160,
-    borderRadius: 80,
-    borderWidth: 4,
-    borderColor: "white",
-    flex: 2,
-    alignSelf: "center",
-    aspectRatio: 1,
-  },
   basicText: {
-    marginTop: 60,
+    marginTop: 10,
     flex: 5,
     alignItems: "center",
   },
