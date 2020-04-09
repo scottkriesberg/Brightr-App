@@ -121,6 +121,10 @@ class Login extends React.Component {
 		// this.addRating(ref, 4);
 	}
 
+	static navigationOptions = {
+		headerShown: false
+	};
+
 	render() {
 		return (
 			<View style={styles.screenContainer}>
@@ -170,6 +174,13 @@ class Login extends React.Component {
 							this.props.navigation.navigate('TutorWorkSetUp', {
 								uid: 'usdXvClRwPGhdPgjJomX'
 							})}
+					/>
+					<Button
+						type="clear"
+						style={styles.signUpButton}
+						titleStyle={styles.signUpButtonTitle}
+						title="Don't have an account yet? Sign up"
+						onPress={() => this.props.navigation.navigate('SignUpBasicInfo')}
 					/>
 				</View>
 			</View>
@@ -230,7 +241,7 @@ const styles = StyleSheet.create({
 		alignSelf: 'center'
 	},
 	signUpButtonContainer: {
-		flex: 1,
+		flex: 1.5,
 		alignItems: 'center'
 	},
 	signUpButton: {

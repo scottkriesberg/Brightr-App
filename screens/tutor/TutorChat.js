@@ -98,7 +98,7 @@ export default class Chat extends React.Component {
 				hourlyRate: this.state.user.hourlyRate,
 				location: this.state.request.location,
 				estTime: this.state.request.estTime,
-				className: this.state.request.className,
+				classObj: this.state.request.classObj,
 				status: 'in progress',
 				date: new Date(),
 				tutorRating: 0.0,

@@ -1,7 +1,10 @@
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import Login from '../screens/Login';
 import Landing from '../screens/Landing';
-import Signup from '../screens/Signup';
+import SignUpChoice from '../screens/SignupChoice';
+import SignUpBasicInfo from '../screens/SignUpBasicInfo';
+import SignUpBioClasses from '../screens/SignUpBioClasses';
 import StudentProfile from '../screens/student/StudentProfile';
 import StudentMap from '../screens/student/StudentMap';
 import TutorPreview from '../screens/student/tutorPreview';
@@ -16,6 +19,17 @@ import TutorInProgress from '../screens/tutor/TutorInProgress';
 import TutorEditProfile from '../screens/tutor/TutorEditProfile';
 import TutorRequestPreview from '../screens/tutor/TutorRequestPreview';
 
+const SignUpStackNavigator = createStackNavigator(
+	{
+		Login: { screen: Login },
+		SignUpBasicInfo: { screen: SignUpBasicInfo },
+		SignUpBioClasses: { screen: SignUpBioClasses }
+	},
+	{
+		initialRouteName: 'Login'
+	}
+);
+
 const SwitchNavigator = createSwitchNavigator(
 	{
 		Landing: {
@@ -23,9 +37,6 @@ const SwitchNavigator = createSwitchNavigator(
 		},
 		Login: {
 			screen: Login
-		},
-		Signup: {
-			screen: Signup
 		},
 		StudentProfile: {
 			screen: StudentProfile
@@ -65,10 +76,11 @@ const SwitchNavigator = createSwitchNavigator(
 		},
 		TutorRequestPreview: {
 			screen: TutorRequestPreview
-		}
+		},
+		SignUpStackNavigator: SignUpStackNavigator
 	},
 	{
-		initialRouteName: 'Login'
+		initialRouteName: 'SignUpStackNavigator'
 	}
 );
 
