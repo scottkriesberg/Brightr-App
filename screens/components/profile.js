@@ -137,14 +137,14 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
     flexDirection: "row",
-    backgroundColor: "#6A7BD6",
+    backgroundColor: "#F8F8FF",
     justifyContent: "space-between",
     alignItems: "center",
   },
   logoutButton: {
     alignSelf: "flex-start",
     borderRadius: 15,
-    borderColor: "white",
+    borderColor: "#6A7BD6",
     borderWidth: 1,
     width: "20%",
     height: "75%",
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   logoutButtonText: {
-    color: "white",
+    color: "#6A7BD6",
     fontSize: 20,
   },
   profileText: {
