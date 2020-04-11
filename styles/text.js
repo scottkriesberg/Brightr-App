@@ -11,12 +11,12 @@ export default StyleSheet.create({
 		margin: '10%'
 	},
 	name: {
-		color: '#6A7BD6',
+		color: primaryColor,
 		fontWeight: 'bold',
 		fontSize: 30
 	},
 	tutorPreview: {
-		color: '#6A7BD6',
-		backgroundColor: 'white'
+		color: primaryColor,
+		backgroundColor: secondaryColor
 	}
 });

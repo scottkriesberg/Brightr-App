@@ -130,7 +130,7 @@ export class Map extends Component {
 							key={index}
 							coordinate={marker.latlng}
 							title={marker.title}
-							pinColor={index == this.state.selectedMarkerIndex ? 'blue' : 'red'}
+							pinColor={index == this.state.selectedMarkerIndex ? primaryColor : 'red'}
 							onPress={() => this.onMarkerPressStudent(marker, index)}
 						/>
 					))}

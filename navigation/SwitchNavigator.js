@@ -2,7 +2,6 @@ import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Login from '../screens/Login';
 import Landing from '../screens/Landing';
-import SignUpChoice from '../screens/SignupChoice';
 import SignUpBasicInfo from '../screens/SignUpBasicInfo';
 import SignUpBioClasses from '../screens/SignUpBioClasses';
 import StudentProfile from '../screens/student/StudentProfile';

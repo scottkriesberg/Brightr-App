@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Icon } from 'react-native-elements';
-import { SearchBar } from 'react-native-elements';
+import { Button } from './buttons';
 import Loading from './utils.js';
 
 export class Dropdown extends Component {
@@ -26,7 +26,8 @@ export class Dropdown extends Component {
 		containerStyle: PropTypes.any,
 		modalStyle: PropTypes.any,
 		titleStyle: PropTypes.any,
-		touchableStyle: PropTypes.any
+		touchableStyle: PropTypes.any,
+		renderItemTextFunc: PropTypes.Func
 	};
 
 	constructor(props) {
@@ -53,15 +54,23 @@ export class Dropdown extends Component {
 	}
 
 	renderItem = ({ item }) => {
+		var text;
+		if (this.props.renderItemTextFunc) {
+			text = this.props.renderItemTextFunc(item);
+		} else {
+			text = item;
+		}
 		return (
 			<TouchableOpacity
 				style={styles.row}
 				onPress={() => {
-					this.setPickerValue(item.name);
+					this.setPickerValue(text);
 					this.props.getSelectedItem(item);
 				}}
 			>
-				<Text style={styles.itemText}>{item.name}</Text>
+				<Text style={styles.itemText} adjustsFontSizeToFit={true} numberOfLines={1}>
+					{text}
+				</Text>
 			</TouchableOpacity>
 		);
 	};
@@ -83,22 +92,24 @@ export class Dropdown extends Component {
 					transparent={true}
 				>
 					<View style={modalStyle || styles.modalView}>
-						<Text style={styles.modalTextHeader}>{modalHeaderText}</Text>
-						<FlatList
-							style={styles.list}
-							data={items}
-							renderItem={this.renderItem}
-							keyExtractor={(item, index) => index.toString()}
-						/>
-
-						<TouchableHighlight
-							onPress={() => {
-								this.togglePicker();
-							}}
-							style={{ paddingTop: 4, paddingBottom: 4 }}
-						>
-							<Text style={{ color: 'black' }}>Cancel</Text>
-						</TouchableHighlight>
+						<View style={{ alignItems: 'center', flex: 4 }}>
+							<Text style={styles.modalTextHeader}>{modalHeaderText}</Text>
+							<FlatList
+								style={styles.list}
+								data={items}
+								renderItem={this.renderItem}
+								keyExtractor={(item, index) => index.toString()}
+							/>
+						</View>
+						<View style={{ alignItems: 'center', flex: 1, width: '90%' }}>
+							<Button
+								onPress={() => {
+									this.togglePicker();
+								}}
+								text={'Cancel'}
+								type={'secondary'}
+							/>
+						</View>
 					</View>
 				</Modal>
 			</View>
@@ -378,7 +389,7 @@ export class MultiSelectSearchableDropdown extends Component {
 											fontWeight: 'bold',
 											fontSize: 20,
 											textAlign: 'center',
-											color: '#6A7BD6'
+											color: primaryColor
 										}}
 									>
 										{title}
@@ -415,7 +426,7 @@ const styles = StyleSheet.create({
 	},
 
 	multiSelectedTouchable: {
-		backgroundColor: 'white',
+		backgroundColor: secondaryColor,
 		borderRadius: 15,
 		width: '90%',
 		height: '15%',
@@ -423,7 +434,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	multiDropDownHeaderText: {
-		color: '#6A7BD6',
+		color: primaryColor,
 		fontSize: 20,
 		fontWeight: 'bold'
 	},
@@ -434,7 +445,7 @@ const styles = StyleSheet.create({
 	selectedRow: {
 		borderRadius: 15,
 		borderWidth: 1,
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		width: 120,
 		alignItems: 'center',
 		justifyContent: 'space-around',
@@ -446,7 +457,7 @@ const styles = StyleSheet.create({
 		marginVertical: 5,
 		borderRadius: 15,
 		borderWidth: 1,
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		paddingHorizontal: '3%',
 		width: '90%',
 		alignItems: 'center',
@@ -465,7 +476,7 @@ const styles = StyleSheet.create({
 		marginVertical: 2,
 		borderRadius: 15,
 		borderWidth: 1,
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		width: '100%',
 		alignItems: 'center',
 		justifyContent: 'center'
@@ -478,7 +489,7 @@ const styles = StyleSheet.create({
 	},
 	multiDoneModalButtonText: {
 		fontSize: 20,
-		color: '#6A7BD6',
+		color: primaryColor,
 		alignSelf: 'center'
 	},
 	multiHeaderContainer: {
@@ -497,7 +508,7 @@ const styles = StyleSheet.create({
 		paddingLeft: '2%'
 	},
 	itemTextNonModal: {
-		color: 'white',
+		color: secondaryColor,
 		fontSize: 15,
 		textAlign: 'left'
 	},
@@ -514,14 +525,14 @@ const styles = StyleSheet.create({
 		height: 10
 	},
 	dropDownHeaderText: {
-		color: 'white',
+		color: secondaryColor,
 		fontSize: 20,
 		fontWeight: 'bold'
 	},
 	placeHolderText: {
 		fontSize: 20,
 		paddingLeft: 10,
-		color: '#6A7BD6'
+		color: primaryColor
 	},
 	modalView: {
 		margin: '5%',
@@ -540,10 +551,10 @@ const styles = StyleSheet.create({
 		fontSize: 20
 	},
 	selectedTouchable: {
-		backgroundColor: 'white',
+		backgroundColor: secondaryColor,
 		borderRadius: 15,
 		width: 200,
-		height: '60%',
+		height: '50%',
 		justifyContent: 'center'
 	},
 	list: {
@@ -557,13 +568,13 @@ const styles = StyleSheet.create({
 		marginVertical: '1%',
 		borderRadius: 15,
 		borderWidth: 1,
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		width: '100%',
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
 	itemText: {
-		color: 'white',
+		color: secondaryColor,
 		fontSize: 20,
 		fontWeight: 'bold'
 	},
@@ -576,21 +587,21 @@ const styles = StyleSheet.create({
 	cancelModalButton: {
 		borderRadius: 15,
 		borderWidth: 1,
-		borderColor: '#6A7BD6',
+		borderColor: primaryColor,
 		height: '90%',
 		width: '90%',
 		justifyContent: 'center'
 	},
 	cancelModalButtonText: {
 		fontSize: 20,
-		color: '#6A7BD6',
+		color: primaryColor,
 		alignSelf: 'center'
 	},
 	modalTitleText: {
 		paddingTop: '50%',
 		textAlign: 'center',
 		fontSize: 35,
-		color: '#6A7BD6'
+		color: primaryColor
 	},
 	searchBar: {
 		width: '90%',

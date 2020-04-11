@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Button } from 'react-native-elements';
 import firebase from '../../firebase';
-import { StyleSheet, ScrollView, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { ProfileTopBar, ProfileHeadingInfo } from '../components/profile';
 import Loading from '../components/utils.js';
-import ButtonStyles from '../../styles/button';
+import { Button } from '../components/buttons';
 
 class TutorHome extends Component {
 	constructor() {
@@ -102,9 +101,7 @@ class TutorHome extends Component {
 				</View>
 
 				<View style={styles.live}>
-					<TouchableOpacity style={styles.liveButton} onPress={this.toWorkPage}>
-						<Text style={styles.liveButtonText}>Set Up Live</Text>
-					</TouchableOpacity>
+					<Button text={'Set Up Live'} onPress={this.toWorkPage} />
 				</View>
 			</View>
 		);
@@ -127,17 +124,18 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	basicInfoContainer: {
-		flex: 9,
+		flex: 5,
+		flexDirection: 'row',
 		backgroundColor: '#F8F8FF',
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		marginHorizontal: '5%'
 	},
 	avatar: {
-		height: 150,
-		width: 150,
+		flex: 3,
 		borderRadius: 75,
 		borderWidth: 4,
-		borderColor: '#6A7BD6',
+		borderColor: primaryColor,
 		alignSelf: 'center',
 		aspectRatio: 1
 	},
@@ -162,7 +160,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between'
 	},
 	statsHeader: {
-		color: '#6A7BD6',
+		color: primaryColor,
 		alignSelf: 'center',
 		fontSize: 30,
 		fontWeight: 'bold'
@@ -175,7 +173,7 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		fontSize: 30,
 		fontWeight: 'bold',
-		color: '#6A7BD6'
+		color: primaryColor
 	},
 	classes: {
 		flex: 6,
@@ -186,7 +184,7 @@ const styles = StyleSheet.create({
 		height: 50,
 		marginBottom: 7,
 		marginHorizontal: 10,
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		borderRadius: 5
 	},
 	classText: {
@@ -204,19 +202,6 @@ const styles = StyleSheet.create({
 		marginTop: 5,
 		flex: 1.5,
 		alignItems: 'center'
-	},
-	liveButton: {
-		backgroundColor: '#6A7BD6',
-		height: '100%',
-		width: '75%',
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderRadius: 15
-	},
-	liveButtonText: {
-		fontSize: 40,
-		fontWeight: 'bold',
-		color: '#F8F8FF'
 	}
 });
 

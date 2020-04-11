@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
 	avatar: {
 		borderRadius: 63,
 		borderWidth: 4,
-		borderColor: 'white',
+		borderColor: secondaryColor,
 		flex: 1,
 		height: '90%',
 		alignSelf: 'center'
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
 	},
 	ratingText: {
 		fontSize: 20,
-		color: 'white'
+		color: secondaryColor
 	},
 	ratingStars: {
 		alignSelf: 'center',
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
 		textShadowRadius: 2
 	},
 	myEmptyStarStyle: {
-		color: 'white'
+		color: secondaryColor
 	},
 	stats: {
 		flex: 4,

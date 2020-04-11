@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Modal } from 'react-native';
-import { Button, AirbnbRating } from 'react-native-elements';
+import { AirbnbRating } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import Loading from './utils.js';
+import { Button } from './buttons';
 
 export class RatingModal extends Component {
 	static props = {
@@ -18,9 +19,13 @@ export class RatingModal extends Component {
 				<View style={styles.ratingModalContainer}>
 					<Text style={styles.modalRatingTitleText}>{text}</Text>
 					<AirbnbRating count={5} defaultRating={0} reviews={[]} onFinishRating={ratingFunc} />
-					<TouchableOpacity style={styles.finishRatingModalButton} onPress={dismissFunc}>
-						<Text style={styles.finishRatingModalButtonText}>Finish</Text>
-					</TouchableOpacity>
+					<Button
+						type={'secondary'}
+						textStyle={styles.finishRatingModalButtonText}
+						text={'Finish'}
+						buttonStyle={styles.finishRatingModalButton}
+						onPress={dismissFunc}
+					/>
 				</View>
 			</Modal>
 		);
@@ -40,9 +45,13 @@ export class WaitingModal extends Component {
 				<View style={styles.waitingModalContainer}>
 					<Text style={styles.modalWaitingTitleText}>{text}</Text>
 					<Loading />
-					<TouchableOpacity style={styles.cancelWaitingModalButton} onPress={dismissFunc}>
-						<Text style={styles.cancelWaitingModalButtonText}>Cancel</Text>
-					</TouchableOpacity>
+					<Button
+						type={'secondary'}
+						textStyle={styles.cancelWaitingModalButtonText}
+						text={'Cancel'}
+						buttonStyle={styles.cancelWaitingModalButton}
+						onPress={dismissFunc}
+					/>
 				</View>
 			</Modal>
 		);
@@ -59,7 +68,7 @@ const styles = StyleSheet.create({
 	finishRatingModalButton: {
 		borderRadius: 15,
 		borderWidth: 1,
-		borderColor: '#6A7BD6',
+		borderColor: primaryColor,
 		alignSelf: 'center',
 		height: '7%',
 		width: '90%',
@@ -69,14 +78,14 @@ const styles = StyleSheet.create({
 	},
 	finishRatingModalButtonText: {
 		fontSize: 40,
-		color: '#6A7BD6',
+		color: primaryColor,
 		alignSelf: 'center'
 	},
 	modalRatingTitleText: {
 		paddingTop: '50%',
 		textAlign: 'center',
 		fontSize: 35,
-		color: '#6A7BD6'
+		color: primaryColor
 	},
 	//WaitingModal Styles
 	waitingModalContainer: {
@@ -87,7 +96,7 @@ const styles = StyleSheet.create({
 	cancelWaitingModalButton: {
 		borderRadius: 15,
 		borderWidth: 1,
-		borderColor: '#6A7BD6',
+		borderColor: primaryColor,
 		alignSelf: 'center',
 		height: '7%',
 		width: '90%',
@@ -97,13 +106,13 @@ const styles = StyleSheet.create({
 	},
 	cancelWaitingModalButtonText: {
 		fontSize: 40,
-		color: '#6A7BD6',
+		color: primaryColor,
 		alignSelf: 'center'
 	},
 	modalWaitingTitleText: {
 		paddingTop: '50%',
 		textAlign: 'center',
 		fontSize: 35,
-		color: '#6A7BD6'
+		color: primaryColor
 	}
 });

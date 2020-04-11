@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Modal } from 'react-native';
 import PropTypes from 'prop-types';
+import { Button } from './buttons';
 import Loading from './utils.js';
 
 export class ChatHeader extends Component {
@@ -36,9 +37,13 @@ export class StartWaiting extends Component {
 				<View style={styles.modalContainer}>
 					<Text style={styles.modalTitleText}>{text}</Text>
 					<Loading />
-					<TouchableOpacity style={styles.cancelModalButton} onPress={dismissFunc}>
-						<Text style={styles.cancelModalButtonText}>Cancel</Text>
-					</TouchableOpacity>
+					<Button
+						type={'secondary'}
+						textStyle={styles.cancelModalButtonText}
+						text={'Cancel'}
+						buttonStyle={styles.cancelModalButton}
+						onPress={dismissFunc}
+					/>
 				</View>
 			</Modal>
 		);
@@ -51,11 +56,11 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between'
 	},
-	chatTitle: { fontSize: 40, color: '#6A7BD6', fontWeight: 'bold' },
+	chatTitle: { fontSize: 40, color: primaryColor, fontWeight: 'bold' },
 	cancelButton: {
 		borderRadius: 15,
 		borderWidth: 1,
-		borderColor: '#6A7BD6',
+		borderColor: primaryColor,
 		justifyContent: 'center',
 		alignContent: 'center',
 		paddingHorizontal: 10,
@@ -64,7 +69,7 @@ const styles = StyleSheet.create({
 	cancelButtonText: {
 		textAlign: 'center',
 		fontSize: 20,
-		color: '#6A7BD6'
+		color: primaryColor
 	},
 	//StartWaiting Styles
 	modalContainer: {
@@ -75,7 +80,7 @@ const styles = StyleSheet.create({
 	cancelModalButton: {
 		borderRadius: 15,
 		borderWidth: 1,
-		borderColor: '#6A7BD6',
+		borderColor: primaryColor,
 		alignSelf: 'center',
 		height: '7%',
 		width: '90%',
@@ -85,13 +90,13 @@ const styles = StyleSheet.create({
 	},
 	cancelModalButtonText: {
 		fontSize: 40,
-		color: '#6A7BD6',
+		color: primaryColor,
 		alignSelf: 'center'
 	},
 	modalTitleText: {
 		paddingTop: '50%',
 		textAlign: 'center',
 		fontSize: 35,
-		color: '#6A7BD6'
+		color: primaryColor
 	}
 });

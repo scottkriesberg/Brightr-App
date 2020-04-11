@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
 		borderRadius: 125,
 		borderColor: 'black',
 		justifyContent: 'center',
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		width: 250,
 		height: 250,
 		alignItems: 'center'
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end'
 	},
 	liveButton: {
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		alignSelf: 'center',
 		height: '25%',
 		width: '85%',
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
 	},
 	liveButtonText: {
 		fontSize: 40,
-		color: 'white'
+		color: secondaryColor
 	}
 });
 

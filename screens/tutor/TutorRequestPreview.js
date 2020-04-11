@@ -105,7 +105,7 @@ export default class RequestPreview extends Component {
 			<View style={styles.container}>
 				<View style={styles.header}>
 					<TouchableOpacity style={styles.backButton} onPress={this.toTutorIncomingRequests}>
-						<Icon name="arrow-left" size={30} color={'white'} />
+						<Icon name="arrow-left" size={30} color={secondaryColor} />
 						<Text style={styles.backButtonText}>Back</Text>
 					</TouchableOpacity>
 				</View>
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	header: {
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		flex: 0.75,
 		justifyContent: 'flex-start'
 	},
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
 	},
 	backButtonText: {
 		fontSize: 30,
-		color: 'white'
+		color: secondaryColor
 	},
 	basicInfoContainer: {
 		flex: 5,
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
 	},
 	requestInfoContainer: {
 		flex: 3,
-		backgroundColor: 'white',
+		backgroundColor: secondaryColor,
 		justifyContent: 'space-around'
 	},
 	requestInfoHeader: {
@@ -193,22 +193,22 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-around'
 	},
 	declineButton: {
-		backgroundColor: 'white',
+		backgroundColor: secondaryColor,
 		height: '75%',
 		width: '35%',
 		alignItems: 'center',
 		justifyContent: 'center',
 		borderRadius: 15,
-		borderColor: '#6A7BD6',
+		borderColor: primaryColor,
 		borderWidth: 1
 	},
 	declineButtonText: {
 		fontSize: 30,
 		fontWeight: 'bold',
-		color: '#6A7BD6'
+		color: primaryColor
 	},
 	acceptButton: {
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		height: '75%',
 		width: '35%',
 		alignItems: 'center',
@@ -218,6 +218,6 @@ const styles = StyleSheet.create({
 	acceptButtonText: {
 		fontSize: 30,
 		fontWeight: 'bold',
-		color: 'white'
+		color: secondaryColor
 	}
 });

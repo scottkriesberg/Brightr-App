@@ -47,7 +47,7 @@ export class ProfileHeadingInfo extends Component {
 					<Text style={styles.profileInfoText}>GPA: {this.props.gpa}</Text>
 					<Rating style={styles.profileInfoText} rating={this.props.rating} />
 					<Text adjustsFontSizeToFit style={styles.bio}>
-						<Text style={{ fontWeight: 'bold', color: '#6A7BD6' }}> Bio: </Text>
+						<Text style={{ fontWeight: 'bold', color: primaryColor }}> Bio: </Text>
 						{this.props.bio}
 					</Text>
 				</View>
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 	//ProfileHeaderInfo Styles
 	container: {
 		flex: 1,
-		flexDirection: 'column'
+		flexDirection: 'row'
 	},
 	basicText: {
 		marginTop: 10,
@@ -95,12 +95,12 @@ const styles = StyleSheet.create({
 	},
 	profileInfoText: {
 		fontSize: 20,
-		color: '#6A7BD6'
+		color: primaryColor
 	},
 	profileNameText: {
 		fontSize: 30,
 		fontWeight: 'bold',
-		color: '#6A7BD6'
+		color: primaryColor
 	},
 	selfInfo: {
 		flex: 3,
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
 	logoutButton: {
 		alignSelf: 'flex-start',
 		borderRadius: 15,
-		borderColor: '#6A7BD6',
+		borderColor: primaryColor,
 		borderWidth: 1,
 		width: '20%',
 		height: '75%',
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
 		marginLeft: 5
 	},
 	logoutButtonText: {
-		color: '#6A7BD6',
+		color: primaryColor,
 		fontSize: 20
 	},
 	profileText: {

@@ -77,9 +77,9 @@ class SignUpBasicInfo extends React.Component {
 	static navigationOptions = {
 		title: 'Additional Information',
 		headerStyle: {
-			backgroundColor: 'white'
+			backgroundColor: secondaryColor
 		},
-		headerTintColor: '#6A7BD6',
+		headerTintColor: primaryColor,
 		headerTitleStyle: {
 			fontWeight: 'bold',
 			fontSize: 20
@@ -184,7 +184,7 @@ class SignUpBasicInfo extends React.Component {
 						<TextInput
 							style={styles.inputBox}
 							value={this.state.bio}
-							placeholderTextColor={'#6A7BD6'}
+							placeholderTextColor={primaryColor}
 							onChangeText={(bio) => this.setState({ bio })}
 							placeholder="Fight on!"
 							multiline={true}
@@ -227,7 +227,7 @@ class SignUpBasicInfo extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		alignItems: 'center',
 		justifyContent: 'space-around'
 	},
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
 		fontSize: 30,
 		textAlign: 'center',
 		fontWeight: 'bold',
-		color: 'white',
+		color: secondaryColor,
 		margin: 15
 	},
 	textInputContainer: {
@@ -250,15 +250,15 @@ const styles = StyleSheet.create({
 		padding: '3%',
 		height: '60%',
 		fontSize: 16,
-		backgroundColor: 'white',
-		borderColor: 'white',
+		backgroundColor: secondaryColor,
+		borderColor: secondaryColor,
 		borderRadius: 15,
 		borderWidth: 2,
 		textAlign: 'left'
 	},
 	textInputHeadingText: {
 		fontSize: 20,
-		color: 'white',
+		color: secondaryColor,
 		fontWeight: 'bold',
 		alignSelf: 'flex-start',
 		marginLeft: '6%'
@@ -277,8 +277,8 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		alignItems: 'center',
-		backgroundColor: 'white',
-		borderColor: 'white',
+		backgroundColor: secondaryColor,
+		borderColor: secondaryColor,
 		borderWidth: 1,
 		borderRadius: 15,
 		width: '50%',
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
 	buttonText: {
 		fontSize: 30,
 		fontWeight: 'bold',
-		color: '#6A7BD6',
+		color: primaryColor,
 		textAlign: 'center'
 	},
 	buttonSignup: {

@@ -3,13 +3,13 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		alignItems: 'stretch',
 		justifyContent: 'space-evenly'
 	},
 	landingContainer: {
 		flex: 1,
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		alignContent: 'center'
 	},
 	landingLogoContainer: {
@@ -30,7 +30,7 @@ export default StyleSheet.create({
 		padding: 40,
 		alignItems: 'center',
 		width: '100%',
-		backgroundColor: 'white',
+		backgroundColor: secondaryColor,
 		flex: 1,
 		zIndex: -1
 	},
@@ -39,7 +39,7 @@ export default StyleSheet.create({
 		height: 130,
 		borderRadius: 63,
 		borderWidth: 4,
-		borderColor: 'white',
+		borderColor: secondaryColor,
 		marginBottom: 10,
 		position: 'absolute',
 		alignSelf: 'center',
@@ -50,25 +50,25 @@ export default StyleSheet.create({
 		width: 70,
 		borderRadius: 63,
 		borderWidth: 2.5,
-		borderColor: '#6A7BD6',
+		borderColor: primaryColor,
 		margin: 20
 	},
 	tutorPreviewContainer: {
-		backgroundColor: 'white',
+		backgroundColor: secondaryColor,
 		flexDirection: 'row',
 		alignItems: 'center',
 		flex: 1,
 		borderWidth: 1,
-		borderColor: '#6A7BD6'
+		borderColor: primaryColor
 	},
 	midbar: {
 		flex: 1,
 		alignSelf: 'stretch',
-		backgroundColor: 'white',
+		backgroundColor: secondaryColor,
 		borderWidth: 1,
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,
-		borderColor: '#6A7BD6',
+		borderColor: primaryColor,
 		paddingTop: '2%',
 		paddingLeft: '3%',
 		paddingRight: '3%'

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button } from '../components/buttons';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
+import '../components/global';
 
 class TutorIncomingRequests extends Component {
 	constructor() {
@@ -29,18 +30,20 @@ class TutorIncomingRequests extends Component {
 					})}
 			>
 				<View style={styles.requestInfo}>
-					<Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }} allowFontScaling={true}>
+					<Text style={{ fontSize: 20, fontWeight: 'bold', color: secondaryColor }} allowFontScaling={true}>
 						{item.studentInfo.name}
 					</Text>
-					<Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>
+					<Text style={{ fontSize: 15, fontWeight: 'bold', color: secondaryColor }}>
 						Class: {item.classObj.department} {item.classObj.code}
 					</Text>
-					<Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>Location: {item.location}</Text>
-					<Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }} numberOfLines={1}>
+					<Text style={{ fontSize: 15, fontWeight: 'bold', color: secondaryColor }}>
+						Location: {item.location}
+					</Text>
+					<Text style={{ fontSize: 15, fontWeight: 'bold', color: secondaryColor }} numberOfLines={1}>
 						Estimated Time: {item.estTime} min
 					</Text>
 					<Text
-						style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}
+						style={{ fontSize: 15, fontWeight: 'bold', color: secondaryColor }}
 						minimumFontScale={0.4}
 						adjustsFontSizeToFit={true}
 						numberOfLines={2}
@@ -50,8 +53,20 @@ class TutorIncomingRequests extends Component {
 					</Text>
 				</View>
 				<View style={styles.requestButtons}>
-					<Button type="clear" style={styles.button} title="Accept" onPress={() => this.accept({ item })} />
-					<Button type="clear" style={styles.button} title="Decline" onPress={() => this.decline({ item })} />
+					<Button
+						type="primary"
+						buttonStyle={styles.button}
+						textStyle={styles.buttonText}
+						text="Accept"
+						onPress={() => this.accept({ item })}
+					/>
+					<Button
+						type="secondary"
+						buttonStyle={styles.button}
+						textStyle={styles.buttonText}
+						text="Decline"
+						onPress={() => this.decline({ item })}
+					/>
 				</View>
 			</TouchableOpacity>
 		);
@@ -153,7 +168,13 @@ class TutorIncomingRequests extends Component {
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
-					<Text adjustsFontSizeToFit style={styles.headerText}>
+					<Text
+						adjustsFontSizeToFit
+						style={styles.headerText}
+						allowFontScaling={true}
+						adjustsFontSizeToFit={true}
+						numberOfLines={1}
+					>
 						Incoming Requests
 					</Text>
 				</View>
@@ -165,9 +186,7 @@ class TutorIncomingRequests extends Component {
 					/>
 				</View>
 				<View style={styles.live}>
-					<TouchableOpacity style={styles.liveButton} onPress={this.stopLive}>
-						<Text style={styles.liveButtonText}>End Live</Text>
-					</TouchableOpacity>
+					<Button buttonStyle={styles.liveButton} text={'End Live'} onPress={this.stopLive} />
 				</View>
 			</View>
 		);
@@ -179,7 +198,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: 'white'
+		backgroundColor: secondaryColor
 	},
 	headerText: {
 		fontSize: 40
@@ -187,7 +206,7 @@ const styles = StyleSheet.create({
 	requestList: {
 		paddingTop: 10,
 		flex: 15,
-		backgroundColor: 'white'
+		backgroundColor: secondaryColor
 	},
 	requestInfo: {
 		flex: 2,
@@ -202,12 +221,14 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		alignSelf: 'center',
-		width: '85%',
-		backgroundColor: 'white',
-		borderRadius: 15
+		width: '95%'
+	},
+	buttonText: {
+		alignSelf: 'center',
+		padding: 3
 	},
 	row: {
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		flexDirection: 'row',
 		marginBottom: '2%',
 		marginHorizontal: 16,
@@ -221,20 +242,8 @@ const styles = StyleSheet.create({
 	},
 	live: {
 		flex: 1,
-		alignItems: 'center'
-	},
-	liveButton: {
-		backgroundColor: '#6A7BD6',
-		height: '100%',
-		width: '75%',
 		alignItems: 'center',
-		justifyContent: 'center',
-		borderRadius: 15,
-		alignContent: 'center'
-	},
-	liveButtonText: {
-		fontSize: 40,
-		color: 'white'
+		width: '100%'
 	}
 });
 

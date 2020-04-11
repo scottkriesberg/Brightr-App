@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	liveButton: {
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		height: '85%',
 		width: '75%',
 		alignItems: 'center',
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
 	liveButtonText: {
 		fontSize: 40,
 		fontWeight: 'bold',
-		color: 'white'
+		color: secondaryColor
 	},
 	holdTextContainer: {
 		flex: 8,

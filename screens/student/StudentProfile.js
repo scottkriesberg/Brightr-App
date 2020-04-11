@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		justifyContent: 'space-evenly'
 	},
 	buttonContainer: {
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
 		width: 150,
 		borderRadius: 75,
 		borderWidth: 4,
-		borderColor: '#6A7BD6',
+		borderColor: primaryColor,
 		alignSelf: 'center',
 		aspectRatio: 1
 	}

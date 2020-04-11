@@ -11,9 +11,9 @@ class SignUpChoice extends React.Component {
 	static navigationOptions = {
 		title: 'Type',
 		headerStyle: {
-			backgroundColor: 'white'
+			backgroundColor: secondaryColor
 		},
-		headerTintColor: '#6A7BD6',
+		headerTintColor: primaryColor,
 		headerTitleStyle: {
 			fontWeight: 'bold',
 			fontSize: 30
@@ -44,18 +44,18 @@ class SignUpChoice extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		alignItems: 'center',
 		justifyContent: 'space-around'
 	},
 	headingText: {
 		fontSize: 40,
-		color: 'white',
+		color: secondaryColor,
 		textAlign: 'center'
 	},
 	button: {
 		alignItems: 'center',
-		backgroundColor: 'white',
+		backgroundColor: secondaryColor,
 		alignItems: 'center',
 		justifyContent: 'center',
 		borderWidth: 1,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 	buttonText: {
 		fontSize: 30,
 		fontWeight: 'bold',
-		color: '#6A7BD6'
+		color: primaryColor
 	},
 	buttonSignup: {
 		fontSize: 12

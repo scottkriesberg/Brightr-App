@@ -17,10 +17,10 @@ const styles = StyleSheet.create({
 		textShadowRadius: 2
 	},
 	myEmptyStarStyle: {
-		color: 'white'
+		color: secondaryColor
 	},
 	header: {
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		height: 200
 	},
 	avatar: {
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 		height: 130,
 		borderRadius: 63,
 		borderWidth: 4,
-		borderColor: 'white',
+		borderColor: secondaryColor,
 		marginBottom: 10,
 		alignSelf: 'center',
 		position: 'absolute',

@@ -211,6 +211,6 @@ const styles = StyleSheet.create({
 		width: '75%',
 		backgroundColor: 'skyblue',
 		height: '5%',
-		color: 'white'
+		color: secondaryColor
 	}
 });

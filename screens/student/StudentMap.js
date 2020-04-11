@@ -7,6 +7,7 @@ import ContainerStyles from '../../styles/container.js';
 import { Rating } from '../components/profile';
 import Loading from '../components/utils.js';
 import { Map } from '../components/map';
+import { Button } from '../components/buttons';
 
 class StudentMap extends Component {
 	constructor() {
@@ -96,7 +97,7 @@ class StudentMap extends Component {
 				</View>
 				<View
 					style={{
-						flex: 2,
+						flex: 1,
 						alignSelf: 'flex-start',
 						marginTop: '3%',
 						margin: '8%'
@@ -177,35 +178,40 @@ class StudentMap extends Component {
 									maximumValue={4}
 									minimumValue={0}
 									step={0.25}
-									thumbTintColor="#6A7BD6"
+									thumbTintColor={primaryColor}
 									trackStyle={styles.trackSlider}
 									onValueChange={(value) => this.setState({ gpaFilter: value })}
 								/>
-								<Text>Minimum GPA: {this.state.gpaFilter}</Text>
+								<Text style={styles.sliderText}>Minimum GPA: {this.state.gpaFilter}</Text>
 								<Slider
 									value={this.state.ratingFilter}
 									maximumValue={5}
 									minimumValue={0}
 									step={0.25}
-									thumbTintColor="#6A7BD6"
+									thumbTintColor={primaryColor}
 									trackStyle={styles.trackSlider}
 									onValueChange={(value) => this.setState({ ratingFilter: value })}
 								/>
-								<Text>Minimum Rating: {this.state.ratingFilter}</Text>
+								<Text style={styles.sliderText}>Minimum Rating: {this.state.ratingFilter}</Text>
 							</View>
 							<View style={styles.filterButtonsContainer}>
-								<TouchableOpacity
-									style={styles.filterButtons}
+								<Button
+									text={'Clear'}
+									type={'secondary'}
+									textStyle={styles.clearButtonText}
+									buttonStyle={styles.filterButtons}
 									onPress={() => {
 										this.setState({ ratingFilter: 0, gpaFilter: 0 });
 										this.toggleFilterWindow();
 									}}
-								>
-									<Text style={styles.filterButtonsText}>Clear</Text>
-								</TouchableOpacity>
-								<TouchableOpacity style={styles.filterButtons} onPress={this.applyFilter}>
-									<Text style={styles.filterButtonsText}>Apply</Text>
-								</TouchableOpacity>
+								/>
+
+								<Button
+									text={'Apply'}
+									textStyle={styles.filterButtonsText}
+									buttonStyle={styles.filterButtons}
+									onPress={this.applyFilter}
+								/>
 							</View>
 						</View>
 					</Modal>
@@ -254,7 +260,7 @@ const styles = StyleSheet.create({
 	},
 	tutorList: {
 		flex: 5,
-		backgroundColor: 'white'
+		backgroundColor: secondaryColor
 	},
 	mapContainer: {
 		flex: 8
@@ -278,7 +284,7 @@ const styles = StyleSheet.create({
 	},
 	filterModal: {
 		backgroundColor: 'rgba(255,255,255,0.8)',
-		height: '50%',
+		height: '40%',
 		borderRadius: 15,
 		padding: 10,
 		justifyContent: 'space-around'
@@ -289,9 +295,6 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	filterButtons: {
-		borderRadius: 10,
-		borderWidth: 1,
-		backgroundColor: '#6A7BD6',
 		justifyContent: 'center',
 		alignItems: 'center',
 		width: '40%',
@@ -299,7 +302,7 @@ const styles = StyleSheet.create({
 	},
 	filterButtonsText: {
 		fontSize: 30,
-		color: 'white'
+		color: secondaryColor
 	},
 	filterTitle: {
 		flex: 1,
@@ -307,23 +310,16 @@ const styles = StyleSheet.create({
 		alignSelf: 'center'
 	},
 	filtersContainer: {
-		flex: 5,
+		flex: 3,
 		justifyContent: 'center'
 	},
-	filterCancelButtonContainer: {
-		flex: 1
+	sliderText: {
+		fontSize: 20
 	},
-	filterCancelButton: {
-		backgroundColor: 'white',
-		width: '20%',
-		height: '100%',
-		borderRadius: 10,
-		borderWidth: 1,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	filterCancelButtonText: {
-		color: '#6A7BD6'
+
+	clearButtonText: {
+		fontSize: 30
+		// color: primaryColor
 	}
 });
 

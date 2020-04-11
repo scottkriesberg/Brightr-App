@@ -1,22 +1,50 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, TouchableWithoutFeedback, Keyboard, Text, Image } from 'react-native';
 import firebase from '../firebase';
-import { Button } from 'react-native-elements';
+import { Button } from './components/buttons';
 const logo = require('../assets/logo-09.png');
 
 class Login extends React.Component {
 	handleSignIn = () => {
+		if (!this.validate()) {
+			return;
+		}
 		const { email, password } = this.state;
 		firebase
 			.auth()
 			.signInWithEmailAndPassword(email, password)
-			.then((user) => this.props.navigation.navigate('StudentMap', { uid: user.uid }))
-			.catch((error) => console.log(error));
+			.then((user) => {
+				const uid = user.user.uid;
+				firebase.firestore().collection('students').doc(uid).get().then((doc) => {
+					if (doc.exists) {
+						this.props.navigation.navigate('StudentNavigator', { uid: uid });
+					} else {
+						firebase.firestore().collection('tutors').doc(uid).get().then((doc) => {
+							if (doc.exists) {
+								this.props.navigation.navigate('TutorNavigator', { uid: uid });
+							} else {
+								console.log('Error');
+							}
+						});
+					}
+				});
+			})
+			.catch((error) => {
+				console.log(error.code);
+				if (error.code == 'auth/invalid-email') {
+					this.setState({ loginError: 'Please check your email format' });
+				} else if (error.code == 'auth/user-not-found') {
+					this.setState({ loginError: 'No account found with that email' });
+				} else if (error.code == 'auth/wrong-password') {
+					this.setState({ loginError: 'Wrong Password' });
+				}
+			});
 	};
 
 	state = {
 		email: '',
-		password: ''
+		password: '',
+		loginError: ''
 	};
 
 	componentDidMount() {}
@@ -24,6 +52,22 @@ class Login extends React.Component {
 	static navigationOptions = {
 		headerShown: false
 	};
+
+	validate() {
+		var valid = true;
+		this.setState({
+			loginError: ''
+		});
+		if (this.state.email == '') {
+			this.setState({ loginError: 'Please enter an email' });
+			valid = false;
+		}
+		if (this.state.password == '') {
+			this.setState({ classesError: 'Please enter an email' });
+			valid = false;
+		}
+		return valid;
+	}
 
 	render() {
 		return (
@@ -57,18 +101,24 @@ class Login extends React.Component {
 							placeholderTextColor="white"
 							secureTextEntry={true}
 						/>
-						<Button type="clear" title="Login" style={styles.loginButton} onPress={this.handleSignIn} />
+						<Text style={styles.errorText} adjustsFontSizeToFit={true} numberOfLines={1}>
+							{this.state.loginError}
+						</Text>
+					</View>
+					<View style={styles.loginButtonContainer}>
+						<Button
+							type="secondary"
+							buttonStyle={styles.loginButton}
+							textStyle={styles.loginButtonText}
+							text="Login"
+							onPress={() => this.handleSignIn()}
+						/>
 					</View>
 					<View style={styles.signUpButtonContainer}>
 						<Button
-							type="clear"
-							style={styles.signUpButton}
-							titleStyle={styles.signUpButtonTitle}
-							titleProps={{
-								adjustsFontSizeToFit: true,
-								numberOfLines: 1
-							}}
-							title="Don't have an account yet? Sign up"
+							type="primary"
+							text="Don't have an account yet? Sign up"
+							buttonStyle={styles.signUpButton}
 							onPress={() => this.props.navigation.navigate('SignUpBasicInfo')}
 						/>
 					</View>
@@ -83,7 +133,7 @@ export default Login;
 const styles = StyleSheet.create({
 	screenContainer: {
 		flex: 1,
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		alignItems: 'stretch'
 	},
 	titleContainer: {
@@ -113,38 +163,38 @@ const styles = StyleSheet.create({
 	},
 	loginInput: {
 		width: '90%%',
-		marginVertical: '10%',
 		padding: '3%',
 		fontSize: 16,
-		borderColor: 'white',
+		borderColor: secondaryColor,
 		borderRadius: 15,
 		borderWidth: 2,
 		textAlign: 'left',
-		color: 'white'
+		color: secondaryColor
+	},
+	loginButtonContainer: {
+		flex: 1,
+		justifyContent: 'flex-start',
+		width: '100%',
+		alignItems: 'center',
+		alignContent: 'center'
 	},
 	loginButton: {
-		backgroundColor: 'white',
-		borderColor: 'white',
-		borderWidth: 1,
-		borderRadius: 15,
-		width: 100,
-		marginTop: '15%'
+		height: '30%',
+		justifyContent: 'center',
+		padding: 1
 	},
 	signUpButtonContainer: {
-		flex: 1.5,
+		flex: 1,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'flex-start'
 	},
 	signUpButton: {
-		borderColor: 'white',
-		borderWidth: 1,
-		borderRadius: 15,
-		width: '75%',
-		margin: '5%',
-		alignSelf: 'center'
+		padding: '2%'
 	},
-	signUpButtonTitle: {
-		color: 'white',
-		fontSize: 20
+	errorText: {
+		color: 'red',
+		fontSize: 25,
+		fontWeight: 'bold',
+		marginTop: '5%'
 	}
 });

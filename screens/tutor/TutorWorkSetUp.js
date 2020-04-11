@@ -4,6 +4,7 @@ import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 import { Map } from '../components/map';
+import { Button } from '../components/buttons';
 
 class TutorWorkSetUp extends Component {
 	constructor() {
@@ -98,9 +99,7 @@ class TutorWorkSetUp extends Component {
 				</View>
 
 				<View style={styles.live}>
-					<TouchableOpacity style={styles.liveButton} onPress={this.goLive}>
-						<Text style={styles.liveButtonText}>Go Live</Text>
-					</TouchableOpacity>
+					<Button buttonStyle={styles.liveButton} text={'Go Live'} onPress={this.goLive} />
 				</View>
 			</View>
 		);
@@ -148,18 +147,7 @@ const styles = StyleSheet.create({
 		flex: 0.75,
 		alignItems: 'center'
 	},
-	liveButton: {
-		backgroundColor: '#6A7BD6',
-		height: '75%',
-		width: '75%',
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderRadius: 15
-	},
-	liveButtonText: {
-		fontSize: 40,
-		color: 'white'
-	},
+
 	trackSlider: {
 		height: 10
 	}

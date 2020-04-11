@@ -16,6 +16,7 @@ import { ProfileHeadingInfo } from '../components/profile';
 import Loading from '../components/utils.js';
 import ModalSelector from 'react-native-modal-selector';
 import { Dropdown } from '../components/dropdown';
+import { Button } from '../components/buttons';
 
 export default class TutorPreview extends Component {
 	classSelected = (selectedItem) => {
@@ -163,7 +164,7 @@ export default class TutorPreview extends Component {
 				<View style={styles.container}>
 					<View style={styles.backButtonContainer}>
 						<TouchableOpacity style={styles.backButton} onPress={this.toStudentMap}>
-							<Icon name="arrow-left" size={30} color={'#6A7BD6'} />
+							<Icon name="arrow-left" size={30} color={primaryColor} />
 						</TouchableOpacity>
 					</View>
 
@@ -202,41 +203,42 @@ export default class TutorPreview extends Component {
 							onValueChange={(value) => this.setState({ value })}
 						/>
 
-						<Text>Estimated Session Time: {this.state.value} minutes</Text>
+						<Text style={styles.sliderText} adjustsFontSizeToFit={true} numberOfLines={1}>
+							Estimated Session Time: {this.state.value} minutes
+						</Text>
+						<Text style={styles.sliderText} adjustsFontSizeToFit={true} numberOfLines={1}>
+							Estimated Session Cost: ${this.state.value * this.state.tutor.hourlyRate / 60}
+						</Text>
 					</View>
 
 					<View style={styles.pickerContainer}>
-						<ModalSelector
-							data={this.state.tutor.locations}
-							accessible={true}
-							initValue="Select a location"
-							keyExtractor={(item) => item}
-							labelExtractor={(item) => item}
-							optionStyle={{ marginTop: 10, backgroundColor: 'white' }}
-							cancelStyle={{ width: '90%', alignSelf: 'center' }}
-							style={{ width: '90%' }}
-							initValueTextStyle={{ color: 'black' }}
-							onChange={(option) => {
-								this.setState({ locationRequest: option });
+						<Dropdown
+							containerStyle={{ width: '100%', alignItems: 'center', marginVertical: '2%' }}
+							titleStyle={{ color: 'black', fontSize: 20 }}
+							items={this.state.tutor.locations}
+							getSelectedItem={(i) => {
+								this.setState({ locationRequest: i });
 							}}
+							modalHeaderText={'Select a location'}
+							intitalValue={'Select a location'}
+							dropdownTitle={'Location'}
 						/>
 
 						<Dropdown
 							containerStyle={{ width: '100%', alignItems: 'center', marginVertical: '2%' }}
-							titleStyle={{ color: 'black' }}
+							titleStyle={{ color: 'black', fontSize: 20 }}
 							items={this.state.tutor.classes}
 							getSelectedItem={(i) => {
 								this.setState({ classRequest: i });
 							}}
-							modalHeaderText={'Select A Class'}
-							intitalValue={'Select A Class'}
+							modalHeaderText={'Select a Class'}
+							intitalValue={'Select a Class'}
 							dropdownTitle={'Class'}
+							renderItemTextFunc={(item) => item.name}
 						/>
 					</View>
 					<View style={styles.live}>
-						<TouchableOpacity style={styles.liveButton} onPress={this.requestTutor}>
-							<Text style={styles.liveButtonText}>Request Tutor</Text>
-						</TouchableOpacity>
+						<Button text={'Request Tutor'} onPress={this.requestTutor} />
 					</View>
 				</View>
 			</TouchableWithoutFeedback>
@@ -259,21 +261,23 @@ const styles = StyleSheet.create({
 		backgroundColor: '#F8F8FF'
 	},
 	avatar: {
-		height: 150,
-		width: 150,
+		flex: 3,
 		borderRadius: 75,
 		borderWidth: 4,
-		borderColor: '#6A7BD6',
+		borderColor: primaryColor,
 		alignSelf: 'center',
 		aspectRatio: 1
 	},
 	tutorInfo: {
-		flex: 8,
+		flex: 2,
 		alignItems: 'center',
-		backgroundColor: '#F8F8FF'
+		backgroundColor: '#F8F8FF',
+		flexDirection: 'row',
+		width: '90%',
+		alignSelf: 'center'
 	},
 	descriptionContainer: {
-		flex: 1,
+		flex: 0.75,
 		height: '30%',
 		alignItems: 'center'
 	},
@@ -282,16 +286,14 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
+	sliderText: {
+		fontSize: 20,
+		textAlign: 'justify'
+	},
 	pickerContainer: {
 		flex: 2,
 		justifyContent: 'space-around',
 		alignItems: 'center'
-	},
-
-	name: {
-		fontSize: 28,
-		color: '#696969',
-		fontWeight: '600'
 	},
 
 	description: {
@@ -316,21 +318,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	live: {
-		flex: 3,
-		marginTop: 10,
+		flex: 1,
 		alignItems: 'center'
-	},
-	liveButton: {
-		backgroundColor: '#6A7BD6',
-		height: 45,
-		width: '75%',
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderRadius: 15
-	},
-	liveButtonText: {
-		fontSize: 30,
-		fontWeight: 'bold',
-		color: 'white'
 	}
 });

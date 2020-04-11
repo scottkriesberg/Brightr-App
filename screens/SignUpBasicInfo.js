@@ -9,9 +9,9 @@ class SignUpBasicInfo extends React.Component {
 	static navigationOptions = {
 		title: 'Basic Information',
 		headerStyle: {
-			backgroundColor: 'white'
+			backgroundColor: secondaryColor
 		},
-		headerTintColor: '#6A7BD6',
+		headerTintColor: primaryColor,
 		headerTitleStyle: {
 			fontWeight: 'bold',
 			fontSize: 20
@@ -137,7 +137,7 @@ class SignUpBasicInfo extends React.Component {
 						<TextInput
 							style={styles.inputBox}
 							value={this.state.name}
-							placeholderTextColor={'#6A7BD6'}
+							placeholderTextColor={primaryColor}
 							onChangeText={(name) => this.setState({ name })}
 							placeholder="Tommy Trojan"
 						/>
@@ -148,7 +148,7 @@ class SignUpBasicInfo extends React.Component {
 						<TextInput
 							style={styles.inputBox}
 							value={this.state.email}
-							placeholderTextColor={'#6A7BD6'}
+							placeholderTextColor={primaryColor}
 							onChangeText={(email) => this.setState({ email })}
 							autoCompleteType={'email'}
 							placeholder="tommyt@usc.edu"
@@ -161,7 +161,7 @@ class SignUpBasicInfo extends React.Component {
 						<TextInput
 							style={styles.inputBox}
 							value={this.state.password}
-							placeholderTextColor={'#6A7BD6'}
+							placeholderTextColor={primaryColor}
 							onChangeText={(password) => this.setState({ password })}
 							placeholder="************"
 							secureTextEntry={true}
@@ -183,25 +183,6 @@ class SignUpBasicInfo extends React.Component {
 						<Text style={styles.errorText} adjustsFontSizeToFit={true} numberOfLines={1}>
 							{this.state.yearError}
 						</Text>
-						{this.state.tutor ? <Text style={styles.textInputGPAHeadingText}>GPA</Text> : null}
-
-						{this.state.tutor ? (
-							<TextInput
-								style={styles.gpaInput}
-								value={this.state.gpa}
-								placeholderTextColor={'#6A7BD6'}
-								onChangeText={(gpa) => {
-									this.setState({ gpa });
-								}}
-								placeholder="3.5"
-								keyboardType={'decimal-pad'}
-								enablesReturnKeyAutomatically={true}
-							/>
-						) : null}
-
-						<Text style={styles.errorText} adjustsFontSizeToFit={true} numberOfLines={1}>
-							{this.state.gpaError}
-						</Text>
 
 						<SearchableDropdown
 							items={this.majors}
@@ -215,6 +196,26 @@ class SignUpBasicInfo extends React.Component {
 						/>
 						<Text style={styles.errorText} adjustsFontSizeToFit={true} numberOfLines={1}>
 							{this.state.majorError}
+						</Text>
+
+						{this.state.tutor ? <Text style={styles.textInputGPAHeadingText}>GPA</Text> : null}
+
+						{this.state.tutor ? (
+							<TextInput
+								style={styles.gpaInput}
+								value={this.state.gpa}
+								placeholderTextColor={primaryColor}
+								onChangeText={(gpa) => {
+									this.setState({ gpa });
+								}}
+								placeholder="3.5"
+								keyboardType={'decimal-pad'}
+								enablesReturnKeyAutomatically={true}
+							/>
+						) : null}
+
+						<Text style={styles.errorText} adjustsFontSizeToFit={true} numberOfLines={1}>
+							{this.state.gpaError}
 						</Text>
 					</View>
 					<View style={styles.checkboxContainer}>
@@ -230,7 +231,7 @@ class SignUpBasicInfo extends React.Component {
 							}}
 							isChecked={this.state.student}
 							rightText="Student"
-							rightTextStyle={{ color: 'white' }}
+							rightTextStyle={{ color: secondaryColor }}
 							checkBoxColor="white"
 						/>
 						<CheckBox
@@ -245,7 +246,7 @@ class SignUpBasicInfo extends React.Component {
 							}}
 							isChecked={this.state.tutor}
 							rightText="Tutor"
-							rightTextStyle={{ color: 'white' }}
+							rightTextStyle={{ color: secondaryColor }}
 							checkBoxColor="white"
 						/>
 					</View>
@@ -268,7 +269,7 @@ class SignUpBasicInfo extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#6A7BD6',
+		backgroundColor: primaryColor,
 		alignItems: 'center',
 		justifyContent: 'space-around'
 	},
@@ -293,34 +294,33 @@ const styles = StyleSheet.create({
 		height: '15%',
 		padding: '3%',
 		fontSize: 16,
-		backgroundColor: 'white',
-		borderColor: 'white',
+		backgroundColor: secondaryColor,
+		borderColor: secondaryColor,
 		borderRadius: 15,
 		borderWidth: 2,
 		textAlign: 'left'
 	},
 	textInputHeadingText: {
 		fontSize: 20,
-		color: 'white',
+		color: secondaryColor,
 		fontWeight: 'bold',
 		alignSelf: 'flex-start',
 		marginLeft: '6%'
 	},
 	dropdownContainer: {
-		flexGrow: 1,
+		flex: 3,
 		justifyContent: 'space-around',
 		width: '100%',
-		alignItems: 'center',
-		marginTop: '5%'
+		alignItems: 'center'
 	},
 	textInputGPAHeadingText: {
-		color: 'white',
+		color: secondaryColor,
 		fontSize: 20,
 		fontWeight: 'bold'
 	},
 	gpaInput: {
-		backgroundColor: 'white',
-		borderColor: 'white',
+		backgroundColor: secondaryColor,
+		borderColor: secondaryColor,
 		borderRadius: 15,
 		borderWidth: 2,
 		textAlign: 'left',
@@ -341,8 +341,8 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 		paddingVertical: 5,
 		alignItems: 'center',
-		backgroundColor: 'white',
-		borderColor: 'white',
+		backgroundColor: secondaryColor,
+		borderColor: secondaryColor,
 		borderWidth: 1,
 		borderRadius: 15,
 		width: '50%',
@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
 	buttonText: {
 		fontSize: 30,
 		fontWeight: 'bold',
-		color: '#6A7BD6'
+		color: primaryColor
 	},
 	buttonSignup: {
 		fontSize: 12
