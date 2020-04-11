@@ -40,7 +40,9 @@ const PrimaryStyle = StyleSheet.create({
 		borderRadius: 15,
 		alignItems: 'center',
 		justifyContent: 'flex-start',
-		width: '80%'
+		width: '80%',
+		borderWidth: 1,
+		borderColor: secondaryColor
 	},
 	text: {
 		color: secondaryColor,
@@ -55,7 +57,9 @@ const SecondaryStyle = StyleSheet.create({
 		borderRadius: 15,
 		alignItems: 'center',
 		justifyContent: 'flex-start',
-		width: '80%'
+		width: '80%',
+		borderWidth: 1,
+		borderColor: primaryColor
 	},
 	text: {
 		color: primaryColor,

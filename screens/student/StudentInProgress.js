@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Alert, View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
-import { RatingModal, WaitingModal } from '../components/inProgress';
+import { RatingModal, WaitingModal, RecapModal } from '../components/inProgress';
 
 class StudentInProgress extends Component {
 	constructor() {
@@ -18,6 +18,7 @@ class StudentInProgress extends Component {
 			hour: 0,
 			ratingModalVisible: false,
 			waitingModalVisible: false,
+			recapModalVisible: false,
 			rating: 0,
 			sessionUid: '',
 			session: {}
@@ -55,8 +56,9 @@ class StudentInProgress extends Component {
 				}
 
 				var newTimeWorked = res.data().timeWorked + this.state.hour * 60 + this.state.min;
+				const sessionTime = Date.now() - this.state.session.startTime;
 				var newMoneyMade =
-					res.data().moneyMade + sessionRate * this.state.hour + sessionRate * this.state.min / 60;
+					res.data().moneyMade + this.calcSessionCost(sessionTime, this.state.session.hourlyRate);
 
 				// Commit to Firestore
 				transaction.update(ref, {
@@ -69,25 +71,6 @@ class StudentInProgress extends Component {
 			});
 		});
 	}
-
-	finish = () => {
-		if (this.state.rating == 0) {
-			Alert.alert('No Rating', 'Please rate your tutor', [ { text: 'OK' } ], {
-				cancelable: false
-			});
-			return;
-		}
-		this.sessionRef
-			.update({
-				tutorRating: this.state.rating,
-				sessionTime: Date.now() - this.state.session.startTime,
-				status: 'completed'
-			})
-			.then(() => {
-				this.addRating('tutors', this.state.session.tutorUid, this.state.rating);
-				this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
-			});
-	};
 
 	componentDidMount() {
 		this.state.uid = this.props.navigation.getParam('uid', '');
@@ -113,6 +96,22 @@ class StudentInProgress extends Component {
 				});
 			}
 		}, 1000);
+		// Alert.alert(
+		// 	'Session Completed',
+		// 	'test',
+		// 	[
+		// 		{
+		// 			text: 'OK',
+		// 			onPress: () => {
+		// 				this.addRating('tutors', this.state.session.tutorUid, this.state.rating);
+		// 				this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
+		// 			}
+		// 		}
+		// 	],
+		// 	{
+		// 		cancelable: false
+		// 	}
+		// );
 	}
 
 	componentWillUnmount() {
@@ -141,10 +140,12 @@ class StudentInProgress extends Component {
 					this.setState({ waitingModalVisible: true });
 				}
 				if (doc.data().tutorDone && doc.data().studentDone) {
-					this.setState({ waitingModalVisible: false });
-					this.setState({ ratingModalVisible: false });
+					this.setState({ waitingModalVisible: false, ratingModalVisible: false, recapModalVisible: true });
 					const sessionTime = Date.now() - this.state.session.startTime;
 					const sessionCost = this.calcSessionCost(sessionTime, this.state.session.hourlyRate);
+					const sessionRecap =
+						'Time: ' + Math.round(sessionTime / 60000) + ' minutes \n' + ' Cost: $' + sessionCost;
+					this.setState({ sessionRecap: sessionRecap });
 					this.sessionRef
 						.update({
 							tutorRating: this.state.rating,
@@ -154,8 +155,6 @@ class StudentInProgress extends Component {
 						})
 						.then(() => {
 							this.addRating('tutors', this.state.session.tutorUid, this.state.rating);
-
-							this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
 						});
 				}
 			}
@@ -171,6 +170,17 @@ class StudentInProgress extends Component {
 		}
 		return (
 			<View style={styles.container}>
+				<RecapModal
+					visible={this.state.recapModalVisible}
+					headingText={'Session Recap'}
+					recapText={this.state.sessionRecap}
+					dismissFunc={() => {
+						this.setState({ recapModalVisible: false });
+						this.props.navigation.navigate('StudentMap', {
+							uid: this.state.uid
+						});
+					}}
+				/>
 				<RatingModal
 					visible={this.state.ratingModalVisible}
 					dismissFunc={() => {
@@ -189,7 +199,6 @@ class StudentInProgress extends Component {
 						this.state.rating = rating;
 					}}
 				/>
-
 				<WaitingModal
 					visible={this.state.waitingModalVisible}
 					dismissFunc={() => {
@@ -200,7 +209,6 @@ class StudentInProgress extends Component {
 					}}
 					text={'Waiting for tutor to finish session...'}
 				/>
-
 				<Text style={styles.heading}>Session Time</Text>
 				<View style={styles.clockContainer}>
 					<View style={styles.clock}>

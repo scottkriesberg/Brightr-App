@@ -58,6 +58,33 @@ export class WaitingModal extends Component {
 	}
 }
 
+export class RecapModal extends Component {
+	static props = {
+		visible: PropTypes.bool.isRequired,
+		dismissFunc: PropTypes.func.isRequired,
+		headingText: PropTypes.any.isRequired,
+		recapText: PropTypes.any.isRequired
+	};
+	render() {
+		const { visible, dismissFunc, recapText, headingText } = this.props;
+		return (
+			<Modal animationType="slide" transparent={false} visible={visible}>
+				<View style={styles.recapContainer}>
+					<Text style={styles.recapTitleText}>{headingText}</Text>
+					<Text style={styles.recapText}>{recapText}</Text>
+					<Button
+						type={'secondary'}
+						textStyle={styles.cancelWaitingModalButtonText}
+						text={'Done'}
+						buttonStyle={styles.cancelWaitingModalButton}
+						onPress={dismissFunc}
+					/>
+				</View>
+			</Modal>
+		);
+	}
+}
+
 const styles = StyleSheet.create({
 	//RatingModal Styles
 	ratingModalContainer: {
@@ -113,6 +140,24 @@ const styles = StyleSheet.create({
 		paddingTop: '50%',
 		textAlign: 'center',
 		fontSize: 35,
+		color: primaryColor
+	},
+	//Recap Modal
+	recapContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'space-around'
+	},
+
+	recapTitleText: {
+		paddingTop: '50%',
+		textAlign: 'center',
+		fontSize: 35,
+		color: primaryColor
+	},
+	recapText: {
+		textAlign: 'center',
+		fontSize: 25,
 		color: primaryColor
 	}
 });

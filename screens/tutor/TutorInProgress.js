@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Alert, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
-import { RatingModal, WaitingModal } from '../components/inProgress';
+import { RatingModal, WaitingModal, RecapModal } from '../components/inProgress';
 
 class TutorInProgress extends Component {
 	constructor() {
@@ -10,6 +10,7 @@ class TutorInProgress extends Component {
 		this.ref = firebase.firestore().collection('tutors');
 		this.sessionRef = firebase.firestore().collection('sessions');
 		this.unsubscribe = null;
+
 		this.state = {
 			uid: '',
 			sessionUid: '',
@@ -20,8 +21,10 @@ class TutorInProgress extends Component {
 			hour: 0,
 			ratingModalVisible: false,
 			waitingModalVisible: false,
+			recapModalVisible: false,
 			rating: 0,
-			finish: false
+			finish: false,
+			sessionRecap: ''
 		};
 		this.interval = null;
 	}
@@ -50,6 +53,15 @@ class TutorInProgress extends Component {
 				});
 			});
 		});
+	}
+
+	calcSessionCost(sessionTime, hourlyRate) {
+		const timeHours = sessionTime / 1000 / 60 / 60;
+		if (timeHours < 0.25) {
+			return 0.25 * hourlyRate;
+		} else {
+			return Math.round(timeHours * hourlyRate * 100) / 100;
+		}
 	}
 
 	padToTwo = (number) => (number <= 9 ? `0${number}` : number);
@@ -94,15 +106,21 @@ class TutorInProgress extends Component {
 				this.setState({ waitingModalVisible: true });
 			}
 			if (doc.data().tutorDone && doc.data().studentDone) {
-				this.setState({ waitingModalVisible: false });
-				this.setState({ ratingModalVisible: false });
+				this.setState({ waitingModalVisible: false, ratingModalVisible: false, recapModalVisible: true });
+				const sessionTime = Date.now() - this.state.session.startTime;
+				const sessionRecap =
+					'Time: ' +
+					Math.round(sessionTime / 60000) +
+					' minutes \n' +
+					' Cost: $' +
+					this.calcSessionCost(sessionTime, this.state.session.hourlyRate);
+				this.setState({ sessionRecap: sessionRecap });
 				this.sessionRef
 					.update({
 						studentRating: this.state.rating
 					})
 					.then(() => {
 						this.addRating('students', this.state.session.studentUid, this.state.rating);
-						this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
 					});
 			}
 		}
@@ -117,6 +135,17 @@ class TutorInProgress extends Component {
 		}
 		return (
 			<View style={styles.container}>
+				<RecapModal
+					visible={this.state.recapModalVisible}
+					headingText={'Session Recap'}
+					recapText={this.state.sessionRecap}
+					dismissFunc={() => {
+						this.setState({ recapModalVisible: false });
+						this.props.navigation.navigate('TutorIncomingRequests', {
+							uid: this.state.uid
+						});
+					}}
+				/>
 				<RatingModal
 					visible={this.state.ratingModalVisible}
 					dismissFunc={() => {
@@ -135,7 +164,6 @@ class TutorInProgress extends Component {
 						this.state.rating = rating;
 					}}
 				/>
-
 				<WaitingModal
 					visible={this.state.waitingModalVisible}
 					dismissFunc={() => {
@@ -146,7 +174,6 @@ class TutorInProgress extends Component {
 					}}
 					text={'Waiting for student to finish session...'}
 				/>
-
 				<Text style={styles.heading}>Session Time</Text>
 				<View style={styles.clockContainer}>
 					<View style={styles.clock}>
@@ -155,7 +182,6 @@ class TutorInProgress extends Component {
 						<Text style={styles.child}>{this.padToTwo(this.state.sec)}</Text>
 					</View>
 				</View>
-
 				<View style={styles.live}>
 					<TouchableOpacity
 						style={styles.liveButton}
