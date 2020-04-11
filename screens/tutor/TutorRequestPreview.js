@@ -109,12 +109,14 @@ export default class RequestPreview extends Component {
 						<Text style={styles.backButtonText}>Back</Text>
 					</TouchableOpacity>
 				</View>
+
 				<ProfileHeadingInfo
 					rating={this.state.student.rating}
 					year={this.state.student.year}
 					major={this.state.student.major.code}
 					name={this.state.student.name}
 					containerStyle={styles.basicInfoContainer}
+					avatarStyle={styles.avatar}
 					image={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }}
 					bio={this.state.student.bio}
 				/>
@@ -124,8 +126,17 @@ export default class RequestPreview extends Component {
 						Class: {this.state.request.classObj.department} {this.state.request.classObj.code}
 					</Text>
 					<Text style={styles.requestInfoText}>Location: {this.state.request.location}</Text>
-					<Text style={styles.requestInfoText}>Estmated Session Time: {this.state.request.estTime}</Text>
-					<Text style={styles.requestInfoText}>Session Description: {this.state.request.description}</Text>
+					<Text style={styles.requestInfoText}>
+						Estmated Session Time: {this.state.request.estTime} minutes
+					</Text>
+					<Text style={styles.requestInfoText}>
+						Estmated Session cost: ${Math.round(
+							this.state.request.estTime / 60 * this.state.request.hourlyRate * 100
+						) / 100}
+					</Text>
+					<Text style={styles.requestInfoText}>
+						Session Description: {this.state.request.description ? this.state.request.description : 'N/A'}
+					</Text>
 				</View>
 
 				<View style={styles.live}>
@@ -168,9 +179,19 @@ const styles = StyleSheet.create({
 		color: secondaryColor
 	},
 	basicInfoContainer: {
-		flex: 5,
-		backgroundColor: 'skyblue',
+		flex: 2,
+		flexDirection: 'row',
+		backgroundColor: '#F8F8FF',
+		justifyContent: 'space-between',
 		alignItems: 'center'
+	},
+	avatar: {
+		flex: 3,
+		borderRadius: 75,
+		borderWidth: 4,
+		borderColor: primaryColor,
+		alignSelf: 'center',
+		aspectRatio: 1
 	},
 	requestInfoContainer: {
 		flex: 3,

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import { Dropdown, SearchableDropdown } from './components/dropdown';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -131,7 +132,12 @@ class SignUpBasicInfo extends React.Component {
 					Keyboard.dismiss();
 				}}
 			>
-				<SafeAreaView style={styles.container}>
+				<KeyboardAwareScrollView
+					style={{ backgroundColor: '#4c69a5' }}
+					resetScrollToCoords={{ x: 0, y: 0 }}
+					contentContainerStyle={styles.container}
+					scrollEnabled={true}
+				>
 					<View style={styles.textInputContainer}>
 						<Text style={styles.textInputHeadingText}>Full Name</Text>
 						<TextInput
@@ -179,6 +185,7 @@ class SignUpBasicInfo extends React.Component {
 							modalHeaderText={'Please select your year'}
 							intitalValue={'Super Senior'}
 							dropdownTitle={'Year'}
+							renderItemTextFunc={(item) => item.name}
 						/>
 						<Text style={styles.errorText} adjustsFontSizeToFit={true} numberOfLines={1}>
 							{this.state.yearError}
@@ -260,7 +267,7 @@ class SignUpBasicInfo extends React.Component {
 							</Text>
 						</TouchableOpacity>
 					</View>
-				</SafeAreaView>
+				</KeyboardAwareScrollView>
 			</TouchableWithoutFeedback>
 		);
 	}
@@ -292,8 +299,8 @@ const styles = StyleSheet.create({
 	inputBox: {
 		width: '90%',
 		height: '15%',
-		padding: '3%',
-		fontSize: 16,
+		paddingLeft: '3%',
+		fontSize: 15,
 		backgroundColor: secondaryColor,
 		borderColor: secondaryColor,
 		borderRadius: 15,

@@ -49,7 +49,7 @@ class TutorIncomingRequests extends Component {
 						numberOfLines={2}
 						allowFontScaling={true}
 					>
-						Description: {item.description}
+						Description: {item.description ? item.description : 'N/A'}
 					</Text>
 				</View>
 				<View style={styles.requestButtons}>

@@ -59,7 +59,7 @@ export class ProfileHeadingInfo extends Component {
 export class ProfileTopBar extends Component {
 	static props = {
 		containerStyle: PropTypes.any,
-		editPageFunction: PropTypes.any,
+		closeFunc: PropTypes.any,
 		logoutFunction: PropTypes.any,
 		name: PropTypes.any
 	};
@@ -69,13 +69,77 @@ export class ProfileTopBar extends Component {
 				<TouchableOpacity style={styles.logoutButton} onPress={this.props.logoutFunction}>
 					<Text style={styles.logoutButtonText}>Logout</Text>
 				</TouchableOpacity>
-				<Icon
-					style={styles.editProfile}
-					name="account-edit"
-					type="MaterialCommunityIcons"
-					color="black"
-					size={40}
-					// onPress={this.props.editPageFunction}
+				<Icon name="close" size={35} color={primaryColor} onPress={this.props.closeFunc} />
+			</View>
+		);
+	}
+}
+
+export class ProfilePreviousSessions extends Component {
+	static props = {
+		containerStyle: PropTypes.any,
+		items: PropTypes.any,
+		renderFunc: PropTypes.Func
+	};
+
+	renderItem = ({ item }) => {
+		var text;
+		if (this.props.renderItemTextFunc) {
+			text = this.props.renderItemTextFunc(item);
+		} else {
+			text =
+				item.class.date +
+				' ' +
+				item.class.name +
+				' '(Math.round(item.sessionTime / 60000)) +
+				'min $' +
+				item.sessionCost;
+		}
+		return (
+			<View style={styles.sessionRow}>
+				<Text style={styles.sessionText}>{text}</Text>
+			</View>
+		);
+	};
+
+	render() {
+		const { items } = this.props;
+		return (
+			<View style={this.props.containerStyle}>
+				<Text style={styles.classesHeader}>Classes</Text>
+				<FlatList data={items} renderItem={this.renderItem} keyExtractor={(item, index) => item.toString()} />
+			</View>
+		);
+	}
+}
+
+export class ProfileClasses extends Component {
+	static props = {
+		containerStyle: PropTypes.any,
+		items: PropTypes.any,
+		renderFunc: PropTypes.Func
+	};
+
+	renderItem = ({ item }) => {
+		return (
+			<View style={styles.classRow}>
+				<Text style={styles.classText}>
+					{item.department}: {item.code}
+				</Text>
+				<Text style={styles.classNameText}>{item.name}</Text>
+			</View>
+		);
+	};
+
+	render() {
+		const { items, renderFunc, containerStyle } = this.props;
+		return (
+			<View style={containerStyle || styles.classes}>
+				<Text style={styles.classesHeader}>Classes</Text>
+				<FlatList
+					data={items}
+					renderItem={renderFunc || this.renderItem}
+					keyExtractor={(item, index) => index.toString()}
 				/>
 			</View>
 		);
@@ -150,5 +214,35 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginBottom: 15
+	},
+	//ProfileClasses Styles
+	classesHeader: {
+		alignSelf: 'center',
+		fontSize: 30,
+		fontWeight: 'bold',
+		color: primaryColor
+	},
+	classes: {
+		flex: 6,
+		backgroundColor: '#F8F8FF',
+		alignItems: 'stretch'
+	},
+	classRow: {
+		height: 50,
+		marginBottom: 7,
+		marginHorizontal: 10,
+		backgroundColor: primaryColor,
+		borderRadius: 5
+	},
+	classText: {
+		fontSize: 20,
+		color: '#F8F8FF',
+		fontWeight: 'bold',
+		marginLeft: '2%'
+	},
+	classNameText: {
+		marginLeft: '2%',
+		fontWeight: 'bold',
+		color: 'lightgrey'
 	}
 });

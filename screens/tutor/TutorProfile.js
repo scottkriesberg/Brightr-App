@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from '../../firebase';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
-import { ProfileTopBar, ProfileHeadingInfo } from '../components/profile';
+import { ProfileTopBar, ProfileHeadingInfo, ProfileClasses } from '../components/profile';
 import Loading from '../components/utils.js';
 import { Button } from '../components/buttons';
 
@@ -63,7 +63,7 @@ class TutorHome extends Component {
 				<ProfileTopBar
 					containerStyle={styles.profileHeaderContainer}
 					logoutFunction={this.logout}
-					editPageFunction={this.toEditPage}
+					closeFunc={this.toWorkPage}
 				/>
 				<ProfileHeadingInfo
 					rating={this.state.user.rating}
@@ -80,9 +80,11 @@ class TutorHome extends Component {
 				/>
 				<View style={styles.stats}>
 					<Text style={styles.statsHeader}>Stats</Text>
-					<Text style={styles.statsText}>People Helped: {this.state.user.numRatings}</Text>
-					<Text style={styles.statsText}>Time Worked: {this.state.user.timeWorked} minutes</Text>
-					<Text style={styles.statsText}>Money Made: ${this.state.user.moneyMade}</Text>
+					<Text style={styles.statsText}>Total Sessions: {this.state.user.numRatings}</Text>
+					<Text style={styles.statsText}>Total Time: {this.state.user.timeWorked} minutes</Text>
+					<Text style={styles.statsText}>
+						Total Revenue: ${Math.round(this.state.user.moneyMade * 100) / 100}
+					</Text>
 					<Text style={styles.statsText}>Top Hourly Rate: ${this.state.user.topHourlyRate}/hr</Text>
 					<Text style={styles.statsText}>
 						Average Hourly Rate: $
@@ -90,19 +92,7 @@ class TutorHome extends Component {
 						/hr
 					</Text>
 				</View>
-
-				<View style={styles.classes}>
-					<Text style={styles.classesHeader}>Classes</Text>
-					<FlatList
-						data={Object.keys(this.state.user.classes)}
-						renderItem={this.renderItem}
-						keyExtractor={(item, index) => item.toString()}
-					/>
-				</View>
-
-				<View style={styles.live}>
-					<Button text={'Set Up Live'} onPress={this.toWorkPage} />
-				</View>
+				<ProfileClasses items={this.state.user.classes} />
 			</View>
 		);
 	}

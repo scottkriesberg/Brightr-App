@@ -14,7 +14,6 @@ import {
 import firebase from '../../firebase';
 import { ProfileHeadingInfo } from '../components/profile';
 import Loading from '../components/utils.js';
-import ModalSelector from 'react-native-modal-selector';
 import { Dropdown } from '../components/dropdown';
 import { Button } from '../components/buttons';
 
@@ -135,7 +134,8 @@ export default class TutorPreview extends Component {
 				studentReady: false,
 				tutorReady: false,
 				messages: [],
-				description: this.state.description
+				description: this.state.description,
+				hourlyRate: this.state.tutor.hourlyRate
 			})
 			.then((docRef) => {
 				this.props.navigation.navigate('RequestWaiting', {
@@ -231,8 +231,8 @@ export default class TutorPreview extends Component {
 							getSelectedItem={(i) => {
 								this.setState({ classRequest: i });
 							}}
-							modalHeaderText={'Select a Class'}
-							intitalValue={'Select a Class'}
+							modalHeaderText={'Select a class'}
+							intitalValue={'Select a class'}
 							dropdownTitle={'Class'}
 							renderItemTextFunc={(item) => item.name}
 						/>

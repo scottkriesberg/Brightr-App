@@ -13,7 +13,6 @@ import {
 import PropTypes from 'prop-types';
 import { Icon } from 'react-native-elements';
 import { Button } from './buttons';
-import Loading from './utils.js';
 
 export class Dropdown extends Component {
 	static props = {
@@ -92,7 +91,7 @@ export class Dropdown extends Component {
 					transparent={true}
 				>
 					<View style={modalStyle || styles.modalView}>
-						<View style={{ alignItems: 'center', flex: 4 }}>
+						<View style={{ alignItems: 'center', flex: 4, width: '95%' }}>
 							<Text style={styles.modalTextHeader}>{modalHeaderText}</Text>
 							<FlatList
 								style={styles.list}
@@ -191,7 +190,9 @@ export class SearchableDropdown extends Component {
 			<View style={styles.container}>
 				<Text style={styles.dropDownHeaderText}>{dropdownTitle}</Text>
 				<TouchableOpacity style={styles.selectedTouchable} onPress={() => this.togglePicker()}>
-					<Text style={styles.placeHolderText}>{this.state.pickerSelection}</Text>
+					<Text style={styles.placeHolderText} adjustsFontSizeToFit={true} numberOfLines={2}>
+						{this.state.pickerSelection}
+					</Text>
 				</TouchableOpacity>
 
 				<Modal
@@ -340,12 +341,14 @@ export class MultiSelectSearchableDropdown extends Component {
 
 		return (
 			<View style={styles.multiContainer}>
-				<TouchableOpacity style={styles.multiSelectedTouchable} onPress={() => this.togglePicker()}>
-					<Text style={styles.multiDropDownHeaderText}>{dropdownTitle}</Text>
-				</TouchableOpacity>
+				<View style={styles.multiTochableContainer}>
+					<TouchableOpacity style={styles.multiSelectedTouchable} onPress={() => this.togglePicker()}>
+						<Text style={styles.multiDropDownHeaderText}>{dropdownTitle}</Text>
+					</TouchableOpacity>
+				</View>
 				<View style={styles.selectedContainer}>
 					<FlatList
-						style={styles.list}
+						style={styles.selectedList}
 						data={this.state.selected}
 						renderItem={this.renderItemSelectedNonModal}
 						keyExtractor={(item, index) => index.toString()}
@@ -424,12 +427,16 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
-
+	multiTochableContainer: {
+		flex: 0.25,
+		width: '100%',
+		alignItems: 'center'
+	},
 	multiSelectedTouchable: {
 		backgroundColor: secondaryColor,
 		borderRadius: 15,
 		width: '90%',
-		height: '15%',
+		height: '95%',
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
