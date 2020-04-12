@@ -7,8 +7,6 @@ import firebase from '../firebase';
 class SignUpBasicInfo extends React.Component {
 	handleSignUp = () => {
 		const { classes, bio, basicInfo } = this.state;
-		// console.log(basicInfo);
-		// return;
 		const classesArray = classes.map((classObj) => {
 			const classDeptName = classObj.department + classObj.code;
 			return classDeptName;

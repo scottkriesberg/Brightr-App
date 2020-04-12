@@ -116,8 +116,9 @@ class TutorWorkSetUp extends Component {
 						maximumValue={100}
 						minimumValue={10}
 						step={5}
-						thumbTintColor="#6A7BD6"
+						thumbTintColor={primaryColor}
 						trackStyle={styles.trackSlider}
+						thumbStyle={styles.thumbStyle}
 						onValueChange={(value) => this.setState({ value })}
 					/>
 					<View style={styles.sliderText}>
@@ -129,20 +130,32 @@ class TutorWorkSetUp extends Component {
 						<Text>$100/hr</Text>
 					</View>
 				</View>
-				<View style={styles.live}>
-					<Button
-						buttonStyle={styles.liveButtons}
-						textStyle={styles.liveButtonsText}
-						text={'End Live'}
-						onPress={this.stopLive}
-					/>
-					<Button
-						buttonStyle={styles.liveButtons}
-						textStyle={styles.liveButtonsText}
-						text={'Go Live'}
-						onPress={this.goLive}
-					/>
-				</View>
+				{this.state.status == 'Live' ? (
+					<View style={styles.live}>
+						<Button
+							type={'secondary'}
+							buttonStyle={styles.liveButtons}
+							textStyle={styles.liveButtonsText}
+							text={'End Live'}
+							onPress={this.stopLive}
+						/>
+						<Button
+							buttonStyle={styles.liveButtons}
+							textStyle={styles.liveButtonsText}
+							text={'Update Live'}
+							onPress={this.goLive}
+						/>
+					</View>
+				) : (
+					<View style={styles.live}>
+						<Button
+							buttonStyle={styles.liveButtons}
+							textStyle={styles.liveButtonsText}
+							text={'Go Live'}
+							onPress={this.goLive}
+						/>
+					</View>
+				)}
 			</View>
 		);
 	}
@@ -173,7 +186,8 @@ const styles = StyleSheet.create({
 	sliderContainer: {
 		flex: 1,
 		paddingLeft: 10,
-		paddingRight: 10
+		paddingRight: 10,
+		justifyContent: 'center'
 	},
 	slider: {
 		flex: 1
@@ -186,8 +200,8 @@ const styles = StyleSheet.create({
 		fontSize: 30
 	},
 	live: {
-		flex: 0.75,
-		alignItems: 'center',
+		flex: 0.5,
+		alignItems: 'flex-start',
 		flexDirection: 'row',
 		justifyContent: 'space-around'
 	},
@@ -198,7 +212,12 @@ const styles = StyleSheet.create({
 		fontSize: 30
 	},
 	trackSlider: {
-		height: 10
+		height: 15,
+		borderRadius: 7.5
+	},
+	thumbStyle: {
+		height: 25,
+		width: 25
 	},
 	statusText: {
 		position: 'absolute',

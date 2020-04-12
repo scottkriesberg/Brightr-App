@@ -10,7 +10,8 @@ export default class Profile extends Component {
 		this.state = {
 			uid: '',
 			user: {},
-			isLoading: true
+			isLoading: true,
+			isTutor: false
 		};
 	}
 
@@ -21,10 +22,21 @@ export default class Profile extends Component {
 		const ref = firebase.firestore().collection('students').doc(this.state.uid);
 		ref.get().then((doc) => {
 			if (doc.exists) {
-				this.setState({
-					user: doc.data(),
-					key: doc.id,
-					isLoading: false
+				firebase.firestore().collection('tutors').doc(this.state.uid).get().then((tutorDoc) => {
+					if (tutorDoc.exists) {
+						this.setState({
+							user: doc.data(),
+							key: doc.id,
+							isLoading: false,
+							isTutor: true
+						});
+					} else {
+						this.setState({
+							user: doc.data(),
+							key: doc.id,
+							isLoading: false
+						});
+					}
 				});
 			} else {
 				console.log('No such document!');
@@ -39,17 +51,32 @@ export default class Profile extends Component {
 	toStudentMap = () => {
 		this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
 	};
+
+	toTutorAccount = () => {
+		this.props.navigation.navigate('TutorNavigator', { uid: this.state.uid });
+	};
+
 	render() {
 		if (this.state.isLoading) {
 			return <Loading />;
 		}
 		return (
 			<SafeAreaView style={styles.container}>
-				<ProfileTopBar
-					containerStyle={styles.profileHeaderContainer}
-					logoutFunction={this.logout}
-					closeFunc={this.toStudentMap}
-				/>
+				{this.state.isTutor ? (
+					<ProfileTopBar
+						containerStyle={styles.profileHeaderContainer}
+						logoutFunction={this.logout}
+						switchAccountFunc={this.toTutorAccount}
+						switchText={'Switch to Tutor'}
+						closeFunc={this.toStudentMap}
+					/>
+				) : (
+					<ProfileTopBar
+						containerStyle={styles.profileHeaderContainer}
+						logoutFunction={this.logout}
+						closeFunc={this.toStudentMap}
+					/>
+				)}
 
 				<ProfileHeadingInfo
 					rating={this.state.user.rating}
@@ -75,13 +102,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignSelf: 'center'
 	},
-	profileHeaderContainer: {
-		flex: 1,
-		flexDirection: 'row',
-		backgroundColor: '#F8F8FF',
-		justifyContent: 'space-between',
-		alignItems: 'center'
-	},
+
 	container: {
 		flex: 1,
 		backgroundColor: primaryColor,

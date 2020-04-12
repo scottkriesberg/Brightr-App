@@ -81,7 +81,9 @@ export class Dropdown extends Component {
 			<View style={containerStyle || styles.container}>
 				<Text style={titleStyle || styles.dropDownHeaderText}>{dropdownTitle}</Text>
 				<TouchableOpacity style={styles.selectedTouchable} onPress={() => this.togglePicker()}>
-					<Text style={styles.placeHolderText}>{this.state.pickerSelection}</Text>
+					<Text style={styles.placeHolderText} adjustsFontSizeToFit={true} numberOfLines={1}>
+						{this.state.pickerSelection}
+					</Text>
 				</TouchableOpacity>
 
 				<Modal
@@ -538,7 +540,7 @@ const styles = StyleSheet.create({
 	},
 	placeHolderText: {
 		fontSize: 20,
-		paddingLeft: 10,
+		paddingHorizontal: 5,
 		color: primaryColor
 	},
 	modalView: {

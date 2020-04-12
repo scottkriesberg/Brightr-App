@@ -21,6 +21,7 @@ import TutorInProgress from '../screens/tutor/TutorInProgress';
 import TutorEditProfile from '../screens/tutor/TutorEditProfile';
 import TutorRequestPreview from '../screens/tutor/TutorRequestPreview';
 import { Icon } from 'react-native-elements';
+import { View, Text } from 'react-native';
 
 const SignUpStackNavigator = createStackNavigator(
 	{
@@ -73,21 +74,51 @@ const StudentTabNavigator = createBottomTabNavigator(
 			screen: StudentProfile,
 			navigationOptions: {
 				tabBarLabel: 'Profile',
-				tabBarIcon: ({ tintColor }) => <Icon name="user" type="font-awesome" color={tintColor} />
+				tabBarIcon: ({ tintColor }) => <Icon name="user" type="font-awesome" color={tintColor} />,
+				lazy: false
 			}
 		},
 		StudentLiveNavigator: {
 			screen: StudentLiveNavigator,
 			navigationOptions: {
 				tabBarLabel: 'Live',
-				tabBarIcon: ({ tintColor }) => <Icon name="place" color={tintColor} />
+				tabBarIcon: ({ tintColor }) => <Icon name="place" color={tintColor} />,
+				lazy: false
 			}
 		},
 		StudentRequestNavigator: {
 			screen: StudentRequestNavigator,
 			navigationOptions: {
 				tabBarLabel: 'Requests',
-				tabBarIcon: ({ tintColor }) => <Icon name="lightbulb-o" type="font-awesome" color={tintColor} />
+				// tabBarIcon: ({ tintColor }) => <Icon name="lightbulb-o" type="font-awesome" color={tintColor} />,
+				tabBarIcon: ({ tintColor }) => {
+					return (
+						<View style={{ width: 24, height: 24, margin: 5 }}>
+							<Icon name="lightbulb-o" type="font-awesome" color={tintColor} />
+							{requestNum > 0 && (
+								<View
+									style={{
+										// On React Native < 0.57 overflow outside of parent will not work on Android, see https://git.io/fhLJ8
+										position: 'absolute',
+										right: -6,
+										top: -3,
+										backgroundColor: 'red',
+										borderRadius: 6,
+										width: 12,
+										height: 12,
+										justifyContent: 'center',
+										alignItems: 'center'
+									}}
+								>
+									<Text style={{ color: 'white', fontSize: 10, fontWeight: 'bold' }}>
+										{requestNum}
+									</Text>
+								</View>
+							)}
+						</View>
+					);
+				},
+				lazy: false
 			}
 		}
 	},

@@ -23,11 +23,12 @@ class StudentActiveRequests extends Component {
 	};
 
 	renderItem = ({ item }) => {
-		const color = item.status == 'pending' ? 'grey' : 'green';
+		const pColor = item.status == 'pending' ? secondaryColor : primaryColor;
+		const sColor = item.status == 'pending' ? primaryColor : secondaryColor;
 		const screenNav = item.status == 'pending' ? 'RequestWaiting' : 'StudentChat';
 		return (
 			<TouchableOpacity
-				style={[ styles.row, { backgroundColor: color } ]}
+				style={[ styles.row, { backgroundColor: pColor, borderWidth: 1, borderColor: sColor } ]}
 				onPress={() =>
 					this.props.navigation.navigate(screenNav, {
 						uid: this.state.uid,
@@ -36,20 +37,18 @@ class StudentActiveRequests extends Component {
 					})}
 			>
 				<View style={styles.requestInfo}>
-					<Text style={{ fontSize: 20, fontWeight: 'bold', color: secondaryColor }} allowFontScaling={true}>
+					<Text style={{ fontSize: 20, fontWeight: 'bold', color: sColor }} allowFontScaling={true}>
 						{item.tutorInfo.name}
 					</Text>
-					<Text style={{ fontSize: 15, fontWeight: 'bold', color: secondaryColor }}>
+					<Text style={{ fontSize: 15, fontWeight: 'bold', color: sColor }}>
 						Class: {item.classObj.department} {item.classObj.code}
 					</Text>
-					<Text style={{ fontSize: 15, fontWeight: 'bold', color: secondaryColor }}>
-						Location: {item.location}
-					</Text>
-					<Text style={{ fontSize: 15, fontWeight: 'bold', color: secondaryColor }} numberOfLines={1}>
+					<Text style={{ fontSize: 15, fontWeight: 'bold', color: sColor }}>Location: {item.location}</Text>
+					<Text style={{ fontSize: 15, fontWeight: 'bold', color: sColor }} numberOfLines={1}>
 						Estimated Time: {item.estTime} min
 					</Text>
 					<Text
-						style={{ fontSize: 15, fontWeight: 'bold', color: secondaryColor }}
+						style={{ fontSize: 15, fontWeight: 'bold', color: sColor }}
 						minimumFontScale={0.4}
 						adjustsFontSizeToFit={true}
 						numberOfLines={2}
@@ -99,11 +98,14 @@ class StudentActiveRequests extends Component {
 				isLoading: true
 			});
 			var tutorInfo = {};
+
 			const { tutorUid, description, classObj, estTime, location, status } = doc.data();
 			firebase.firestore().collection('tutors').doc(tutorUid).get().then((tutorDoc) => {
 				if (tutorDoc.exists) {
 					tutorInfo = tutorDoc.data();
 				} else {
+				}
+				if (status == 'accepted') {
 				}
 				requests.push({
 					status,
@@ -142,13 +144,16 @@ class StudentActiveRequests extends Component {
 	};
 
 	cancelAll = () => {
+		this.setState({ requests: [] });
 		for (var i = 0; i < this.state.requests.length; i++) {
 			firebase
 				.firestore()
 				.collection('requests')
 				.doc(this.state.requests[i].id)
 				.update({ status: 'cancelled' })
-				.then((docRef) => {})
+				.then((docRef) => {
+					this.setState({ requests: [] });
+				})
 				.catch((error) => {
 					console.error('Error adding document: ', error);
 				});
@@ -171,6 +176,12 @@ class StudentActiveRequests extends Component {
 					>
 						Active Requests
 					</Text>
+					<Button
+						onPress={this.cancelAll}
+						type={'secondary'}
+						buttonStyle={styles.cancelAllButton}
+						text={'Cancel All'}
+					/>
 				</View>
 				<View style={styles.requestList}>
 					{this.state.requests.length > 0 ? (
@@ -190,11 +201,16 @@ class StudentActiveRequests extends Component {
 
 const styles = StyleSheet.create({
 	header: {
-		flex: 1,
-		justifyContent: 'center',
+		flex: 2,
+		justifyContent: 'space-around',
 		alignItems: 'center',
 		backgroundColor: secondaryColor,
 		width: '100%'
+	},
+	cancelAllButton: {
+		width: '40%',
+		height: '40%',
+		alignSelf: 'center'
 	},
 	headerText: {
 		fontSize: 40,

@@ -9,10 +9,11 @@ export class Button extends Component {
 		buttonStyle: PropTypes.any,
 		textStyle: PropTypes.any,
 		onPress: PropTypes.Func,
-		text: PropTypes.any
+		text: PropTypes.any,
+		disabled: PropTypes.any
 	};
 	render() {
-		const { type, buttonStyle, textStyle, onPress, text } = this.props;
+		const { disabled, type, buttonStyle, textStyle, onPress, text } = this.props;
 		var styles = PrimaryStyle;
 		if (type == 'primary') {
 			styles = PrimaryStyle;
@@ -20,8 +21,12 @@ export class Button extends Component {
 			styles = SecondaryStyle;
 		}
 
+		if (disabled) {
+			styles = DisabledStyle;
+		}
+
 		return (
-			<TouchableOpacity style={[ styles.button, buttonStyle ]} onPress={onPress}>
+			<TouchableOpacity style={[ styles.button, buttonStyle ]} disabled={disabled} onPress={onPress}>
 				<Text
 					style={[ styles.text, textStyle ]}
 					allowFontScaling={true}
@@ -37,7 +42,7 @@ export class Button extends Component {
 const PrimaryStyle = StyleSheet.create({
 	button: {
 		backgroundColor: primaryColor,
-		borderRadius: 15,
+		borderRadius: 5,
 		alignItems: 'center',
 		justifyContent: 'flex-start',
 		width: '80%',
@@ -54,7 +59,7 @@ const PrimaryStyle = StyleSheet.create({
 const SecondaryStyle = StyleSheet.create({
 	button: {
 		backgroundColor: secondaryColor,
-		borderRadius: 15,
+		borderRadius: 5,
 		alignItems: 'center',
 		justifyContent: 'flex-start',
 		width: '80%',
@@ -63,6 +68,23 @@ const SecondaryStyle = StyleSheet.create({
 	},
 	text: {
 		color: primaryColor,
+		textAlign: 'center',
+		fontSize: 40
+	}
+});
+
+const DisabledStyle = StyleSheet.create({
+	button: {
+		backgroundColor: '#A0A0A0',
+		borderRadius: 5,
+		alignItems: 'center',
+		justifyContent: 'flex-start',
+		width: '80%',
+		borderWidth: 1,
+		borderColor: 'grey'
+	},
+	text: {
+		color: 'lightgrey',
 		textAlign: 'center',
 		fontSize: 40
 	}

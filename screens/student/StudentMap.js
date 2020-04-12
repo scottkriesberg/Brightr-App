@@ -8,6 +8,7 @@ import { Rating } from '../components/profile';
 import Loading from '../components/utils.js';
 import { Map } from '../components/map';
 import { Button } from '../components/buttons';
+import { Dropdown } from '../components/dropdown';
 
 class StudentMap extends Component {
 	constructor() {
@@ -22,8 +23,10 @@ class StudentMap extends Component {
 			locationFilter: 'All Locations',
 			ratingFilter: 0,
 			gpaFilter: 0,
+			classFilter: null,
 			numActive: 0,
-			isFilterVisable: false
+			isFilterVisable: false,
+			user: {}
 		};
 		this.filter = this.filter.bind(this);
 	}
@@ -40,7 +43,15 @@ class StudentMap extends Component {
 		if (tutor.gpa < this.state.gpaFilter) {
 			return false;
 		}
-		return true;
+		if (this.state.classFilter == null) {
+			return true;
+		}
+		for (var i = 0; i < tutor.classes.length; i++) {
+			if (tutor.classes[i].name == this.state.classFilter.name) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	static navigationOptions = {
@@ -184,6 +195,19 @@ class StudentMap extends Component {
 						<View style={styles.filterModal}>
 							<Text style={styles.filterTitle}>Filter</Text>
 							<View style={styles.filtersContainer}>
+								<Dropdown
+									containerStyle={{ width: '100%', alignItems: 'center', height: '35%' }}
+									titleStyle={{ color: 'black', fontSize: 10 }}
+									items={this.state.user.classes}
+									getSelectedItem={(i) => {
+										this.setState({ classFilter: i });
+									}}
+									modalHeaderText={'Select a class'}
+									intitalValue={
+										this.state.classFilter ? this.state.classFilter.name : 'Filter by class'
+									}
+									renderItemTextFunc={(item) => item.name}
+								/>
 								<Slider
 									value={this.state.gpaFilter}
 									maximumValue={4}
@@ -212,7 +236,7 @@ class StudentMap extends Component {
 									textStyle={styles.clearButtonText}
 									buttonStyle={styles.filterButtons}
 									onPress={() => {
-										this.setState({ ratingFilter: 0, gpaFilter: 0 });
+										this.setState({ ratingFilter: 0, gpaFilter: 0, classFilter: null });
 										this.toggleFilterWindow();
 									}}
 								/>
@@ -292,7 +316,7 @@ const styles = StyleSheet.create({
 	},
 	filterModal: {
 		backgroundColor: 'rgba(255,255,255,0.8)',
-		height: '40%',
+		height: '44%',
 		borderRadius: 15,
 		padding: 10,
 		justifyContent: 'space-around'

@@ -9,3 +9,4 @@ global.accentColor = '#FFE180';
 
 //State Variables
 global.userUid = '';
+global.requestNum = 0;

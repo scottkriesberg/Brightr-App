@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, Button, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
+import { Button } from './buttons';
 
 export class Rating extends Component {
 	static props = {
@@ -61,14 +62,28 @@ export class ProfileTopBar extends Component {
 		containerStyle: PropTypes.any,
 		editFunc: PropTypes.any,
 		logoutFunction: PropTypes.any,
-		name: PropTypes.any
+		name: PropTypes.any,
+		switchAccountFunc: PropTypes.Func,
+		switchText: PropTypes.any
 	};
 	render() {
 		return (
 			<View style={this.props.containerStyle || styles.header}>
-				<TouchableOpacity style={styles.logoutButton} onPress={this.props.logoutFunction}>
-					<Text style={styles.logoutButtonText}>Logout</Text>
-				</TouchableOpacity>
+				<Button
+					type={'secondary'}
+					buttonStyle={{ width: '20%', height: '40%' }}
+					text={'Logout'}
+					onPress={this.props.logoutFunction}
+				/>
+				{this.props.switchAccountFunc ? (
+					<Button
+						type={'primary'}
+						buttonStyle={{ width: '50%', height: '45%' }}
+						text={this.props.switchText}
+						onPress={this.props.switchAccountFunc}
+					/>
+				) : null}
+
 				<Icon name="account-edit" size={35} color={primaryColor} onPress={this.props.editFunc} />
 			</View>
 		);
@@ -189,7 +204,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		backgroundColor: '#F8F8FF',
 		justifyContent: 'space-between',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingHorizontal: '2%'
 	},
 	logoutButton: {
 		alignSelf: 'flex-start',

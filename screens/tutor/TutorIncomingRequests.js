@@ -23,11 +23,12 @@ class TutorIncomingRequests extends Component {
 	};
 
 	renderItem = ({ item }) => {
-		const color = item.status == 'pending' ? 'grey' : 'green';
+		const pColor = item.status == 'pending' ? secondaryColor : primaryColor;
+		const sColor = item.status == 'pending' ? primaryColor : secondaryColor;
 		const screenNav = item.status == 'pending' ? 'TutorRequestPreview' : 'TutorChat';
 		return (
 			<TouchableOpacity
-				style={[ styles.row, { backgroundColor: color } ]}
+				style={[ styles.row, { backgroundColor: pColor, borderWidth: 1, borderColor: sColor } ]}
 				onPress={() =>
 					this.props.navigation.navigate(screenNav, {
 						tutorUid: this.state.uid,
@@ -36,20 +37,18 @@ class TutorIncomingRequests extends Component {
 					})}
 			>
 				<View style={styles.requestInfo}>
-					<Text style={{ fontSize: 20, fontWeight: 'bold', color: secondaryColor }} allowFontScaling={true}>
+					<Text style={{ fontSize: 20, fontWeight: 'bold', color: sColor }} allowFontScaling={true}>
 						{item.studentInfo.name}
 					</Text>
-					<Text style={{ fontSize: 15, fontWeight: 'bold', color: secondaryColor }}>
+					<Text style={{ fontSize: 15, fontWeight: 'bold', color: sColor }}>
 						Class: {item.classObj.department} {item.classObj.code}
 					</Text>
-					<Text style={{ fontSize: 15, fontWeight: 'bold', color: secondaryColor }}>
-						Location: {item.location}
-					</Text>
-					<Text style={{ fontSize: 15, fontWeight: 'bold', color: secondaryColor }} numberOfLines={1}>
+					<Text style={{ fontSize: 15, fontWeight: 'bold', color: sColor }}>Location: {item.location}</Text>
+					<Text style={{ fontSize: 15, fontWeight: 'bold', color: sColor }} numberOfLines={1}>
 						Estimated Time: {item.estTime} min
 					</Text>
 					<Text
-						style={{ fontSize: 15, fontWeight: 'bold', color: secondaryColor }}
+						style={{ fontSize: 15, fontWeight: 'bold', color: sColor }}
 						minimumFontScale={0.4}
 						adjustsFontSizeToFit={true}
 						numberOfLines={2}

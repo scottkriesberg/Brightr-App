@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from '../../firebase';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Alert, TouchableOpacity } from 'react-native';
 import { ProfileTopBar, ProfileHeadingInfo, ProfileClasses } from '../components/profile';
 import Loading from '../components/utils.js';
 import { Button } from '../components/buttons';
@@ -11,20 +11,31 @@ class TutorHome extends Component {
 		this.state = {
 			uid: '',
 			user: {},
-			isLoading: true
+			isLoading: true,
+			isStudent: false
 		};
 	}
 
 	componentDidMount() {
-		// this.state.uid = this.props.navigation.dangerouslyGetParent().dangerouslyGetParent().getParam('uid', '');
 		this.state.uid = userUid;
 		const ref = firebase.firestore().collection('tutors').doc(this.state.uid);
 		ref.get().then((doc) => {
 			if (doc.exists) {
-				this.setState({
-					user: doc.data(),
-					key: doc.id,
-					isLoading: false
+				firebase.firestore().collection('students').doc(this.state.uid).get().then((tutorDoc) => {
+					if (tutorDoc.exists) {
+						this.setState({
+							user: doc.data(),
+							key: doc.id,
+							isLoading: false,
+							isStudent: true
+						});
+					} else {
+						this.setState({
+							user: doc.data(),
+							key: doc.id,
+							isLoading: false
+						});
+					}
 				});
 			} else {
 				console.log('No such document!');
@@ -55,17 +66,77 @@ class TutorHome extends Component {
 		this.props.navigation.navigate('TutorEditProfile', { uid: this.state.uid });
 	};
 
+	toStudentAccount = () => {
+		Alert.alert(
+			'Cancel All Active Requests',
+			'Switching to student account will cancel all your active requests',
+			[
+				{
+					text: 'Cancel',
+					onPress: () => {}
+				},
+				{
+					text: 'Switch',
+					onPress: () => {
+						this.cancelAll();
+					}
+				}
+			],
+			{
+				cancelable: false
+			}
+		);
+	};
+
+	cancelAll = () => {
+		firebase
+			.firestore()
+			.collection('tutors')
+			.doc(this.state.uid)
+			.update({ isLive: false, hourlyRate: 0, locations: [] })
+			.then(() => {
+				firebase
+					.firestore()
+					.collection('requests')
+					.where('tutorUid', '==', this.state.uid)
+					.where('status', '==', 'pending')
+					.get()
+					.then((querySnapshot) => {
+						querySnapshot.forEach((doc) => {
+							firebase
+								.firestore()
+								.collection('requests')
+								.doc(doc.id)
+								.update({ status: 'declined' })
+								.then((docRef) => {})
+								.catch((error) => {
+									console.error('Error adding document: ', error);
+								});
+						});
+						this.props.navigation.navigate('StudentNavigator', { uid: this.state.uid });
+					})
+					.catch(function(error) {
+						console.log('Error getting documents: ', error);
+					});
+			});
+	};
+
 	render() {
 		if (this.state.isLoading) {
 			return <Loading />;
 		}
 		return (
 			<View style={styles.container}>
-				<ProfileTopBar
-					containerStyle={styles.profileHeaderContainer}
-					logoutFunction={this.logout}
-					closeFunc={this.toWorkPage}
-				/>
+				{this.state.isStudent ? (
+					<ProfileTopBar
+						containerStyle={styles.profileHeaderContainer}
+						logoutFunction={this.logout}
+						switchAccountFunc={this.toStudentAccount}
+						switchText={'Switch to Student'}
+					/>
+				) : (
+					<ProfileTopBar containerStyle={styles.profileHeaderContainer} logoutFunction={this.logout} />
+				)}
 				<ProfileHeadingInfo
 					rating={this.state.user.rating}
 					year={this.state.user.year}
@@ -87,11 +158,13 @@ class TutorHome extends Component {
 						Total Revenue: ${Math.round(this.state.user.moneyMade * 100) / 100}
 					</Text>
 					<Text style={styles.statsText}>Top Hourly Rate: ${this.state.user.topHourlyRate}/hr</Text>
-					<Text style={styles.statsText}>
-						Average Hourly Rate: $
-						{Math.round(this.state.user.moneyMade / this.state.user.timeWorked * 60 * 100) / 100}
-						/hr
-					</Text>
+					{this.state.user.numRatings != 0 ? (
+						<Text style={styles.statsText}>
+							Average Hourly Rate: $
+							{Math.round(this.state.user.moneyMade / this.state.user.timeWorked * 60 * 100) / 100}
+							/hr
+						</Text>
+					) : null}
 				</View>
 				<ProfileClasses items={this.state.user.classes} />
 			</View>
@@ -112,7 +185,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		backgroundColor: '#F8F8FF',
 		justifyContent: 'space-between',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingHorizontal: '2%'
 	},
 	basicInfoContainer: {
 		flex: 5,
