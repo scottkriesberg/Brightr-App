@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Icon, Slider } from 'react-native-elements';
-import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Alert, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 import { Map } from '../components/map';
@@ -15,12 +15,14 @@ class TutorWorkSetUp extends Component {
 			user: {},
 			isLoading: true,
 			locations: [],
-			value: 25
+			value: 25,
+			status: 'Offline'
 		};
 	}
 
 	componentDidMount() {
-		this.state.uid = this.props.navigation.dangerouslyGetParent().getParam('uid');
+		// this.state.uid = this.props.navigation.dangerouslyGetParent().dangerouslyGetParent().getParam('uid');
+		this.state.uid = userUid;
 		this.tutorRef = this.tutorRef.doc(this.state.uid);
 		this.tutorRef.get().then((doc) => {
 			if (doc.exists) {
@@ -28,7 +30,8 @@ class TutorWorkSetUp extends Component {
 					user: doc.data(),
 					key: doc.id,
 					isLoading: false,
-					value: 25
+					value: 25,
+					status: doc.data().isLive ? 'Live' : 'Offline'
 				});
 			} else {
 				console.log('No such document!');
@@ -50,7 +53,8 @@ class TutorWorkSetUp extends Component {
 		this.tutorRef
 			.update({ isLive: true, hourlyRate: this.state.value, locations: this.state.locations })
 			.then(() => {
-				this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
+				// this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
+				this.setState({ status: 'Live' });
 			});
 	};
 
@@ -66,6 +70,36 @@ class TutorWorkSetUp extends Component {
 		this.state.locations = [];
 	};
 
+	stopLive = () => {
+		this.tutorRef.update({ isLive: false, hourlyRate: 0, locations: [] }).then(() => {
+			firebase
+				.firestore()
+				.collection('requests')
+				.where('tutorUid', '==', this.state.uid)
+				.where('status', '==', 'pending')
+				.get()
+				.then(function(querySnapshot) {
+					querySnapshot.forEach(function(doc) {
+						firebase
+							.firestore()
+							.collection('requests')
+							.doc(doc.id)
+							.update({ status: 'declined' })
+							.then((docRef) => {})
+							.catch((error) => {
+								console.error('Error adding document: ', error);
+							});
+					});
+				})
+				.catch(function(error) {
+					console.log('Error getting documents: ', error);
+				});
+
+			this.setState({ status: 'Offline' });
+			// this.props.navigation.navigate('TutorWorkSetUp', { uid: this.state.uid });
+		});
+	};
+
 	render() {
 		if (this.state.isLoading) {
 			return <Loading />;
@@ -74,9 +108,7 @@ class TutorWorkSetUp extends Component {
 			<View style={styles.container}>
 				<View style={styles.mapContainer}>
 					<Map locationPressFunc={this.toggleLoc} mapPressFunc={this.clearLocations} isStudent={false} />
-					<View style={{ position: 'absolute', marginTop: '6%', marginLeft: '1%' }}>
-						<Icon size={35} name="person" onPress={this.toProfile} />
-					</View>
+					<Text style={styles.statusText}>Status: {this.state.status}</Text>
 				</View>
 				<View style={styles.sliderContainer}>
 					<Slider
@@ -97,9 +129,19 @@ class TutorWorkSetUp extends Component {
 						<Text>$100/hr</Text>
 					</View>
 				</View>
-
 				<View style={styles.live}>
-					<Button buttonStyle={styles.liveButton} text={'Go Live'} onPress={this.goLive} />
+					<Button
+						buttonStyle={styles.liveButtons}
+						textStyle={styles.liveButtonsText}
+						text={'End Live'}
+						onPress={this.stopLive}
+					/>
+					<Button
+						buttonStyle={styles.liveButtons}
+						textStyle={styles.liveButtonsText}
+						text={'Go Live'}
+						onPress={this.goLive}
+					/>
 				</View>
 			</View>
 		);
@@ -145,11 +187,25 @@ const styles = StyleSheet.create({
 	},
 	live: {
 		flex: 0.75,
-		alignItems: 'center'
+		alignItems: 'center',
+		flexDirection: 'row',
+		justifyContent: 'space-around'
 	},
-
+	liveButtons: {
+		width: '40%'
+	},
+	liveButtonsText: {
+		fontSize: 30
+	},
 	trackSlider: {
 		height: 10
+	},
+	statusText: {
+		position: 'absolute',
+		textAlign: 'center',
+		fontSize: 30,
+		alignSelf: 'center',
+		paddingTop: 35
 	}
 });
 

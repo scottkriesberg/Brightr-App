@@ -140,12 +140,12 @@ class StudentInProgress extends Component {
 					this.setState({ waitingModalVisible: true });
 				}
 				if (doc.data().tutorDone && doc.data().studentDone) {
-					this.setState({ waitingModalVisible: false, ratingModalVisible: false, recapModalVisible: true });
 					const sessionTime = Date.now() - this.state.session.startTime;
 					const sessionCost = this.calcSessionCost(sessionTime, this.state.session.hourlyRate);
 					const sessionRecap =
 						'Time: ' + Math.round(sessionTime / 60000) + ' minutes \n' + ' Cost: $' + sessionCost;
 					this.setState({ sessionRecap: sessionRecap });
+					this.setState({ waitingModalVisible: false, ratingModalVisible: false, recapModalVisible: true });
 					this.sessionRef
 						.update({
 							tutorRating: this.state.rating,
@@ -176,7 +176,7 @@ class StudentInProgress extends Component {
 					recapText={this.state.sessionRecap}
 					dismissFunc={() => {
 						this.setState({ recapModalVisible: false });
-						this.props.navigation.navigate('StudentMap', {
+						this.props.navigation.navigate('StudentTabNavigator', {
 							uid: this.state.uid
 						});
 					}}

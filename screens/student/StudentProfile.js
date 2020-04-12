@@ -15,7 +15,9 @@ export default class Profile extends Component {
 	}
 
 	componentDidMount() {
-		this.state.uid = this.props.navigation.getParam('uid', '');
+		// console.log(this.props.navigation.state.params.results);
+		this.state.uid = this.props.navigation.dangerouslyGetParent().dangerouslyGetParent().getParam('uid');
+		// this.state.uid = this.state.uid = userUid;
 		const ref = firebase.firestore().collection('students').doc(this.state.uid);
 		ref.get().then((doc) => {
 			if (doc.exists) {

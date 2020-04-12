@@ -5,10 +5,10 @@ import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 import '../components/global';
 
-class TutorIncomingRequests extends Component {
+class StudentActiveRequests extends Component {
 	constructor() {
 		super();
-		this.tutorRef = firebase.firestore().collection('tutors');
+		this.studentRef = firebase.firestore().collection('students');
 		this.requestRef = firebase.firestore().collection('requests');
 		this.unsubscribe = null;
 		this.state = {
@@ -24,20 +24,20 @@ class TutorIncomingRequests extends Component {
 
 	renderItem = ({ item }) => {
 		const color = item.status == 'pending' ? 'grey' : 'green';
-		const screenNav = item.status == 'pending' ? 'TutorRequestPreview' : 'TutorChat';
+		const screenNav = item.status == 'pending' ? 'RequestWaiting' : 'StudentChat';
 		return (
 			<TouchableOpacity
 				style={[ styles.row, { backgroundColor: color } ]}
 				onPress={() =>
 					this.props.navigation.navigate(screenNav, {
-						tutorUid: this.state.uid,
-						studentUid: item.studentUid,
+						uid: this.state.uid,
+						tutorUid: item.tutorUid,
 						requestUid: item.id
 					})}
 			>
 				<View style={styles.requestInfo}>
 					<Text style={{ fontSize: 20, fontWeight: 'bold', color: secondaryColor }} allowFontScaling={true}>
-						{item.studentInfo.name}
+						{item.tutorInfo.name}
 					</Text>
 					<Text style={{ fontSize: 15, fontWeight: 'bold', color: secondaryColor }}>
 						Class: {item.classObj.department} {item.classObj.code}
@@ -58,24 +58,22 @@ class TutorIncomingRequests extends Component {
 						Description: {item.description ? item.description : 'N/A'}
 					</Text>
 				</View>
-				{item.status == 'pending' ? (
-					<View style={styles.requestButtons}>
-						<Button
-							type="primary"
-							buttonStyle={styles.button}
-							textStyle={styles.buttonText}
-							text="Accept"
-							onPress={() => this.accept({ item })}
-						/>
-						<Button
-							type="secondary"
-							buttonStyle={styles.button}
-							textStyle={styles.buttonText}
-							text="Decline"
-							onPress={() => this.decline({ item })}
-						/>
-					</View>
-				) : null}
+				{/* <View style={styles.requestButtons}>
+					<Button
+						type="primary"
+						buttonStyle={styles.button}
+						textStyle={styles.buttonText}
+						text="Update"
+						onPress={() => this.accept({ item })}
+					/>
+					<Button
+						type="secondary"
+						buttonStyle={styles.button}
+						textStyle={styles.buttonText}
+						text="Cancel"
+						onPress={() => this.decline({ item })}
+					/>
+				</View> */}
 			</TouchableOpacity>
 		);
 	};
@@ -83,9 +81,9 @@ class TutorIncomingRequests extends Component {
 	componentDidMount() {
 		// this.state.uid = this.props.navigation.dangerouslyGetParent().dangerouslyGetParent().getParam('uid', '');
 		this.state.uid = userUid;
-		this.tutorRef = this.tutorRef.doc(this.state.uid);
+		this.studentRef = this.studentRef.doc(this.state.uid);
 		this.requestRef = this.requestRef
-			.where('tutorUid', '==', this.state.uid)
+			.where('studentUid', '==', this.state.uid)
 			.where('status', 'in', [ 'pending', 'accepted' ]);
 		this.unsubscribe = this.requestRef.onSnapshot(this.onCollectionUpdate);
 	}
@@ -100,21 +98,21 @@ class TutorIncomingRequests extends Component {
 			this.setState({
 				isLoading: true
 			});
-			var studentInfo = {};
-			const { studentUid, description, classObj, estTime, location, status } = doc.data();
-			firebase.firestore().collection('students').doc(studentUid).get().then((studentDoc) => {
-				if (studentDoc.exists) {
-					studentInfo = studentDoc.data();
+			var tutorInfo = {};
+			const { tutorUid, description, classObj, estTime, location, status } = doc.data();
+			firebase.firestore().collection('tutors').doc(tutorUid).get().then((tutorDoc) => {
+				if (tutorDoc.exists) {
+					tutorInfo = tutorDoc.data();
 				} else {
 				}
 				requests.push({
-					studentUid,
 					status,
+					tutorUid,
 					classObj,
 					estTime,
 					location,
 					description,
-					studentInfo,
+					tutorInfo,
 					id: doc.id
 				});
 				this.setState({
@@ -131,46 +129,30 @@ class TutorIncomingRequests extends Component {
 		});
 	};
 
-	decline = ({ item }) => {
+	cancel = ({ item }) => {
 		firebase
 			.firestore()
 			.collection('requests')
 			.doc(item.id)
-			.update({ status: 'declined' })
+			.update({ status: 'cancelled' })
 			.then((docRef) => {})
 			.catch((error) => {
 				console.error('Error adding document: ', error);
 			});
 	};
 
-	accept = ({ item }) => {
-		firebase
-			.firestore()
-			.collection('requests')
-			.doc(item.id)
-			.update({
-				status: 'accepted'
-			})
-			.then(() => {
-				this.props.navigation.navigate('TutorChat', { tutorUid: this.state.uid, requestUid: item.id });
-			});
-	};
-
-	stopLive = () => {
-		this.tutorRef.update({ isLive: false, hourlyRate: 0, locations: [] }).then(() => {
-			for (var i = 0; i < this.state.requests.length; i++) {
-				firebase
-					.firestore()
-					.collection('requests')
-					.doc(this.state.requests[i].id)
-					.update({ status: 'declined' })
-					.then((docRef) => {})
-					.catch((error) => {
-						console.error('Error adding document: ', error);
-					});
-			}
-			this.props.navigation.navigate('TutorWorkSetUp', { uid: this.state.uid });
-		});
+	cancelAll = () => {
+		for (var i = 0; i < this.state.requests.length; i++) {
+			firebase
+				.firestore()
+				.collection('requests')
+				.doc(this.state.requests[i].id)
+				.update({ status: 'cancelled' })
+				.then((docRef) => {})
+				.catch((error) => {
+					console.error('Error adding document: ', error);
+				});
+		}
 	};
 
 	render() {
@@ -265,4 +247,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default TutorIncomingRequests;
+export default StudentActiveRequests;

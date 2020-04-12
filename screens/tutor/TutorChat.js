@@ -23,6 +23,18 @@ export default class Chat extends React.Component {
 		};
 	}
 
+	static navigationOptions = {
+		title: 'Chat',
+		headerStyle: {
+			backgroundColor: secondaryColor
+		},
+		headerTintColor: primaryColor,
+		headerTitleStyle: {
+			fontWeight: 'bold',
+			fontSize: 20
+		}
+	};
+
 	getUser() {
 		return {
 			name: this.state.user.name,
@@ -39,7 +51,7 @@ export default class Chat extends React.Component {
 	}
 
 	componentDidMount() {
-		this.state.uid = this.props.navigation.getParam('uid', '');
+		this.state.uid = this.props.navigation.getParam('tutorUid', '');
 		this.state.requestUid = this.props.navigation.getParam('requestUid', '');
 		this.requestRef = this.requestRef.doc(this.state.requestUid);
 		const ref = firebase.firestore().collection('tutors').doc(this.state.uid);
@@ -188,8 +200,6 @@ export default class Chat extends React.Component {
 
 const styles = StyleSheet.create({
 	container: {
-		paddingTop: 40,
-		paddingBottom: 10,
 		flex: 1
 	},
 	chatView: {

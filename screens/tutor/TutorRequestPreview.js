@@ -22,6 +22,18 @@ export default class RequestPreview extends Component {
 		};
 	}
 
+	static navigationOptions = {
+		title: 'Request Preview',
+		headerStyle: {
+			backgroundColor: secondaryColor
+		},
+		headerTintColor: primaryColor,
+		headerTitleStyle: {
+			fontWeight: 'bold',
+			fontSize: 20
+		}
+	};
+
 	componentDidMount() {
 		this.state.studentUid = this.props.navigation.getParam('studentUid', '');
 		this.state.tutorUid = this.props.navigation.getParam('tutorUid', '');
@@ -43,7 +55,7 @@ export default class RequestPreview extends Component {
 				status: 'accepted'
 			})
 			.then(() => {
-				this.props.navigation.navigate('TutorChat', {
+				this.props.navigation.navigate('TutorIncomingRequests', {
 					uid: this.state.tutorUid,
 					requestUid: this.state.requestUid
 				});
@@ -61,7 +73,7 @@ export default class RequestPreview extends Component {
 						{
 							text: 'OK',
 							onPress: () => {
-								this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.tutorUid });
+								this.props.navigation.navigate('TutorTabNavigator', { uid: this.state.tutorUid });
 							}
 						}
 					],
@@ -86,7 +98,10 @@ export default class RequestPreview extends Component {
 				}
 			});
 		} else {
-			this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.tutorUid });
+			this.props.navigation.navigate('TutorTabNavigator', {
+				screen: 'TutorIncomingRequests',
+				params: { uid: this.state.tutorUid }
+			});
 		}
 	};
 
@@ -95,7 +110,10 @@ export default class RequestPreview extends Component {
 	}
 
 	toTutorIncomingRequests = () => {
-		this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.tutorUid });
+		this.props.navigation.navigate('TutorTabNavigator', {
+			screen: 'TutorIncomingRequests',
+			params: { uid: this.state.tutorUid }
+		});
 	};
 	render() {
 		if (this.state.isLoading) {
@@ -103,12 +121,12 @@ export default class RequestPreview extends Component {
 		}
 		return (
 			<View style={styles.container}>
-				<View style={styles.header}>
+				{/* <View style={styles.header}>
 					<TouchableOpacity style={styles.backButton} onPress={this.toTutorIncomingRequests}>
 						<Icon name="arrow-left" size={30} color={secondaryColor} />
 						<Text style={styles.backButtonText}>Back</Text>
 					</TouchableOpacity>
-				</View>
+				</View> */}
 
 				<ProfileHeadingInfo
 					rating={this.state.student.rating}

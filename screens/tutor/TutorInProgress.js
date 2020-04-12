@@ -141,7 +141,7 @@ class TutorInProgress extends Component {
 					recapText={this.state.sessionRecap}
 					dismissFunc={() => {
 						this.setState({ recapModalVisible: false });
-						this.props.navigation.navigate('TutorIncomingRequests', {
+						this.props.navigation.navigate('TutorRequestNavigator', {
 							uid: this.state.uid
 						});
 					}}

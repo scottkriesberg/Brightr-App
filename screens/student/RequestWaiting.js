@@ -3,6 +3,7 @@ import { Text } from 'react-native-elements';
 import { Alert, StyleSheet, View, TouchableOpacity } from 'react-native';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
+import { Button } from '../components/buttons';
 
 export default class TutorPreview extends Component {
 	constructor() {
@@ -13,15 +14,28 @@ export default class TutorPreview extends Component {
 		this.unsubscribe = null;
 		this.state = {
 			id: '',
-			tutorId: '',
+			tutorUid: '',
 			isLoading: true,
 			uid: '',
 			requestUid: '',
 			timer: 3
 		};
 	}
+
+	static navigationOptions = {
+		title: 'Request Pending',
+		headerStyle: {
+			backgroundColor: secondaryColor
+		},
+		headerTintColor: primaryColor,
+		headerTitleStyle: {
+			fontWeight: 'bold',
+			fontSize: 20
+		}
+	};
+
 	componentDidMount() {
-		this.state.tutorId = this.props.navigation.getParam('tutorId', '');
+		this.state.tutorUid = this.props.navigation.getParam('tutorUid', '');
 		this.state.uid = this.props.navigation.getParam('uid', '');
 		this.state.requestUid = this.props.navigation.getParam('requestUid', '');
 		this.requestRef = this.requestRef.doc(this.state.requestUid);
@@ -74,7 +88,7 @@ export default class TutorPreview extends Component {
 		this.requestRef
 			.update({ status: 'cancelled' })
 			.then((docRef) => {
-				this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
+				this.props.navigation.navigate('StudentActiveRequests', { uid: this.state.uid });
 			})
 			.catch((error) => {
 				console.error('Error adding document: ', error);
@@ -87,17 +101,11 @@ export default class TutorPreview extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<View style={styles.holdTextContainer}>
+				{/* <View style={styles.holdTextContainer}>
 					<Text style={styles.holdText}>Please hold while your tutor responds</Text>
-				</View>
+				</View> */}
 				<Loading />
-				<View style={styles.live}>
-					<TouchableOpacity style={styles.liveButton} onPress={this.cancelRequest}>
-						<Text adjustsFontSizeToFit style={styles.liveButtonText}>
-							Cancel Request
-						</Text>
-					</TouchableOpacity>
-				</View>
+				<Button text={'Cancel Request'} onPress={this.cancelRequest} />
 			</View>
 		);
 	}
@@ -106,11 +114,10 @@ export default class TutorPreview extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		flexDirection: 'column',
+		flexDirection: 'column-reverse',
 		alignItems: 'center',
 		alignContent: 'stretch',
-		justifyContent: 'space-between',
-		paddingTop: 40
+		paddingBottom: '5%'
 	},
 	live: {
 		marginTop: 5,

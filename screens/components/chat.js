@@ -15,7 +15,6 @@ export class ChatHeader extends Component {
 				<TouchableOpacity style={styles.cancelButton} onPress={this.props.cancelFunction}>
 					<Text style={styles.cancelButtonText}>Cancel Session</Text>
 				</TouchableOpacity>
-				<Text style={styles.chatTitle}>Chat</Text>
 				<TouchableOpacity style={styles.cancelButton} onPress={this.props.startFunction}>
 					<Text style={styles.cancelButtonText}>Start Session</Text>
 				</TouchableOpacity>

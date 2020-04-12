@@ -44,7 +44,7 @@ export class ProfileHeadingInfo extends Component {
 					<Text adjustsFontSizeToFit style={styles.profileInfoText}>
 						{this.props.year} / {this.props.major}
 					</Text>
-					<Text style={styles.profileInfoText}>GPA: {this.props.gpa}</Text>
+					{this.props.gpa ? <Text style={styles.profileInfoText}>GPA: {this.props.gpa}</Text> : null}
 					<Rating style={styles.profileInfoText} rating={this.props.rating} />
 					<Text adjustsFontSizeToFit style={styles.bio}>
 						<Text style={{ fontWeight: 'bold', color: primaryColor }}> Bio: </Text>
@@ -59,7 +59,7 @@ export class ProfileHeadingInfo extends Component {
 export class ProfileTopBar extends Component {
 	static props = {
 		containerStyle: PropTypes.any,
-		closeFunc: PropTypes.any,
+		editFunc: PropTypes.any,
 		logoutFunction: PropTypes.any,
 		name: PropTypes.any
 	};
@@ -69,7 +69,7 @@ export class ProfileTopBar extends Component {
 				<TouchableOpacity style={styles.logoutButton} onPress={this.props.logoutFunction}>
 					<Text style={styles.logoutButtonText}>Logout</Text>
 				</TouchableOpacity>
-				<Icon name="close" size={35} color={primaryColor} onPress={this.props.closeFunc} />
+				<Icon name="account-edit" size={35} color={primaryColor} onPress={this.props.editFunc} />
 			</View>
 		);
 	}
@@ -236,13 +236,13 @@ const styles = StyleSheet.create({
 	},
 	classText: {
 		fontSize: 20,
-		color: '#F8F8FF',
+		color: secondaryColor,
 		fontWeight: 'bold',
 		marginLeft: '2%'
 	},
 	classNameText: {
 		marginLeft: '2%',
 		fontWeight: 'bold',
-		color: 'lightgrey'
+		color: secondaryColor
 	}
 });

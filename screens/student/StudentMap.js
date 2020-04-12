@@ -43,6 +43,10 @@ class StudentMap extends Component {
 		return true;
 	}
 
+	static navigationOptions = {
+		headerShown: false
+	};
+
 	applyFilter = () => {
 		this.setState({ update: true });
 		this.toggleFilterWindow();
@@ -62,7 +66,7 @@ class StudentMap extends Component {
 				style={ContainerStyles.tutorPreviewContainer}
 				onPress={() =>
 					this.props.navigation.navigate('TutorPreview', {
-						tutorId: item.id,
+						tutorUid: item.id,
 						uid: this.state.uid
 					})}
 			>
@@ -119,7 +123,14 @@ class StudentMap extends Component {
 	};
 
 	componentDidMount() {
-		this.state.uid = this.props.navigation.dangerouslyGetParent().getParam('uid');
+		// console.log(this.props.navigation.dangerouslyGetParent().dangerouslyGetParent().getParam('uid'));
+		// this.state.uid = this.props.navigation.dangerouslyGetParent().getParam('uid', 'ocyNQp4r0vfcC13YE56iAzckTke2');
+		// this.state.uid = this.props.navigation
+		// 	.dangerouslyGetParent()
+		// 	.dangerouslyGetParent()
+		// 	.dangerouslyGetParent()
+		// 	.getParam('uid');
+		this.state.uid = userUid;
 		firebase.firestore().collection('students').doc(this.state.uid).get().then((doc) => {
 			if (doc.exists) {
 				this.setState({
@@ -219,9 +230,6 @@ class StudentMap extends Component {
 
 				<View style={styles.mapContainer}>
 					<Map locationPressFunc={this.locationFilter} mapPressFunc={this.clearLocations} isStudent={true} />
-					<View style={{ position: 'absolute', marginTop: '6%', marginLeft: '1%' }}>
-						<Icon size={35} name="person" onPress={this.toProfile} />
-					</View>
 				</View>
 				<View style={ContainerStyles.midbar}>
 					<View style={styles.findTutorFilterContainer}>

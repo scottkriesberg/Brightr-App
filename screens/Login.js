@@ -1,5 +1,14 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, TouchableWithoutFeedback, Keyboard, Text, Image } from 'react-native';
+import {
+	View,
+	TextInput,
+	StyleSheet,
+	TouchableWithoutFeedback,
+	Keyboard,
+	Text,
+	Image,
+	SafeAreaView
+} from 'react-native';
 import firebase from '../firebase';
 import { Button } from './components/buttons';
 const logo = require('../assets/logo-09.png');
@@ -17,10 +26,12 @@ class Login extends React.Component {
 				const uid = user.user.uid;
 				firebase.firestore().collection('students').doc(uid).get().then((doc) => {
 					if (doc.exists) {
+						userUid = uid;
 						this.props.navigation.navigate('StudentNavigator', { uid: uid });
 					} else {
 						firebase.firestore().collection('tutors').doc(uid).get().then((doc) => {
 							if (doc.exists) {
+								userUid = uid;
 								this.props.navigation.navigate('TutorNavigator', { uid: uid });
 							} else {
 								console.log('Error');
@@ -76,7 +87,25 @@ class Login extends React.Component {
 					Keyboard.dismiss();
 				}}
 			>
-				<View style={styles.screenContainer}>
+				<SafeAreaView style={styles.screenContainer}>
+					<Button
+						text={'to student'}
+						onPress={() => {
+							userUid = 'ocyNQp4r0vfcC13YE56iAzckTke2';
+							this.props.navigation.navigate('StudentNavigator', {
+								uid: 'ocyNQp4r0vfcC13YE56iAzckTke2'
+							});
+						}}
+					/>
+					<Button
+						text={'to tutor'}
+						onPress={() => {
+							userUid = 'XrwNEbLvWgPVXd1AuKq5sjFtBBB3';
+							this.props.navigation.navigate('TutorNavigator', {
+								uid: 'XrwNEbLvWgPVXd1AuKq5sjFtBBB3'
+							});
+						}}
+					/>
 					<View style={styles.titleContainer}>
 						<Image style={styles.logoImage} source={logo} />
 						<Text h1 style={styles.title}>
@@ -122,7 +151,7 @@ class Login extends React.Component {
 							onPress={() => this.props.navigation.navigate('SignUpBasicInfo')}
 						/>
 					</View>
-				</View>
+				</SafeAreaView>
 			</TouchableWithoutFeedback>
 		);
 	}

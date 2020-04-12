@@ -23,6 +23,18 @@ export default class Chat extends React.Component {
 		};
 	}
 
+	static navigationOptions = {
+		title: 'Chat',
+		headerStyle: {
+			backgroundColor: secondaryColor
+		},
+		headerTintColor: primaryColor,
+		headerTitleStyle: {
+			fontWeight: 'bold',
+			fontSize: 20
+		}
+	};
+
 	getUser() {
 		return {
 			name: this.state.user.name,
@@ -70,7 +82,8 @@ export default class Chat extends React.Component {
 		this.requestRef
 			.update({ status: 'cancelled' })
 			.then((docRef) => {
-				this.props.navigation.navigate('StudentMap', {
+				console.log('test');
+				this.props.navigation.navigate('StudentActiveRequests', {
 					uid: this.state.uid
 				});
 			})
@@ -156,8 +169,6 @@ export default class Chat extends React.Component {
 
 const styles = StyleSheet.create({
 	container: {
-		paddingTop: 40,
-		paddingBottom: 10,
 		flex: 1
 	},
 	chatView: {
@@ -175,6 +186,5 @@ const styles = StyleSheet.create({
 	codeText: {
 		fontSize: 30,
 		alignSelf: 'center'
-	},
-	backToChatButton: {}
+	}
 });

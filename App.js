@@ -19,6 +19,6 @@ if (!global.atob) {
 
 export default class App extends React.Component {
 	render() {
-		return <SwitchNavigator />;
+		return <SwitchNavigator screenProps={{ test: 'test' }} />;
 	}
 }

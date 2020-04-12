@@ -16,7 +16,8 @@ class TutorHome extends Component {
 	}
 
 	componentDidMount() {
-		this.state.uid = this.props.navigation.getParam('uid', '');
+		// this.state.uid = this.props.navigation.dangerouslyGetParent().dangerouslyGetParent().getParam('uid', '');
+		this.state.uid = userUid;
 		const ref = firebase.firestore().collection('tutors').doc(this.state.uid);
 		ref.get().then((doc) => {
 			if (doc.exists) {
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#F8F8FF'
 	},
 	profileHeaderContainer: {
-		flex: 2,
+		flex: 1.5,
 		flexDirection: 'row',
 		backgroundColor: '#F8F8FF',
 		justifyContent: 'space-between',

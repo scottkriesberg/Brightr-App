@@ -25,6 +25,19 @@ export default class TutorPreview extends Component {
 		this.state.locationRequest = selectedItem[0];
 	};
 
+	static navigationOptions = {
+		gestureEnabled: false,
+		title: 'Tutor Preview',
+		headerStyle: {
+			backgroundColor: secondaryColor
+		},
+		headerTintColor: primaryColor,
+		headerTitleStyle: {
+			fontWeight: 'bold',
+			fontSize: 20
+		}
+	};
+
 	rowItem = (item) => (
 		<View
 			style={{
@@ -47,7 +60,7 @@ export default class TutorPreview extends Component {
 		this.unsubscribe = null;
 		this.state = {
 			id: '',
-			tutorId: '',
+			tutorUid: '',
 			tutor: {},
 			isLoading: true,
 			uid: '',
@@ -59,9 +72,9 @@ export default class TutorPreview extends Component {
 	}
 
 	componentDidMount() {
-		this.state.tutorId = this.props.navigation.getParam('tutorId', '');
+		this.state.tutorUid = this.props.navigation.getParam('tutorUid', '');
 		this.state.uid = this.props.navigation.getParam('uid', '');
-		this.tutorRef = this.tutorRef.doc(this.state.tutorId);
+		this.tutorRef = this.tutorRef.doc(this.state.tutorUid);
 		this.tutorRef.get().then((doc) => {
 			if (doc.exists) {
 				this.setState({
@@ -106,7 +119,7 @@ export default class TutorPreview extends Component {
 	}
 
 	toStudentMap = () => {
-		this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
+		this.props.navigation.navigate('StudentTabNavigator', { uid: this.state.uid });
 	};
 	requestTutor = () => {
 		if (this.state.classRequest == '') {
@@ -122,33 +135,68 @@ export default class TutorPreview extends Component {
 			return;
 		}
 		const time = Date.now();
-		this.requestRef
-			.add({
-				studentUid: this.state.uid,
-				tutorUid: this.state.tutorId,
-				timestamp: time,
-				location: this.state.locationRequest,
-				estTime: this.state.value,
-				classObj: this.state.classRequest,
-				status: 'pending',
-				studentReady: false,
-				tutorReady: false,
-				messages: [],
-				description: this.state.description,
-				hourlyRate: this.state.tutor.hourlyRate
-			})
-			.then((docRef) => {
-				this.props.navigation.navigate('RequestWaiting', {
-					tutorId: this.state.id,
-					uid: this.state.uid,
-					requestUid: docRef.id
+		firebase
+			.firestore()
+			.collection('requests')
+			.where('tutorUid', '==', this.state.tutorUid)
+			.where('status', '==', 'pending')
+			.get()
+			.then((querySnapshot) => {
+				var requested = false;
+				querySnapshot.forEach((doc) => {
+					requested = true;
 				});
+				if (requested) {
+					Alert.alert(
+						'Tutor Requested',
+						'You already have a pending request for this tutor',
+						[
+							{
+								text: 'OK',
+								onPress: () =>
+									this.props.navigation.navigate('StudentMap', {
+										uid: this.state.uid
+									})
+							}
+						],
+						{
+							cancelable: false
+						}
+					);
+				} else {
+					firebase
+						.firestore()
+						.collection('requests')
+						.add({
+							studentUid: this.state.uid,
+							tutorUid: this.state.tutorUid,
+							timestamp: time,
+							location: this.state.locationRequest,
+							estTime: this.state.value,
+							classObj: this.state.classRequest,
+							status: 'pending',
+							studentReady: false,
+							tutorReady: false,
+							messages: [],
+							description: this.state.description,
+							hourlyRate: this.state.tutor.hourlyRate
+						})
+						.then((docRef) => {
+							console.log('requested');
+							this.props.navigation.navigate('StudentActiveRequests', {
+								uid: this.state.uid
+							});
+						})
+						.catch((error) => {
+							console.error('Error adding document: ', error);
+							this.setState({
+								isLoading: false
+							});
+						});
+				}
 			})
-			.catch((error) => {
-				console.error('Error adding document: ', error);
-				this.setState({
-					isLoading: false
-				});
+			.catch(function(error) {
+				console.log('Error getting documents: ', error);
 			});
 	};
 	render() {
@@ -162,12 +210,6 @@ export default class TutorPreview extends Component {
 				}}
 			>
 				<View style={styles.container}>
-					<View style={styles.backButtonContainer}>
-						<TouchableOpacity style={styles.backButton} onPress={this.toStudentMap}>
-							<Icon name="arrow-left" size={30} color={primaryColor} />
-						</TouchableOpacity>
-					</View>
-
 					<ProfileHeadingInfo
 						rating={this.state.tutor.rating}
 						year={this.state.tutor.year}
@@ -199,7 +241,9 @@ export default class TutorPreview extends Component {
 							minimumValue={15}
 							step={15}
 							thumbTintColor="#6A7BD6"
-							trackStyle={{ height: 10 }}
+							thumbTouchSize={{ width: 30, height: 30 }}
+							trackStyle={{ height: 15, borderRadius: 10 }}
+							thumbStyle={{ height: 30, width: 30, borderRadius: 15 }}
 							onValueChange={(value) => this.setState({ value })}
 						/>
 
