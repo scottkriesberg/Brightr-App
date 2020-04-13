@@ -1,26 +1,148 @@
 import React, { Component } from 'react';
-import { Button } from 'react-native-elements';
-import Stars from 'react-native-stars';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import firebase from '../../firebase';
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import {
+	StyleSheet,
+	Text,
+	View,
+	Alert,
+	TouchableOpacity,
+	TextInput,
+	Image,
+	TouchableWithoutFeedback,
+	Keyboard
+} from 'react-native';
+import { ProfileTopBar, ProfileHeadingInfo, ProfileClasses } from '../components/profile';
 import Loading from '../components/utils.js';
+import { Button } from '../components/buttons';
+import { Dropdown, SearchableDropdown, MultiSelectSearchableDropdown } from '../components/dropdown';
 
 class TutorEditProfile extends Component {
 	constructor() {
 		super();
+		this.majors = [
+			{
+				name: 'Computer Science',
+				code: 'CSCI'
+			},
+			{
+				name: 'Computer Science Business Administration',
+				code: 'CSBA'
+			},
+			{
+				name: 'Business Administration',
+				code: 'BUAD'
+			},
+			{
+				name: 'Economics',
+				code: 'ECON'
+			}
+		];
+		this.years = [
+			{
+				name: 'Freshman',
+				value: 'Freshman'
+			},
+			{
+				name: 'Sophmore',
+				value: 'Sophmore'
+			},
+			{
+				name: 'Junior',
+				value: 'Junior'
+			},
+			{
+				name: 'Senior',
+				value: 'Senior'
+			},
+			{
+				name: 'Graduate',
+				value: 'Graduate'
+			}
+		];
+		this.classes = [
+			{
+				title: 'Computer Science (CSCI)',
+				data: [
+					{
+						name: 'Data Structures and Algortims',
+						department: 'CSCI',
+						code: '104'
+					},
+					{
+						name: 'Introduction to Programming',
+						department: 'CSCI',
+						code: '103'
+					}
+				]
+			},
+			{
+				title: 'Mathamatics MATH',
+				data: [
+					{
+						name: 'Calculus III',
+						department: 'MATH',
+						code: '229'
+					}
+				]
+			},
+			{
+				title: 'ITP',
+				data: [
+					{
+						name: 'Introduction to  C++ Programming',
+						department: 'ITP',
+						code: '165'
+					},
+					{
+						name: 'Introduction to  MATLAB',
+						department: 'ITP',
+						code: '168'
+					},
+					{
+						name: 'Programming in Python',
+						department: 'ITP',
+						code: '115'
+					}
+				]
+			}
+		];
 		this.state = {
 			uid: '',
 			user: {},
-			isLoading: true
+			isLoading: true,
+			name: '',
+			nameError: ''
 		};
 	}
 
+	static navigationOptions = {
+		title: 'Edit Profile',
+		headerStyle: {
+			backgroundColor: secondaryColor
+		},
+		headerTintColor: primaryColor,
+		headerTitleStyle: {
+			fontWeight: 'bold',
+			fontSize: 20
+		}
+	};
+
 	componentDidMount() {
-		this.state.uid = this.props.navigation.getParam('uid', '');
+		this.state.uid = userUid;
 		const ref = firebase.firestore().collection('tutors').doc(this.state.uid);
 		ref.get().then((doc) => {
 			if (doc.exists) {
+				const { name, major, year, bio, classes } = doc.data();
+				this.setState({
+					user: doc.data(),
+					name: name,
+					major: major,
+					year: year,
+					bio: bio,
+					classes: classes,
+					key: doc.id,
+					isLoading: false
+				});
 				this.setState({
 					user: doc.data(),
 					key: doc.id,
@@ -36,22 +158,11 @@ class TutorEditProfile extends Component {
 		return (
 			<View style={styles.classRow}>
 				<Text style={styles.classText}>
-					{item.department}: {item.code}
+					{this.state.user.classes[item].department}: {this.state.user.classes[item].code}
 				</Text>
+				<Text style={styles.classNameText}>{this.state.user.classes[item].name}</Text>
 			</View>
 		);
-	};
-
-	cancel = () => {
-		this.props.navigation.navigate('TutorHome', { uid: this.state.uid });
-	};
-
-	save = () => {
-		this.props.navigation.navigate('TutorHome', { uid: this.state.uid });
-	};
-
-	toWorkPage = () => {
-		this.props.navigation.navigate('TutorWorkSetUp', { uid: this.state.uid });
 	};
 
 	render() {
@@ -59,178 +170,158 @@ class TutorEditProfile extends Component {
 			return <Loading />;
 		}
 		return (
-			<View style={styles.container}>
-				<View style={styles.header}>
-					<Button
-						style={styles.logoutButton}
-						icon={<Icon name="arrow-left" size={15} color="white" />}
-						iconLeft
-						title="Cancel"
-						onPress={this.cancel}
-					/>
-
-					<Text style={styles.editProfileText}>Edit Profile</Text>
-				</View>
-
-				<View style={styles.selfInfo}>
-					<Image
-						style={styles.avatar}
-						source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }}
-					/>
-
-					<View style={styles.info}>
-						<Text style={styles.name}>{this.state.user.name}</Text>
-						<Text style={styles.yearMajor}>
-							{this.state.user.year} / {this.state.user.major.code}
+			<TouchableWithoutFeedback
+				onPress={() => {
+					Keyboard.dismiss();
+				}}
+			>
+				<View style={styles.container}>
+					<View style={styles.nameAvatarContianer}>
+						<Image
+							resizeMode="stretch"
+							style={styles.avatarStyle}
+							source={{
+								uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'
+							}}
+						/>
+						<TextInput
+							style={styles.inputBox}
+							value={this.state.name}
+							placeholderTextColor={primaryColor}
+							onChangeText={(name) => this.setState({ name })}
+						/>
+						<Text style={styles.errorText} adjustsFontSizeToFit={true} numberOfLines={1}>
+							{this.state.nameError}
 						</Text>
-						<View style={styles.rating}>
-							<Text style={styles.ratingText}>Rating</Text>
-							<View style={styles.ratingStars}>
-								<Stars
-									default={4.5}
-									count={5}
-									starSize={10000}
-									fullStar={<Icon name={'star'} style={[ styles.myStarStyle ]} />}
-									emptyStar={
-										<Icon
-											name={'star-outline'}
-											style={[ styles.myStarStyle, styles.myEmptyStarStyle ]}
-										/>
-									}
-									halfStar={<Icon name={'star-half'} style={[ styles.myStarStyle ]} />}
-								/>
-							</View>
-						</View>
+					</View>
+					<View style={styles.yearMajorContainer}>
+						<Dropdown
+							items={this.years}
+							getSelectedItem={(i) => {
+								this.setState({ year: i.value });
+							}}
+							modalHeaderText={'Update your year'}
+							intitalValue={this.state.year}
+							renderItemTextFunc={(item) => item.name}
+							touchableStyle={styles.yearDropdown}
+							containerStyle={styles.dropdownContainer}
+						/>
+						<Text style={{ fontSize: 30, marginTop: '2%' }}> / </Text>
+						<SearchableDropdown
+							items={this.majors}
+							getSelectedItem={(item) => {
+								this.setState({ major: { name: item.name, code: item.code } });
+							}}
+							modalHeaderText={'Update your major'}
+							intitalValue={this.state.major.code}
+							touchableStyle={styles.majorDropdown}
+							containerStyle={styles.dropdownContainer}
+						/>
+					</View>
+					<View style={styles.bioContianer}>
+						<Text style={styles.textInputHeadingText}>Bio</Text>
+						<TextInput
+							style={styles.bioInputBox}
+							value={this.state.bio}
+							placeholderTextColor={primaryColor}
+							onChangeText={(bio) => this.setState({ bio })}
+							placeholder="Fight on!"
+							multiline={true}
+							maxLength={500}
+						/>
+					</View>
+					<View style={styles.classesContainer}>
+						<MultiSelectSearchableDropdown
+							items={this.classes}
+							selected={this.state.classes}
+							getSelectedItem={(item) => {
+								this.setState({ major: { name: item.name, code: item.code } });
+							}}
+							modalHeaderText={'Please select all the classes you would like to tutor for'}
+							intitalValue={'Computer Science'}
+							dropdownTitle={'Classes'}
+							doneFunc={(selected) => {
+								this.setState({ classes: selected });
+							}}
+						/>
 					</View>
 				</View>
-
-				<View style={styles.bioContainer}>
-					<Text style={styles.bio}>{this.state.user.bio}</Text>
-				</View>
-
-				<View style={styles.stats} />
-
-				<View style={styles.classes}>
-					<FlatList
-						data={this.state.user.classes}
-						renderItem={this.renderItem}
-						keyExtractor={(item, index) => index.toString()}
-					/>
-				</View>
-
-				<View style={styles.work}>
-					<Button style={styles.workButton} title="Save" onPress={this.save} />
-				</View>
-
-				<View style={styles.navbar} />
-			</View>
+			</TouchableWithoutFeedback>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
-	activity: {
-		flex: 1,
-		alignContent: 'center',
-		paddingTop: '100%'
-	},
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		paddingTop: 40
-	},
-	header: {
-		flex: 1,
-		flexDirection: 'row',
-		backgroundColor: 'green'
-	},
-	logoutButton: {
-		alignSelf: 'flex-start'
-	},
-	editProfileText: {
-		fontSize: 40
-	},
-	editProfile: {
-		alignSelf: 'flex-end'
-	},
-	selfInfo: {
-		flex: 3,
-		backgroundColor: 'black',
-		flexDirection: 'row'
-	},
-	avatar: {
-		borderRadius: 63,
-		borderWidth: 4,
-		borderColor: secondaryColor,
-		flex: 1,
-		height: '90%',
-		alignSelf: 'center'
-	},
-	info: {
-		flex: 1,
-		flexDirection: 'column',
-		alignSelf: 'center'
-	},
-	name: {
-		fontSize: 28,
-		color: '#696969',
-		fontWeight: '600'
-	},
-	yearMajor: {
-		fontSize: 28,
-		color: '#696969',
-		fontWeight: '600'
-	},
-	bioContainer: {
-		flex: 2
-	},
-	bio: {
-		fontSize: 30
-	},
-	rating: {
-		flexDirection: 'row'
-	},
-	ratingText: {
-		fontSize: 20,
-		color: secondaryColor
-	},
-	ratingStars: {
-		alignSelf: 'center',
-		marginLeft: 5
-	},
-	myStarStyle: {
-		color: 'yellow',
-		backgroundColor: 'transparent',
-		textShadowColor: 'black',
-		textShadowRadius: 2
-	},
-	myEmptyStarStyle: {
-		color: secondaryColor
-	},
-	stats: {
-		flex: 4,
-		backgroundColor: 'yellow'
-	},
-	classes: {
-		flex: 5,
-		backgroundColor: 'blue',
+		backgroundColor: primaryColor,
 		alignItems: 'stretch'
 	},
-	classRow: {
-		height: 60,
-		marginBottom: 5,
-		backgroundColor: 'skyblue'
+	nameAvatarContianer: {
+		flex: 1.75,
+		justifyContent: 'space-around'
 	},
-	classText: {
-		fontSize: 50
+	yearMajorContainer: {
+		flex: 0.75,
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
-	work: {
+	bioContianer: {
 		flex: 1,
-		backgroundColor: 'purple'
+		alignItems: 'center'
 	},
-	navbar: {
-		flex: 1,
-		backgroundColor: 'red'
+	classesContainer: {
+		flex: 3
+	},
+	dropdownContainer: {
+		width: '10%'
+	},
+	majorDropdown: {
+		width: '40%',
+		alignSelf: 'flex-start'
+	},
+	yearDropdown: {
+		width: '40%',
+		alignSelf: 'flex-end'
+	},
+	avatarStyle: {
+		height: '85%',
+		borderRadius: 75,
+		borderWidth: 4,
+		borderColor: secondaryColor,
+		alignSelf: 'center',
+		aspectRatio: 1
+	},
+	inputBox: {
+		width: '70%',
+		height: '25%',
+		fontSize: 35,
+		marginTop: 25,
+		backgroundColor: secondaryColor,
+		borderColor: secondaryColor,
+		borderRadius: 5,
+		borderWidth: 2,
+		textAlign: 'center',
+		alignSelf: 'center'
+	},
+	textInputHeadingText: {
+		fontSize: 20,
+		color: secondaryColor,
+		fontWeight: 'bold',
+		alignSelf: 'flex-start',
+		marginLeft: '6%'
+	},
+	bioInputBox: {
+		width: '90%%',
+		padding: '3%',
+		height: '60%',
+		fontSize: 16,
+		backgroundColor: secondaryColor,
+		borderColor: secondaryColor,
+		borderRadius: 5,
+		borderWidth: 2,
+		textAlign: 'left'
 	}
 });
 

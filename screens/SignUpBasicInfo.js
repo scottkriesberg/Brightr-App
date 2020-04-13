@@ -195,7 +195,6 @@ class SignUpBasicInfo extends React.Component {
 							items={this.majors}
 							getSelectedItem={(item) => {
 								this.setState({ major: { name: item.name, code: item.code } });
-								console.log(item);
 							}}
 							modalHeaderText={'Please select your major'}
 							intitalValue={'Basket Weaving'}

@@ -75,12 +75,23 @@ export class Dropdown extends Component {
 	};
 
 	render() {
-		const { containerStyle, modalStyle, titleStyle, items, dropdownTitle, modalHeaderText } = this.props;
+		const {
+			containerStyle,
+			touchableStyle,
+			modalStyle,
+			titleStyle,
+			items,
+			dropdownTitle,
+			modalHeaderText
+		} = this.props;
 
 		return (
-			<View style={containerStyle || styles.container}>
-				<Text style={titleStyle || styles.dropDownHeaderText}>{dropdownTitle}</Text>
-				<TouchableOpacity style={styles.selectedTouchable} onPress={() => this.togglePicker()}>
+			<View style={[ styles.container, containerStyle ]}>
+				<Text style={[ styles.dropDownHeaderText, titleStyle ]}>{dropdownTitle}</Text>
+				<TouchableOpacity
+					style={[ styles.selectedTouchable, touchableStyle ]}
+					onPress={() => this.togglePicker()}
+				>
 					<Text style={styles.placeHolderText} adjustsFontSizeToFit={true} numberOfLines={1}>
 						{this.state.pickerSelection}
 					</Text>
@@ -125,7 +136,9 @@ export class SearchableDropdown extends Component {
 		modalHeaderText: PropTypes.any,
 		dropdownTitle: PropTypes.any,
 		placeholder: PropTypes.any,
-		intitalValue: PropTypes.any
+		intitalValue: PropTypes.any,
+		touchableStyle: PropTypes.any,
+		containerStyle: PropTypes.any
 	};
 
 	constructor(props) {
@@ -186,12 +199,15 @@ export class SearchableDropdown extends Component {
 	};
 
 	render() {
-		const { dropdownTitle, modalHeaderText } = this.props;
+		const { dropdownTitle, touchableStyle, containerStyle } = this.props;
 
 		return (
-			<View style={styles.container}>
+			<View style={[ containerStyle, styles.container ]}>
 				<Text style={styles.dropDownHeaderText}>{dropdownTitle}</Text>
-				<TouchableOpacity style={styles.selectedTouchable} onPress={() => this.togglePicker()}>
+				<TouchableOpacity
+					style={[ styles.selectedTouchable, touchableStyle ]}
+					onPress={() => this.togglePicker()}
+				>
 					<Text style={styles.placeHolderText} adjustsFontSizeToFit={true} numberOfLines={2}>
 						{this.state.pickerSelection}
 					</Text>
@@ -242,14 +258,15 @@ export class MultiSelectSearchableDropdown extends Component {
 		dropdownTitle: PropTypes.any,
 		placeholder: PropTypes.any,
 		intitalValue: PropTypes.any,
-		doneFunc: PropTypes.Func
+		doneFunc: PropTypes.Func,
+		selected: PropTypes.any
 	};
 
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			selected: [],
+			selected: this.props.selected ? this.props.selected : [],
 			pickerDisplayed: false,
 			data: this.props.items,
 			searchVaule: ''
@@ -436,7 +453,7 @@ const styles = StyleSheet.create({
 	},
 	multiSelectedTouchable: {
 		backgroundColor: secondaryColor,
-		borderRadius: 15,
+		borderRadius: 5,
 		width: '90%',
 		height: '95%',
 		justifyContent: 'center',
@@ -452,7 +469,7 @@ const styles = StyleSheet.create({
 		width: '100%'
 	},
 	selectedRow: {
-		borderRadius: 15,
+		borderRadius: 5,
 		borderWidth: 1,
 		backgroundColor: primaryColor,
 		width: 120,
@@ -464,7 +481,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingVertical: 10,
 		marginVertical: 5,
-		borderRadius: 15,
+		borderRadius: 5,
 		borderWidth: 1,
 		backgroundColor: primaryColor,
 		paddingHorizontal: '3%',
@@ -483,7 +500,7 @@ const styles = StyleSheet.create({
 		height: 35,
 		paddingVertical: 8,
 		marginVertical: 2,
-		borderRadius: 15,
+		borderRadius: 5,
 		borderWidth: 1,
 		backgroundColor: primaryColor,
 		width: '100%',
@@ -511,7 +528,7 @@ const styles = StyleSheet.create({
 	multiSearchBar: {
 		width: '90%',
 		height: 35,
-		borderRadius: 15,
+		borderRadius: 5,
 		borderWidth: 1,
 		borderColor: 'black',
 		paddingLeft: '2%'
@@ -545,7 +562,7 @@ const styles = StyleSheet.create({
 	},
 	modalView: {
 		margin: '5%',
-		borderRadius: 15,
+		borderRadius: 5,
 		borderWidth: 1,
 		padding: 20,
 		backgroundColor: '#efefef',
@@ -561,7 +578,7 @@ const styles = StyleSheet.create({
 	},
 	selectedTouchable: {
 		backgroundColor: secondaryColor,
-		borderRadius: 15,
+		borderRadius: 5,
 		width: 200,
 		height: '50%',
 		justifyContent: 'center'
@@ -575,7 +592,7 @@ const styles = StyleSheet.create({
 		height: 35,
 		paddingHorizontal: '1%',
 		marginVertical: '1%',
-		borderRadius: 15,
+		borderRadius: 5,
 		borderWidth: 1,
 		backgroundColor: primaryColor,
 		width: '100%',
@@ -594,7 +611,7 @@ const styles = StyleSheet.create({
 		width: '100%'
 	},
 	cancelModalButton: {
-		borderRadius: 15,
+		borderRadius: 5,
 		borderWidth: 1,
 		borderColor: primaryColor,
 		height: '90%',
@@ -615,7 +632,7 @@ const styles = StyleSheet.create({
 	searchBar: {
 		width: '90%',
 		height: 35,
-		borderRadius: 15,
+		borderRadius: 5,
 		borderWidth: 1,
 		borderColor: 'black',
 		paddingLeft: '2%'
@@ -628,7 +645,7 @@ const styles = StyleSheet.create({
 	},
 	searchModalView: {
 		margin: '5%',
-		borderRadius: 15,
+		borderRadius: 5,
 		borderWidth: 1,
 		padding: 20,
 		backgroundColor: '#efefef',

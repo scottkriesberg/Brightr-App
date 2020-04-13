@@ -61,7 +61,6 @@ export class ProfileTopBar extends Component {
 	static props = {
 		containerStyle: PropTypes.any,
 		editFunc: PropTypes.any,
-		logoutFunction: PropTypes.any,
 		name: PropTypes.any,
 		switchAccountFunc: PropTypes.Func,
 		switchText: PropTypes.any

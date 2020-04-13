@@ -16,6 +16,11 @@ class TutorHome extends Component {
 		};
 	}
 
+	static navigationOptions = {
+		headerShown: false,
+		title: ''
+	};
+
 	componentDidMount() {
 		this.state.uid = userUid;
 		const ref = firebase.firestore().collection('tutors').doc(this.state.uid);
@@ -133,9 +138,14 @@ class TutorHome extends Component {
 						logoutFunction={this.logout}
 						switchAccountFunc={this.toStudentAccount}
 						switchText={'Switch to Student'}
+						// editFunc={this.toEditPage}
 					/>
 				) : (
-					<ProfileTopBar containerStyle={styles.profileHeaderContainer} logoutFunction={this.logout} />
+					<ProfileTopBar
+						containerStyle={styles.profileHeaderContainer}
+						logoutFunction={this.logout}
+						editFunc={this.toEditPage}
+					/>
 				)}
 				<ProfileHeadingInfo
 					rating={this.state.user.rating}

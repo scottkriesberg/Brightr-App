@@ -3,6 +3,7 @@ import { View, TextInput, StyleSheet, TouchableOpacity, Text, TouchableWithoutFe
 import { MultiSelectSearchableDropdown } from './components/dropdown';
 
 import firebase from '../firebase';
+import { Button } from './components/buttons';
 
 class SignUpBasicInfo extends React.Component {
 	handleSignUp = () => {
@@ -31,6 +32,7 @@ class SignUpBasicInfo extends React.Component {
 							numRatings: 0
 						})
 						.then(() => {
+							userUid = result.user.uid;
 							this.props.navigation.navigate('StudentNavigator', { uid: result.user.uid });
 						})
 						.catch(function(error) {
@@ -61,6 +63,7 @@ class SignUpBasicInfo extends React.Component {
 						})
 						.then(() => {
 							if (!basicInfo.student) {
+								userUid = result.user.uid;
 								this.props.navigation.navigate('TutorNavigator', { uid: result.user.uid });
 							}
 						})
@@ -210,11 +213,7 @@ class SignUpBasicInfo extends React.Component {
 						/>
 					</View>
 					<View style={styles.buttonContainer}>
-						<TouchableOpacity style={styles.button} onPress={() => this.validate()}>
-							<Text style={styles.buttonText} adjustsFontSizeToFit={true} numberOfLines={1}>
-								Sign Up
-							</Text>
-						</TouchableOpacity>
+						<Button type={'secondary'} text={'Sign Up'} onPress={() => this.validate()} />
 					</View>
 				</View>
 			</TouchableWithoutFeedback>
@@ -288,9 +287,6 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		color: primaryColor,
 		textAlign: 'center'
-	},
-	buttonSignup: {
-		fontSize: 12
 	},
 	errorText: {
 		color: 'red',

@@ -30,6 +30,7 @@ class StudentMap extends Component {
 		};
 		this.filter = this.filter.bind(this);
 	}
+
 	toggleFilterWindow = () => {
 		this.setState({ isFilterVisable: !this.state.isFilterVisable });
 	};
@@ -55,7 +56,8 @@ class StudentMap extends Component {
 	}
 
 	static navigationOptions = {
-		headerShown: false
+		headerShown: false,
+		title: ''
 	};
 
 	applyFilter = () => {

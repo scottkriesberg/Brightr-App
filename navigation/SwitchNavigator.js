@@ -157,10 +157,24 @@ const TutorRequestNavigator = createStackNavigator(
 	}
 );
 
-const TutorTabNavigator = createBottomTabNavigator(
+const TutorProfiletNavigator = createStackNavigator(
 	{
 		TutorProfile: {
-			screen: TutorProfile,
+			screen: TutorProfile
+		},
+		TutorEditProfile: {
+			screen: TutorEditProfile
+		}
+	},
+	{
+		initialRouteName: 'TutorProfile'
+	}
+);
+
+const TutorTabNavigator = createBottomTabNavigator(
+	{
+		TutorProfiletNavigator: {
+			screen: TutorProfiletNavigator,
 			navigationOptions: {
 				tabBarLabel: 'Profile',
 				tabBarIcon: ({ tintColor }) => <Icon name="user" type="font-awesome" color={tintColor} />
