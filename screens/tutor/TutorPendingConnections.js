@@ -181,7 +181,6 @@ class TutorPendingConnections extends Component {
 						placeholder="Search student name"
 						onChangeText={(text) => this.searchFilterFunction(text)}
 						value={this.state.searchText}
-						autoFocus={true}
 					/>
 				</View>
 				<View style={styles.connectList}>

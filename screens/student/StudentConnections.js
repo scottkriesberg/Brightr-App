@@ -206,7 +206,6 @@ class StudentConnections extends Component {
 						placeholder="Search tutor name"
 						onChangeText={(text) => this.searchFilterFunction(text)}
 						value={this.state.searchText}
-						autoFocus={true}
 					/>
 				</View>
 				<View style={styles.connectList}>
@@ -253,10 +252,10 @@ const styles = StyleSheet.create({
 		color: primaryColor
 	},
 	addConnection: {
-		paddingHorizontal: '15%'
+		paddingHorizontal: '10%'
 	},
 	pendingConnection: {
-		paddingHorizontal: '15%'
+		paddingHorizontal: '10%'
 	},
 	searchBar: {
 		width: '90%',

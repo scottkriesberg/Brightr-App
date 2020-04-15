@@ -88,7 +88,7 @@ class Login extends React.Component {
 				}}
 			>
 				<SafeAreaView style={styles.screenContainer}>
-					<Button
+					{/* <Button
 						text={'to student'}
 						onPress={() => {
 							userUid = 'ocyNQp4r0vfcC13YE56iAzckTke2';
@@ -105,7 +105,7 @@ class Login extends React.Component {
 								uid: 'XrwNEbLvWgPVXd1AuKq5sjFtBBB3'
 							});
 						}}
-					/>
+					/> */}
 					<View style={styles.titleContainer}>
 						<Image style={styles.logoImage} source={logo} />
 						<Text h1 style={styles.title}>
