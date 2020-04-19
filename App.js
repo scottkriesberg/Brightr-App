@@ -3,7 +3,7 @@ import SwitchNavigator from "./navigation/SwitchNavigator";
 import { decode, encode } from "base-64";
 import "./screens/components/global";
 import { Provider } from "react-redux";
-import { store } from "./redux/app-redux";
+import store from "./redux/store";
 global.crypto = require("@firebase/firestore");
 global.crypto.getRandomValues = (byteArray) => {
   for (let i = 0; i < byteArray.length; i++) {
