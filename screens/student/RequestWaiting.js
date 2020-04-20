@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native-elements';
-import { Alert, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Alert, StyleSheet, View, Image } from 'react-native';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 import { Button } from '../components/buttons';
+import { Icon } from 'react-native-elements';
+const FaceLogo = require('../../assets/FaceLogo.png');
 
 export default class TutorPreview extends Component {
 	constructor() {
@@ -101,10 +103,14 @@ export default class TutorPreview extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				{/* <View style={styles.holdTextContainer}>
-					<Text style={styles.holdText}>Please hold while your tutor responds</Text>
-				</View> */}
+				<View style={styles.iconBackground}>
+					<Image source={FaceLogo} style={styles.face} />
+					<Icon name="check" type="font-awesome" color="white" size={50} containerStyle={styles.checkMark} />
+				</View>
 				<Loading />
+				<View style={styles.holdTextContainer}>
+					<Text style={styles.holdText}>You will be notified once your tutor responds to your request.</Text>
+				</View>
 				<Button text={'Cancel Request'} onPress={this.cancelRequest} />
 			</View>
 		);
@@ -114,10 +120,31 @@ export default class TutorPreview extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		flexDirection: 'column-reverse',
+		flexDirection: 'column',
 		alignItems: 'center',
 		alignContent: 'stretch',
 		paddingBottom: '5%'
+	},
+	iconBackground: {
+		backgroundColor: primaryColor,
+		borderRadius: 150,
+		borderColor: accentColor,
+		borderWidth: 5,
+		height: '25%',
+		width: '40%',
+		alignItems: 'center',
+		justifyContent: 'center',
+		// position: 'absolute',
+		top: '20%'
+	},
+	face: {
+		top: 25
+	},
+	checkMark: {
+		position: 'relative',
+		left: 55,
+		backgroundColor: accentColor,
+		borderRadius: 25
 	},
 	live: {
 		marginTop: 5,
@@ -144,6 +171,8 @@ const styles = StyleSheet.create({
 	},
 	holdText: {
 		fontSize: 20,
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+		textAlign: 'center'
+		// top: '40%'
 	}
 });
