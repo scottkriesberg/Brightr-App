@@ -48,6 +48,8 @@ class Login extends React.Component {
               const currUser = {
                 uid: user.user.uid,
                 email: user.user.email,
+                type: "student",
+                userData: doc.data(),
               };
               this.props.setUser(currUser);
               this.props.navigation.navigate("StudentNavigator", {
@@ -65,6 +67,8 @@ class Login extends React.Component {
                     const currUser = {
                       uid: user.user.uid,
                       email: user.user.email,
+                      type: "tutor",
+                      userData: doc.data(),
                     };
                     this.props.setUser(currUser);
                     this.props.navigation.navigate("TutorNavigator", {
