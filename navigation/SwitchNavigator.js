@@ -9,6 +9,17 @@ import SignUpBioClasses from '../screens/SignUpBioClasses';
 import StudentProfile from '../screens/student/StudentProfile';
 import StudentMap from '../screens/student/StudentMap';
 import StudentActiveRequests from '../screens/student/StudentActiveRequests';
+import StudentConnections from '../screens/student/StudentConnections';
+import TutorConnections from '../screens/tutor/TutorConnections';
+import StudentConnectionPreview from '../screens/tutor/StudentConnectionPreview';
+// import TutorAddConnections from '../screens/tutor/tutorAddConnections';
+import TutorPendingConnections from '../screens/tutor/TutorPendingConnections';
+import TutorPendingConnectionPreview from '../screens/tutor/TutorPendingConnectionPreview';
+import TutorConnectedPreview from '../screens/student/TutorConnectedPreview';
+import AddConnectionPreview from '../screens/student/AddConnectionPreview';
+import AddConnections from '../screens/student/AddConnections';
+import PendingConnections from '../screens/student/PendingConnections';
+import PendingConnectionPreview from '../screens/student/PendingConnectionPreview';
 import TutorPreview from '../screens/student/tutorPreview';
 import RequestWaiting from '../screens/student/RequestWaiting';
 import StudentChat from '../screens/student/StudentChat';
@@ -68,6 +79,32 @@ const StudentLiveNavigator = createStackNavigator(
 	}
 );
 
+const StudentConnectionsNavigator = createStackNavigator(
+	{
+		StudentConnections: {
+			screen: StudentConnections
+		},
+		TutorConnectedPreview: {
+			screen: TutorConnectedPreview
+		},
+		AddConnections: {
+			screen: AddConnections
+		},
+		AddConnectionPreview: {
+			screen: AddConnectionPreview
+		},
+		PendingConnections: {
+			screen: PendingConnections
+		},
+		PendingConnectionPreview: {
+			screen: PendingConnectionPreview
+		}
+	},
+	{
+		initialRouteName: 'StudentConnections'
+	}
+);
+
 const StudentTabNavigator = createBottomTabNavigator(
 	{
 		StudentProfile: {
@@ -118,6 +155,14 @@ const StudentTabNavigator = createBottomTabNavigator(
 						</View>
 					);
 				},
+				lazy: false
+			}
+		},
+		StudentConnectionsNavigator: {
+			screen: StudentConnectionsNavigator,
+			navigationOptions: {
+				tabBarLabel: 'Connections',
+				tabBarIcon: ({ tintColor }) => <Icon name="users" type="font-awesome" color={tintColor} />,
 				lazy: false
 			}
 		}
@@ -171,6 +216,32 @@ const TutorProfiletNavigator = createStackNavigator(
 	}
 );
 
+const TutorConnectionsNavigator = createStackNavigator(
+	{
+		TutorConnections: {
+			screen: TutorConnections
+		},
+		StudentConnectionPreview: {
+			screen: StudentConnectionPreview
+		},
+		// TutorAddConnections: {
+		// 	screen: TutorAddConnections
+		// },
+		TutorPendingConnections: {
+			screen: TutorPendingConnections
+		},
+		TutorPendingConnectionPreview: {
+			screen: TutorPendingConnectionPreview
+		}
+		// PendingConnectionPreview: {
+		// 	screen: PendingConnectionPreview
+		// }
+	},
+	{
+		initialRouteName: 'TutorConnections'
+	}
+);
+
 const TutorTabNavigator = createBottomTabNavigator(
 	{
 		TutorProfiletNavigator: {
@@ -192,6 +263,14 @@ const TutorTabNavigator = createBottomTabNavigator(
 			navigationOptions: {
 				tabBarLabel: 'Requests',
 				tabBarIcon: ({ tintColor }) => <Icon name="lightbulb-o" type="font-awesome" color={tintColor} />
+			}
+		},
+		TutorConnectionsNavigator: {
+			screen: TutorConnectionsNavigator,
+			navigationOptions: {
+				tabBarLabel: 'Connections',
+				tabBarIcon: ({ tintColor }) => <Icon name="users" type="font-awesome" color={tintColor} />,
+				lazy: false
 			}
 		}
 	},
