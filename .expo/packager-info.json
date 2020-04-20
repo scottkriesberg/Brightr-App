@@ -3,8 +3,8 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://mz-8rx.anonymous.lavalab-project.exp.direct",
+  "packagerNgrokUrl": "https://packager.mz-8rx.anonymous.lavalab-project.exp.direct",
+  "ngrokPid": 81903,
   "webpackServerPort": null
 }
