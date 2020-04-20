@@ -14,6 +14,7 @@ import { Button } from "./components/buttons";
 import { SET_USER } from "../redux/types";
 import { connect } from "react-redux";
 import { setUser } from "../redux/actions/userAction";
+import store from "../redux/store";
 const logo = require("../assets/logo-09.png");
 
 //This allows us to dispatch the action through props in component
@@ -29,6 +30,7 @@ class Login extends React.Component {
     if (!this.validate()) {
       return;
     }
+
     const { email, password } = this.state;
     firebase
       .auth()
@@ -99,7 +101,9 @@ class Login extends React.Component {
     loginError: "",
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    console.log(store.getState());
+  }
 
   static navigationOptions = {
     headerShown: false,

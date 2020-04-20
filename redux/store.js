@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, combineReducers, compose } from "redux";
-import { SET_USER } from "./types";
+import { SET_USER, CLEAR_USER } from "./types";
 import thunk from "redux-thunk";
 const middleWare = [thunk];
 //Initial state
@@ -15,6 +15,13 @@ const reducer = (state = initialState, action) => {
         authenticated: true,
         user: action.user,
       };
+    case CLEAR_USER: {
+      return {
+        ...state,
+        authenticated: false,
+        user: {},
+      };
+    }
 
     default:
       return state;

@@ -7,8 +7,20 @@ import {
   ProfileClasses,
 } from "../components/profile";
 import Loading from "../components/utils";
+import { clearUser } from "../../redux/actions/userAction";
+import { connect } from "react-redux";
 import store from "../../redux/store";
-export default class Profile extends Component {
+
+//This allows us to dispatch the action through props in component
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearUser: () => {
+      console.log("Made the redux call");
+      dispatch(clearUser());
+    },
+  };
+};
+class Profile extends Component {
   constructor() {
     super();
     this.state = {
@@ -53,6 +65,7 @@ export default class Profile extends Component {
   }
 
   logout = () => {
+    this.props.clearUser();
     this.props.navigation.navigate("Login");
   };
 
@@ -101,6 +114,8 @@ export default class Profile extends Component {
     );
   }
 }
+
+export default connect(null, mapDispatchToProps)(Profile);
 
 const styles = StyleSheet.create({
   basicInfoContainer: {
