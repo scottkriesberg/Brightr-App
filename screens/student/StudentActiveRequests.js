@@ -19,7 +19,8 @@ class StudentActiveRequests extends Component {
 	}
 
 	static navigationOptions = {
-		headerShown: false
+		headerShown: false,
+		title: ''
 	};
 
 	renderItem = ({ item }) => {
@@ -33,7 +34,9 @@ class StudentActiveRequests extends Component {
 					this.props.navigation.navigate(screenNav, {
 						uid: this.state.uid,
 						tutorUid: item.tutorUid,
-						requestUid: item.id
+						requestUid: item.id,
+						tutorImage: 'https://bootdey.com/img/Content/avatar/avatar6.png',
+						tutorName: item.tutorInfo.name
 					})}
 			>
 				<View style={styles.requestInfo}>

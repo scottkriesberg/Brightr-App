@@ -332,7 +332,9 @@ const styles = StyleSheet.create({
 	},
 	sliderText: {
 		fontSize: 20,
-		textAlign: 'justify'
+		textAlign: 'justify',
+		width: '85%',
+		top: 10
 	},
 	pickerContainer: {
 		flex: 2,
