@@ -15,7 +15,6 @@ import store from "../../redux/store";
 const mapDispatchToProps = (dispatch) => {
   return {
     clearUser: () => {
-      console.log("Made the redux call");
       dispatch(clearUser());
     },
   };
@@ -74,6 +73,7 @@ class Profile extends Component {
   };
 
   toTutorAccount = () => {
+    //TODO: Need to set up switching to tutor profile on redux
     this.props.navigation.navigate("TutorNavigator", { uid: this.state.uid });
   };
 

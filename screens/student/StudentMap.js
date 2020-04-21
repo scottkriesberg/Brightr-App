@@ -159,6 +159,7 @@ class StudentMap extends Component {
     // 	.dangerouslyGetParent()
     // 	.getParam('uid');
     // this.state.uid = userUid;
+    console.log(store.getState());
     const userCreds = store.getState().user;
     this.setState({
       uid: userCreds.uid,
