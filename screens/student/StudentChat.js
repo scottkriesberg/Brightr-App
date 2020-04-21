@@ -7,7 +7,10 @@ import Fire from 'firebase';
 import Loading from '../components/utils.js';
 import { ChatHeader, StartWaiting } from '../components/chat';
 import { ProfileIcon } from '../components/profile';
+<<<<<<< HEAD
 import store from '../../redux/store';
+=======
+>>>>>>> a5ac56795845edc530708f618a91994d805208f2
 
 export default class Chat extends React.Component {
 	constructor() {
