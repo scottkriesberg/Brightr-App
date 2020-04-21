@@ -9,12 +9,20 @@ import store from '../../redux/store';
 
 //This allows us to dispatch the action through props in component
 const mapDispatchToProps = (dispatch) => {
+<<<<<<< HEAD
 	return {
 		clearUser: () => {
 			console.log('Made the redux call');
 			dispatch(clearUser());
 		}
 	};
+=======
+  return {
+    clearUser: () => {
+      dispatch(clearUser());
+    },
+  };
+>>>>>>> Small debug statements added along with some todos to polish redux flow. Going to start chipping at switching between tutor and student.
 };
 class Profile extends Component {
 	constructor() {
@@ -64,9 +72,16 @@ class Profile extends Component {
 		this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
 	};
 
+<<<<<<< HEAD
 	toTutorAccount = () => {
 		this.props.navigation.navigate('TutorNavigator', { uid: this.state.uid });
 	};
+=======
+  toTutorAccount = () => {
+    //TODO: Need to set up switching to tutor profile on redux
+    this.props.navigation.navigate("TutorNavigator", { uid: this.state.uid });
+  };
+>>>>>>> Small debug statements added along with some todos to polish redux flow. Going to start chipping at switching between tutor and student.
 
 	render() {
 		if (this.state.isLoading) {

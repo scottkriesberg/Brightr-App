@@ -87,6 +87,7 @@ class StudentMap extends Component {
 		);
 	};
 
+<<<<<<< HEAD
 	componentDidMount() {
 		const userCreds = store.getState().user;
 		this.setState({
@@ -104,6 +105,43 @@ class StudentMap extends Component {
 			}
 		});
 	}
+=======
+  componentDidMount() {
+    // console.log(this.props.navigation.dangerouslyGetParent().dangerouslyGetParent().getParam('uid'));
+    // this.state.uid = this.props.navigation.dangerouslyGetParent().getParam('uid', 'ocyNQp4r0vfcC13YE56iAzckTke2');
+    // this.state.uid = this.props.navigation
+    // 	.dangerouslyGetParent()
+    // 	.dangerouslyGetParent()
+    // 	.dangerouslyGetParent()
+    // 	.getParam('uid');
+    // this.state.uid = userUid;
+    console.log(store.getState());
+    const userCreds = store.getState().user;
+    this.setState({
+      uid: userCreds.uid,
+    });
+    firebase
+      .firestore()
+      .collection("students")
+      .doc(userCreds.uid)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          this.setState({
+            user: doc.data(),
+          });
+          this.ref = this.ref.where(
+            "classesArray",
+            "array-contains-any",
+            this.state.user.classesArray
+          );
+          this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+        } else {
+          console.log("No such document!");
+        }
+      });
+  }
+>>>>>>> Small debug statements added along with some todos to polish redux flow. Going to start chipping at switching between tutor and student.
 
 	componentWillUnmount() {
 		this.unsubscribe();
