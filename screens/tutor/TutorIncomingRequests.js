@@ -154,7 +154,13 @@ class TutorIncomingRequests extends Component {
 				status: 'accepted'
 			})
 			.then(() => {
-				this.props.navigation.navigate('TutorChat', { tutorUid: this.state.uid, requestUid: item.id });
+				this.props.navigation.navigate('TutorChat', {
+					tutorUid: this.state.uid,
+					studentUid: item.studentUid,
+					requestUid: item.id,
+					studentImage: 'https://bootdey.com/img/Content/avatar/avatar6.png',
+					studentName: item.studentInfo.name
+				});
 			});
 	};
 

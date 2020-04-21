@@ -9,6 +9,7 @@ class StudentInProgress extends Component {
 		super();
 		this.ref = firebase.firestore().collection('students');
 		this.sessionRef = firebase.firestore().collection('sessions');
+		this.currentSessionRef = firebase.firestore().collection('sessions');
 		this.unsubscribe = null;
 		this.state = {
 			uid: '',
@@ -73,7 +74,8 @@ class StudentInProgress extends Component {
 	}
 
 	componentDidMount() {
-		this.state.uid = this.props.navigation.getParam('uid', '');
+		this.state.uid = userUid;
+		// this.state.uid = this.props.navigation.getParam('uid', '');
 		this.sessionRef = this.sessionRef
 			.where('studentUid', '==', this.state.uid)
 			.where('status', '==', 'in progress');
@@ -135,7 +137,7 @@ class StudentInProgress extends Component {
 			this.state.session = doc.data();
 			if (doc.data().status == 'in progress') {
 				this.sessionUid = doc.id;
-				this.sessionRef = firebase.firestore().collection('sessions').doc(doc.id);
+				this.currentSessionRef = firebase.firestore().collection('sessions').doc(doc.id);
 				if (doc.data().studentDone) {
 					this.setState({ waitingModalVisible: true });
 				}
@@ -146,7 +148,7 @@ class StudentInProgress extends Component {
 						'Time: ' + Math.round(sessionTime / 60000) + ' minutes \n' + ' Cost: $' + sessionCost;
 					this.setState({ sessionRecap: sessionRecap });
 					this.setState({ waitingModalVisible: false, ratingModalVisible: false, recapModalVisible: true });
-					this.sessionRef
+					this.currentSessionRef
 						.update({
 							tutorRating: this.state.rating,
 							sessionTime: sessionTime,
@@ -188,9 +190,10 @@ class StudentInProgress extends Component {
 							Alert.alert('No Rating', 'Please rate your tutor', [ { text: 'OK' } ], {
 								cancelable: false
 							});
+							console.log(this.currentSessionRef);
 							return;
 						}
-						this.sessionRef.update({ studentDone: true }).then(() => {
+						this.currentSessionRef.update({ studentDone: true }).then(() => {
 							this.setState({ ratingModalVisible: false });
 						});
 					}}
@@ -202,7 +205,7 @@ class StudentInProgress extends Component {
 				<WaitingModal
 					visible={this.state.waitingModalVisible}
 					dismissFunc={() => {
-						this.sessionRef.update({ studentDone: false }).then(() => {
+						this.currentSessionRef.update({ studentDone: false }).then(() => {
 							this.setState({ ratingModalVisible: false });
 							this.setState({ waitingModalVisible: false });
 						});
