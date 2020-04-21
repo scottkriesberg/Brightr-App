@@ -4,6 +4,43 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
 import { Button } from './buttons';
 
+export class ProfileIcon extends Component {
+	static props = {
+		containerStyle: PropTypes.any,
+		textStyle: PropTypes.any,
+		imageStyle: PropTypes.any,
+		name: PropTypes.any,
+		image: PropTypes.any,
+		uid: PropTypes.any
+	};
+	render() {
+		return (
+			<View
+				style={[
+					this.props.containerStyle,
+					{ flex: 1, flexDirection: 'coloumn', justifyContent: 'center', alignItems: 'center' }
+				]}
+			>
+				<Image
+					resizeMode="stretch"
+					style={[ this.props.imageStyle, { width: 50, height: 50, borderRadius: 25 } ]}
+					source={this.props.image}
+				/>
+				<View
+					style={[
+						this.props.containerStyle,
+						{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }
+					]}
+				>
+					<Text style={[ this.props.textStyle, { fontSize: 15, color: 'black', textAlign: 'center' } ]}>
+						{this.props.name}
+					</Text>
+				</View>
+			</View>
+		);
+	}
+}
+
 export class Rating extends Component {
 	static props = {
 		containerStyle: PropTypes.any,

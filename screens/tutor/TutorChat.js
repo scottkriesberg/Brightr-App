@@ -5,6 +5,7 @@ import firebase from '../../firebase';
 import Fire from 'firebase';
 import Loading from '../components/utils.js';
 import { ChatHeader, StartWaiting } from '../components/chat';
+import { ProfileIcon } from '../components/profile';
 
 export default class Chat extends React.Component {
 	constructor() {
@@ -23,16 +24,20 @@ export default class Chat extends React.Component {
 		};
 	}
 
-	static navigationOptions = {
-		title: 'Chat',
-		headerStyle: {
-			backgroundColor: secondaryColor
-		},
-		headerTintColor: primaryColor,
-		headerTitleStyle: {
-			fontWeight: 'bold',
-			fontSize: 20
-		}
+	static navigationOptions = ({ navigation }) => {
+		const { params = {} } = navigation.state;
+		return {
+			headerTitle: () => <ProfileIcon image={{ uri: params.studentImage }} name={params.studentName} />,
+			headerStyle: {
+				backgroundColor: secondaryColor,
+				height: 115
+			},
+			headerTintColor: primaryColor,
+			headerTitleStyle: {
+				fontWeight: 'bold',
+				fontSize: 40
+			}
+		};
 	};
 
 	getUser() {
@@ -189,6 +194,8 @@ export default class Chat extends React.Component {
 				/>
 				<ChatHeader startFunction={this.start} cancelFunction={this.cancel} />
 				<GiftedChat
+					textInputStyle={styles.chatTextInput}
+					scrollToBottomStyle={styles.chatBottom}
 					messages={this.state.messages}
 					onSend={(messages) => this.onSend(messages)}
 					user={this.getUser()}
@@ -204,6 +211,10 @@ const styles = StyleSheet.create({
 	},
 	chatView: {
 		flex: 1
+	},
+	chatTextInput: {},
+	chatBottom: {
+		backgroundColor: 'yellow'
 	},
 	modal: {
 		flex: 1,

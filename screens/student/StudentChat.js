@@ -6,6 +6,7 @@ import firebase from '../../firebase';
 import Fire from 'firebase';
 import Loading from '../components/utils.js';
 import { ChatHeader, StartWaiting } from '../components/chat';
+import { ProfileIcon } from '../components/profile';
 
 export default class Chat extends React.Component {
 	constructor() {
@@ -23,16 +24,20 @@ export default class Chat extends React.Component {
 		};
 	}
 
-	static navigationOptions = {
-		title: 'Chat',
-		headerStyle: {
-			backgroundColor: secondaryColor
-		},
-		headerTintColor: primaryColor,
-		headerTitleStyle: {
-			fontWeight: 'bold',
-			fontSize: 20
-		}
+	static navigationOptions = ({ navigation }) => {
+		const { params = {} } = navigation.state;
+		return {
+			headerTitle: () => <ProfileIcon image={{ uri: params.tutorImage }} name={params.tutorName} />,
+			headerStyle: {
+				backgroundColor: secondaryColor,
+				height: 115
+			},
+			headerTintColor: primaryColor,
+			headerTitleStyle: {
+				fontWeight: 'bold',
+				fontSize: 40
+			}
+		};
 	};
 
 	getUser() {

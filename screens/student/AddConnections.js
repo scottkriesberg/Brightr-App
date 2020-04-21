@@ -8,6 +8,7 @@ import Loading from '../components/utils.js';
 import '../components/global';
 import { TextInput } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
+import { UserBar } from '../components/UserBar';
 class AddConnections extends Component {
 	constructor() {
 		super();
@@ -112,68 +113,15 @@ class AddConnections extends Component {
 			return;
 		}
 		item = item.tutorInfo;
-		var classList = '';
-		for (var i = 0; i < item.classesArray.length; i++) {
-			classList += item.classesArray[i] + ', ';
-		}
-		classList = classList.substring(0, classList.length - 2);
 		return (
-			<TouchableOpacity
-				style={[ ContainerStyles.tutorPreviewContainer ]}
-				onPress={() =>
+			<UserBar
+				onPressFunc={() =>
 					this.props.navigation.navigate('AddConnectionPreview', {
 						tutorUid: id,
 						uid: this.state.uid
 					})}
-			>
-				{/* Different containers needed for image and description for styling */
-				/* Tutor image */}
-				<View>
-					<Image
-						style={ContainerStyles.previewImage}
-						source={{
-							uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'
-						}}
-					/>
-				</View>
-				{/* Tutor Info */}
-				<View
-					style={{
-						flex: 1
-					}}
-				>
-					<Text
-						style={{
-							fontSize: 20
-						}}
-					>
-						{item.name}
-					</Text>
-					<Rating rating={item.rating} />
-					<Text adjustsFontSizeToFit={true} numberOfLines={2}>
-						{item.major.code} / {item.year}
-					</Text>
-				</View>
-				<View
-					style={{
-						flex: 1,
-						alignSelf: 'flex-start',
-						marginTop: '3%',
-						margin: '8%'
-					}}
-				>
-					<Text
-						style={{
-							fontSize: 20
-						}}
-					>
-						Classes
-					</Text>
-					<Text adjustsFontSizeToFit={true} numberOfLines={3}>
-						{classList}
-					</Text>
-				</View>
-			</TouchableOpacity>
+				user={item}
+			/>
 		);
 	};
 
