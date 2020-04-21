@@ -55,9 +55,12 @@ export default class RequestPreview extends Component {
 				status: 'accepted'
 			})
 			.then(() => {
-				this.props.navigation.navigate('TutorIncomingRequests', {
-					uid: this.state.tutorUid,
-					requestUid: this.state.requestUid
+				this.props.navigation.navigate(screenNav, {
+					tutorUid: this.state.uid,
+					studentUid: item.studentUid,
+					requestUid: item.id,
+					studentImage: 'https://bootdey.com/img/Content/avatar/avatar6.png',
+					studentName: item.studentInfo.name
 				});
 			});
 	};
