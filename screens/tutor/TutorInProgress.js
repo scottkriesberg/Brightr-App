@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { View, Alert, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { View, Alert, TouchableOpacity, StyleSheet, Text, Image } from 'react-native';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 import { RatingModal, WaitingModal, RecapModal } from '../components/inProgress';
+import { Button } from '../components/buttons';
+const FaceLogo = require('../../assets/FaceLogo.png');
 
 class TutorInProgress extends Component {
 	constructor() {
@@ -174,23 +176,29 @@ class TutorInProgress extends Component {
 					}}
 					text={'Waiting for student to finish session...'}
 				/>
-				<Text style={styles.heading}>Session Time</Text>
-				<View style={styles.clockContainer}>
-					<View style={styles.clock}>
-						<Text style={styles.child}>{this.padToTwo(this.state.hour) + ' : '}</Text>
-						<Text style={styles.child}>{this.padToTwo(this.state.min) + ' : '}</Text>
-						<Text style={styles.child}>{this.padToTwo(this.state.sec)}</Text>
+				<View style={styles.facesContainer}>
+					<View style={styles.studentFace}>
+						<Image source={FaceLogo} style={styles.face} />
+					</View>
+					<View style={styles.tutorFace}>
+						<Image source={FaceLogo} style={styles.face} />
 					</View>
 				</View>
+				<View style={styles.headerContainer}>
+					<Text style={styles.heading}>Session Time</Text>
+				</View>
+				<View style={styles.clockContainer}>
+					<Text style={styles.child} adjustsFontSizeToFit={true} numberOfLines={1}>
+						{this.padToTwo(this.state.hour) + ' : ' + this.padToTwo(this.state.min)}
+					</Text>
+				</View>
 				<View style={styles.live}>
-					<TouchableOpacity
-						style={styles.liveButton}
+					<Button
+						text={'End Session'}
 						onPress={() => {
 							this.setState({ ratingModalVisible: true });
 						}}
-					>
-						<Text style={styles.liveButtonText}>End Session</Text>
-					</TouchableOpacity>
+					/>
 				</View>
 			</View>
 		);
@@ -207,22 +215,18 @@ const styles = StyleSheet.create({
 	},
 	clockContainer: {
 		flex: 1,
-		justifyContent: 'flex-end'
-	},
-	clock: {
 		flexDirection: 'row',
-		alignSelf: 'center',
-		borderWidth: 1,
-		borderRadius: 125,
-		borderColor: 'black',
 		justifyContent: 'center',
-		backgroundColor: primaryColor,
-		width: 250,
-		height: 250,
 		alignItems: 'center'
 	},
 	child: {
-		fontSize: 35
+		fontSize: 60,
+		fontWeight: 'bold'
+	},
+	headerContainer: {
+		flex: 1,
+		justifyContent: 'flex-end',
+		top: '6%'
 	},
 	heading: {
 		fontSize: 50,
@@ -249,6 +253,35 @@ const styles = StyleSheet.create({
 	liveButtonText: {
 		fontSize: 40,
 		color: secondaryColor
+	},
+	tutorFace: {
+		backgroundColor: accentColor,
+		borderRadius: 150,
+		borderColor: primaryColor,
+		borderWidth: 5,
+		height: 175,
+		width: 175,
+		right: 15,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	studentFace: {
+		backgroundColor: primaryColor,
+		borderRadius: 150,
+		borderColor: accentColor,
+		borderWidth: 5,
+		height: 175,
+		width: 175,
+		left: 15,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	facesContainer: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		top: '25%'
 	}
 });
 
