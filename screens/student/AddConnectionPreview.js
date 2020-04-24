@@ -16,6 +16,7 @@ import Loading from '../components/utils.js';
 import { Dropdown } from '../components/dropdown';
 import { Button } from '../components/buttons';
 import { ProfileTopBar, ProfileHeadingInfo, ProfileClasses } from '../components/profile';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default class AddConnectionPreview extends Component {
 	static navigationOptions = {
@@ -94,38 +95,45 @@ export default class AddConnectionPreview extends Component {
 			return <Loading />;
 		}
 		return (
-			<View style={styles.container}>
-				<ProfileHeadingInfo
-					rating={this.state.tutor.rating}
-					year={this.state.tutor.year}
-					major={this.state.tutor.major.code}
-					gpa={this.state.tutor.gpa}
-					name={this.state.tutor.name}
-					containerStyle={styles.basicInfoContainer}
-					avatarStyle={styles.avatar}
-					image={{
-						uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'
-					}}
-					bio={this.state.tutor.bio}
-				/>
-				<ProfileClasses items={this.state.tutor.classes} />
-				<View style={styles.descriptionContainer}>
-					<TextInput
-						style={styles.description}
-						multiline={true}
-						placeholder="Request Description"
-						onChangeText={(description) => this.setState({ description })}
-						value={this.state.description}
+			<KeyboardAwareScrollView
+				style={{ backgroundColor: '#4c69a5' }}
+				resetScrollToCoords={{ x: 0, y: 0 }}
+				contentContainerStyle={styles.container}
+				scrollEnabled={true}
+			>
+				<View style={styles.container}>
+					<ProfileHeadingInfo
+						rating={this.state.tutor.rating}
+						year={this.state.tutor.year}
+						major={this.state.tutor.major.code}
+						gpa={this.state.tutor.gpa}
+						name={this.state.tutor.name}
+						containerStyle={styles.basicInfoContainer}
+						avatarStyle={styles.avatar}
+						image={{
+							uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'
+						}}
+						bio={this.state.tutor.bio}
 					/>
+					<ProfileClasses items={this.state.tutor.classes} />
+					<View style={styles.descriptionContainer}>
+						<TextInput
+							style={styles.description}
+							multiline={true}
+							placeholder="Request Description"
+							onChangeText={(description) => this.setState({ description })}
+							value={this.state.description}
+						/>
+					</View>
+					<View style={styles.requestContianer}>
+						<Button
+							buttonStyle={{ width: '90%', height: '80%' }}
+							text={'Request Connection'}
+							onPress={this.requestConnection}
+						/>
+					</View>
 				</View>
-				<View style={styles.requestContianer}>
-					<Button
-						buttonStyle={{ width: '90%', height: '80%' }}
-						text={'Request Connection'}
-						onPress={this.requestConnection}
-					/>
-				</View>
-			</View>
+			</KeyboardAwareScrollView>
 		);
 	}
 }

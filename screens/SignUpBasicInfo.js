@@ -4,8 +4,6 @@ import CheckBox from 'react-native-check-box';
 import { Dropdown, SearchableDropdown } from './components/dropdown';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import { SafeAreaView } from 'react-native-safe-area-context';
-
 class SignUpBasicInfo extends React.Component {
 	static navigationOptions = {
 		title: 'Basic Information',

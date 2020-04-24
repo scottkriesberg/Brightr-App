@@ -58,6 +58,7 @@ export default class Chat extends React.Component {
 	componentDidMount() {
 		this.state.uid = this.props.navigation.getParam('tutorUid', '');
 		this.state.requestUid = this.props.navigation.getParam('requestUid', '');
+		console.log(this.state);
 		this.requestRef = this.requestRef.doc(this.state.requestUid);
 		const ref = firebase.firestore().collection('tutors').doc(this.state.uid);
 		ref.get().then((doc) => {
