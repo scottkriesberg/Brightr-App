@@ -100,22 +100,6 @@ class StudentInProgress extends Component {
 				});
 			}
 		}, 1000);
-		// Alert.alert(
-		// 	'Session Completed',
-		// 	'test',
-		// 	[
-		// 		{
-		// 			text: 'OK',
-		// 			onPress: () => {
-		// 				this.addRating('tutors', this.state.session.tutorUid, this.state.rating);
-		// 				this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
-		// 			}
-		// 		}
-		// 	],
-		// 	{
-		// 		cancelable: false
-		// 	}
-		// );
 	}
 
 	componentWillUnmount() {
