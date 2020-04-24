@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Text, TouchableOpacity, SafeAreaView, Image } from 'react-native';
-import { Button } from '../components/buttons';
-import { Rating } from '../components/profile';
-import ContainerStyles from '../../styles/container.js';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 import '../components/global';

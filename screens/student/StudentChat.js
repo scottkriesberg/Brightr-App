@@ -1,7 +1,6 @@
 import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat'; // 0.3.0
 import { View, Modal, StyleSheet, Text, Alert } from 'react-native';
-import { Button } from 'react-native-elements';
 import firebase from '../../firebase';
 import Fire from 'firebase';
 import Loading from '../components/utils.js';
@@ -57,7 +56,6 @@ export default class Chat extends React.Component {
 	}
 
 	componentDidMount() {
-		// this.state.uid = this.props.navigation.getParam('uid', '');
 		const userCreds = store.getState().user;
 		this.state.requestUid = this.props.navigation.getParam('requestUid', '');
 		this.requestRef = this.requestRef.doc(this.state.requestUid);

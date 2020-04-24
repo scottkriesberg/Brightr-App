@@ -7,7 +7,6 @@ import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 import '../components/global';
 import { TextInput } from 'react-native-gesture-handler';
-import { Icon } from 'react-native-elements';
 class TutorAddConnections extends Component {
 	constructor() {
 		super();

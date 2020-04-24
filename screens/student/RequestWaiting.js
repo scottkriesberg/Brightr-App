@@ -19,8 +19,7 @@ export default class TutorPreview extends Component {
 			tutorUid: '',
 			isLoading: true,
 			uid: '',
-			requestUid: '',
-			timer: 3
+			requestUid: ''
 		};
 	}
 
@@ -41,9 +40,6 @@ export default class TutorPreview extends Component {
 		this.state.uid = this.props.navigation.getParam('uid', '');
 		this.state.requestUid = this.props.navigation.getParam('requestUid', '');
 		this.requestRef = this.requestRef.doc(this.state.requestUid);
-		this.interval = setInterval(() => {
-			this.setState((prevState) => ({ timer: prevState.timer - 1 }));
-		}, 1000);
 		this.unsubscribe = this.requestRef.onSnapshot(this.onCollectionUpdate);
 	}
 
@@ -74,16 +70,8 @@ export default class TutorPreview extends Component {
 		}
 	};
 
-	componentDidUpdate() {
-		if (this.state.timer === 0) {
-			clearInterval(this.interval);
-			// this.props.navigation.navigate('StudentChat', { uid: this.state.uid });
-		}
-	}
-
 	componentWillUnmount() {
 		this.unsubscribe();
-		clearInterval(this.interval);
 	}
 
 	cancelRequest = () => {
@@ -134,7 +122,6 @@ const styles = StyleSheet.create({
 		width: '40%',
 		alignItems: 'center',
 		justifyContent: 'center',
-		// position: 'absolute',
 		top: '20%'
 	},
 	face: {
@@ -173,6 +160,5 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: 'bold',
 		textAlign: 'center'
-		// top: '40%'
 	}
 });

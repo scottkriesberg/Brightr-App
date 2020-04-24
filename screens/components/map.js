@@ -2,6 +2,8 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, Button, FlatList, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
+const location = require('../../assets/location.png');
+const selected_location = require('../../assets/selected_location.png');
 
 export class Map extends Component {
 	constructor() {
@@ -130,9 +132,13 @@ export class Map extends Component {
 							key={index}
 							coordinate={marker.latlng}
 							title={marker.title}
-							pinColor={index == this.state.selectedMarkerIndex ? primaryColor : 'red'}
 							onPress={() => this.onMarkerPressStudent(marker, index)}
-						/>
+						>
+							<Image
+								source={index == this.state.selectedMarkerIndex ? selected_location : location}
+								style={{ width: 20, height: 30 }}
+							/>
+						</Marker>
 					))}
 				</MapView>
 			);
@@ -149,9 +155,13 @@ export class Map extends Component {
 							key={index}
 							coordinate={marker.latlng}
 							title={marker.title}
-							pinColor={this.state.selectedMarkerIndexs.includes(index) ? primaryColor : 'red'}
 							onPress={() => this.onMarkerPressTutor(marker, index)}
-						/>
+						>
+							<Image
+								source={this.state.selectedMarkerIndexs.includes(index) ? selected_location : location}
+								style={{ width: 20, height: 30 }}
+							/>
+						</Marker>
 					))}
 				</MapView>
 			);
