@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Rating } from '../components/profile';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
 import { Button } from './buttons';
+import { Icon } from 'react-native-elements';
 
 export class UserBar extends Component {
 	static props = {
@@ -11,7 +11,8 @@ export class UserBar extends Component {
 		textStyle: PropTypes.any,
 		imageStyle: PropTypes.any,
 		user: PropTypes.any,
-		onPressFunc: PropTypes.any
+		onPressFunc: PropTypes.any,
+		rate: PropTypes.any
 	};
 	render() {
 		const { user } = this.props;
@@ -69,6 +70,7 @@ export class UserBar extends Component {
 					<Text adjustsFontSizeToFit={true} numberOfLines={2}>
 						{user.major.code} / {user.year}
 					</Text>
+					{this.props.rate ? <Text>${user.hourlyRate}/hour</Text> : null}
 				</View>
 				<View
 					style={{
@@ -87,6 +89,9 @@ export class UserBar extends Component {
 					<Text adjustsFontSizeToFit={true} numberOfLines={3}>
 						{classList}
 					</Text>
+				</View>
+				<View style={{ alignItems: 'center', justifyContent: 'center' }}>
+					<Icon name="keyboard-arrow-right" size={40} color={primaryColor} />
 				</View>
 			</TouchableOpacity>
 		);

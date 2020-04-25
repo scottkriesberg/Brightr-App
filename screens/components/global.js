@@ -5,7 +5,7 @@ global.tertiaryColor = primaryColor;
 global.accentColor = '#FFE180';
 
 //Font
-// global.primaryFont = 'normal';
+global.primaryFont = 'Poppins-Regular';
 
 //State Variables
 global.userUid = '';

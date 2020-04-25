@@ -53,7 +53,6 @@ class TutorWorkSetUp extends Component {
 		this.tutorRef
 			.update({ isLive: true, hourlyRate: this.state.value, locations: this.state.locations })
 			.then(() => {
-				// this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.uid });
 				this.setState({ status: 'Live' });
 			});
 	};
@@ -96,7 +95,6 @@ class TutorWorkSetUp extends Component {
 				});
 
 			this.setState({ status: 'Offline' });
-			// this.props.navigation.navigate('TutorWorkSetUp', { uid: this.state.uid });
 		});
 	};
 
@@ -108,7 +106,25 @@ class TutorWorkSetUp extends Component {
 			<View style={styles.container}>
 				<View style={styles.mapContainer}>
 					<Map locationPressFunc={this.toggleLoc} mapPressFunc={this.clearLocations} isStudent={false} />
-					<Text style={styles.statusText}>Status: {this.state.status}</Text>
+					<View
+						style={[
+							styles.statusContainer,
+							{
+								shadowColor: this.state.status == 'Live' ? primaryColor : 'black'
+							}
+						]}
+					>
+						<Text
+							style={[
+								styles.statusText,
+								{
+									color: this.state.status == 'Live' ? primaryColor : 'black'
+								}
+							]}
+						>
+							Status: {this.state.status}
+						</Text>
+					</View>
 				</View>
 				<View style={styles.sliderContainer}>
 					<Slider
@@ -219,12 +235,26 @@ const styles = StyleSheet.create({
 		height: 25,
 		width: 25
 	},
-	statusText: {
+	statusContainer: {
 		position: 'absolute',
+		alignItems: 'center',
+		alignSelf: 'center',
+		width: '50%',
+		height: '7%',
+		backgroundColor: 'white',
+		justifyContent: 'center',
+		top: '7%',
+		borderRadius: 5,
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 4 },
+		shadowRadius: 6,
+		shadowOpacity: 0.8
+	},
+	statusText: {
 		textAlign: 'center',
 		fontSize: 30,
 		alignSelf: 'center',
-		paddingTop: 35
+		fontWeight: 'bold'
 	}
 });
 
