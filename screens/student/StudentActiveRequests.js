@@ -4,6 +4,7 @@ import { Button } from '../components/buttons';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 import '../components/global';
+import { Icon } from 'react-native-elements';
 
 class StudentActiveRequests extends Component {
 	constructor() {
@@ -60,28 +61,14 @@ class StudentActiveRequests extends Component {
 						Description: {item.description ? item.description : 'N/A'}
 					</Text>
 				</View>
-				{/* <View style={styles.requestButtons}>
-					<Button
-						type="primary"
-						buttonStyle={styles.button}
-						textStyle={styles.buttonText}
-						text="Update"
-						onPress={() => this.accept({ item })}
-					/>
-					<Button
-						type="secondary"
-						buttonStyle={styles.button}
-						textStyle={styles.buttonText}
-						text="Cancel"
-						onPress={() => this.decline({ item })}
-					/>
-				</View> */}
+				<View style={{ alignItems: 'center', justifyContent: 'center' }}>
+					<Icon name="keyboard-arrow-right" size={60} color={sColor} />
+				</View>
 			</TouchableOpacity>
 		);
 	};
 
 	componentDidMount() {
-		// this.state.uid = this.props.navigation.dangerouslyGetParent().dangerouslyGetParent().getParam('uid', '');
 		this.state.uid = userUid;
 		this.studentRef = this.studentRef.doc(this.state.uid);
 		this.requestRef = this.requestRef
@@ -186,6 +173,27 @@ class StudentActiveRequests extends Component {
 						text={'Cancel All'}
 					/>
 				</View>
+				<View style={styles.legendContianer}>
+					<View
+						style={[
+							styles.legends,
+							{ backgroundColor: 'white', borderColor: primaryColor, borderWidth: 1 }
+						]}
+					>
+						<Text style={[ styles.legendText, { color: primaryColor } ]}>Sent</Text>
+					</View>
+					<View style={[ styles.legends, { backgroundColor: primaryColor } ]}>
+						<Text style={styles.legendText}>Accepted</Text>
+					</View>
+					<View
+						style={[
+							styles.legends,
+							{ backgroundColor: accentColor, borderColor: accentColor, borderWidth: 1 }
+						]}
+					>
+						<Text style={[ styles.legendText, { color: primaryColor } ]}>Resopnse Needed</Text>
+					</View>
+				</View>
 				<View style={styles.requestList}>
 					{this.state.requests.length > 0 ? (
 						<FlatList
@@ -212,7 +220,7 @@ const styles = StyleSheet.create({
 	},
 	cancelAllButton: {
 		width: '40%',
-		height: '40%',
+		height: '30%',
 		alignSelf: 'center'
 	},
 	headerText: {
@@ -221,7 +229,7 @@ const styles = StyleSheet.create({
 	},
 	requestList: {
 		paddingTop: 10,
-		flex: 15,
+		flex: 12,
 		backgroundColor: secondaryColor
 	},
 	requestInfo: {
@@ -248,7 +256,11 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		marginBottom: '2%',
 		marginHorizontal: 16,
-		borderRadius: 20
+		borderRadius: 20,
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 2 },
+		shadowRadius: 3,
+		shadowOpacity: 0.5
 	},
 	container: {
 		flex: 1,
@@ -263,6 +275,22 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		alignSelf: 'center',
 		paddingTop: '50%'
+	},
+	legendContianer: {
+		flex: 1,
+		flexDirection: 'row',
+		backgroundColor: 'white',
+		justifyContent: 'space-around',
+		alignItems: 'center'
+	},
+	legends: {
+		width: '30%',
+		textAlign: 'center',
+		borderRadius: 5,
+		alignItems: 'center'
+	},
+	legendText: {
+		color: 'white'
 	}
 });
 

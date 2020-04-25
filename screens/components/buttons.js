@@ -86,6 +86,7 @@ const DisabledStyle = StyleSheet.create({
 	text: {
 		color: 'lightgrey',
 		textAlign: 'center',
-		fontSize: 40
+		fontSize: 40,
+		fontFamily: primaryFont
 	}
 });

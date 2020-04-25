@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
 import { Button } from './buttons';
+const Background = require('../../assets/BackgroundTopBar.png');
 
 export class ProfileIcon extends Component {
 	static props = {

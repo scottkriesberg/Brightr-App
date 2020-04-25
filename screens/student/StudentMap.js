@@ -10,6 +10,7 @@ import { Map } from '../components/map';
 import { Button } from '../components/buttons';
 import { Dropdown } from '../components/dropdown';
 import store from '../../redux/store';
+import { UserBar } from '../components/UserBar';
 
 class StudentMap extends Component {
 	constructor() {
@@ -36,6 +37,9 @@ class StudentMap extends Component {
 		this.setState({ isFilterVisable: !this.state.isFilterVisable });
 	};
 	filter(tutor) {
+		if (tutor.id == this.state.uid) {
+			return false;
+		}
 		if (tutor.rating < this.state.ratingFilter) {
 			return false;
 		}
@@ -70,69 +74,16 @@ class StudentMap extends Component {
 		if (!this.filter(item)) {
 			return;
 		}
-		var classList = '';
-		for (var i = 0; i < item.classesArray.length; i++) {
-			classList += item.classesArray[i] + ', ';
-		}
-		classList = classList.substring(0, classList.length - 2);
 		return (
-			<TouchableOpacity
-				style={ContainerStyles.tutorPreviewContainer}
-				onPress={() =>
+			<UserBar
+				onPressFunc={() =>
 					this.props.navigation.navigate('TutorPreview', {
 						tutorUid: item.id,
 						uid: this.state.uid
 					})}
-			>
-				{/* Different containers needed for image and description for styling */
-				/* Tutor image */}
-				<View>
-					<Image
-						style={ContainerStyles.previewImage}
-						source={{
-							uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'
-						}}
-					/>
-				</View>
-				{/* Tutor Info */}
-				<View
-					style={{
-						flex: 1
-					}}
-				>
-					<Text
-						style={{
-							fontSize: 20
-						}}
-					>
-						{item.name}
-					</Text>
-					<Rating rating={item.rating} />
-					<Text adjustsFontSizeToFit={true} numberOfLines={2}>
-						{item.major.code} / {item.year}
-					</Text>
-					<Text>${item.hourlyRate}/hour</Text>
-				</View>
-				<View
-					style={{
-						flex: 1,
-						alignSelf: 'flex-start',
-						marginTop: '3%',
-						margin: '8%'
-					}}
-				>
-					<Text
-						style={{
-							fontSize: 20
-						}}
-					>
-						Classes
-					</Text>
-					<Text adjustsFontSizeToFit={true} numberOfLines={3}>
-						{classList}
-					</Text>
-				</View>
-			</TouchableOpacity>
+				user={item}
+				rate={true}
+			/>
 		);
 	};
 
