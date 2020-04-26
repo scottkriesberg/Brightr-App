@@ -63,22 +63,35 @@ export class RecapModal extends Component {
 		visible: PropTypes.bool.isRequired,
 		dismissFunc: PropTypes.func.isRequired,
 		headingText: PropTypes.any.isRequired,
-		recapText: PropTypes.any.isRequired
+		time: PropTypes.any,
+		cost: PropTypes.any.isRequired,
+		duration: PropTypes.any.isRequired
 	};
 	render() {
-		const { visible, dismissFunc, recapText, headingText } = this.props;
+		const { visible, dismissFunc, time, cost, duration, headingText } = this.props;
 		return (
 			<Modal animationType="slide" transparent={false} visible={visible}>
 				<View style={styles.recapContainer}>
-					<Text style={styles.recapTitleText}>{headingText}</Text>
-					<Text style={styles.recapText}>{recapText}</Text>
-					<Button
-						type={'secondary'}
-						textStyle={styles.cancelWaitingModalButtonText}
-						text={'Done'}
-						buttonStyle={styles.cancelWaitingModalButton}
-						onPress={dismissFunc}
-					/>
+					<View style={styles.headingContainer}>
+						<Text style={styles.recapTitleText}>{headingText}</Text>
+					</View>
+					<View style={styles.recapTextContainer}>
+						<Text style={styles.recapTextHeader}>{'Time'}</Text>
+						<Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.recapText}>
+							{time}
+						</Text>
+						<Text style={styles.recapTextHeader}>{'Duration'}</Text>
+						<Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.recapText}>
+							{duration + ' minutes'}
+						</Text>
+						<Text style={styles.recapTextHeader}>{'Cost'}</Text>
+						<Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.recapText}>
+							{'$' + cost}
+						</Text>
+					</View>
+					<View style={styles.doneButtonConainter}>
+						<Button type={'primary'} text={'Done'} buttonStyle={styles.doneButton} onPress={dismissFunc} />
+					</View>
 				</View>
 			</Modal>
 		);
@@ -145,19 +158,51 @@ const styles = StyleSheet.create({
 	//Recap Modal
 	recapContainer: {
 		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'space-around'
+		flexDirection: 'column'
 	},
-
+	headingContainer: {
+		flex: 2,
+		justifyContent: 'center'
+	},
+	recapTextContainer: {
+		flex: 8,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	doneButtonConainter: {
+		flex: 1
+	},
 	recapTitleText: {
-		paddingTop: '50%',
 		textAlign: 'center',
-		fontSize: 35,
+		fontSize: 60,
 		color: primaryColor
+	},
+	recapTextHeader: {
+		textAlign: 'left',
+		fontSize: 45,
+		color: primaryColor,
+		width: '90%'
 	},
 	recapText: {
+		textAlign: 'left',
+		fontSize: 45,
+		color: primaryColor,
+		borderColor: primaryColor,
+		borderWidth: 1,
+		borderRadius: 5,
+		width: '90%',
+		padding: 10,
+		marginBottom: '4%'
+	},
+	doneButton: {
+		borderRadius: 15,
+		borderWidth: 1,
+		borderColor: primaryColor,
+		alignSelf: 'center',
+		height: '80%',
+		width: '90%',
+		justifyContent: 'center',
 		textAlign: 'center',
-		fontSize: 25,
-		color: primaryColor
+		marginBottom: 30
 	}
 });

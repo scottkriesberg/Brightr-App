@@ -26,7 +26,10 @@ class TutorInProgress extends Component {
 			recapModalVisible: false,
 			rating: 0,
 			finish: false,
-			sessionRecap: ''
+			sessionRecap: '',
+			duration: '',
+			time: '',
+			cost: ''
 		};
 		this.interval = null;
 	}
@@ -110,13 +113,16 @@ class TutorInProgress extends Component {
 			if (doc.data().tutorDone && doc.data().studentDone) {
 				this.setState({ waitingModalVisible: false, ratingModalVisible: false, recapModalVisible: true });
 				const sessionTime = Date.now() - this.state.session.startTime;
-				const sessionRecap =
-					'Time: ' +
-					Math.round(sessionTime / 60000) +
-					' minutes \n' +
-					' Cost: $' +
-					this.calcSessionCost(sessionTime, this.state.session.hourlyRate);
-				this.setState({ sessionRecap: sessionRecap });
+				const duration = Math.round(sessionTime / 60000);
+				const cost = this.calcSessionCost(sessionTime, this.state.session.hourlyRate).toFixed(2);
+				const time =
+					new Date(this.state.session.startTime).toLocaleTimeString([], {
+						hour: '2-digit',
+						minute: '2-digit'
+					}) +
+					' - ' +
+					new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+				this.setState({ duration: duration, cost: cost, time: time });
 				this.sessionRef
 					.update({
 						studentRating: this.state.rating
@@ -139,8 +145,10 @@ class TutorInProgress extends Component {
 			<View style={styles.container}>
 				<RecapModal
 					visible={this.state.recapModalVisible}
-					headingText={'Session Recap'}
-					recapText={this.state.sessionRecap}
+					headingText={'Summary'}
+					time={this.state.time}
+					cost={this.state.cost}
+					duration={this.state.duration}
 					dismissFunc={() => {
 						this.setState({ recapModalVisible: false });
 						this.props.navigation.navigate('TutorRequestNavigator', {

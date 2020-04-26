@@ -83,7 +83,6 @@ class TutorIncomingRequests extends Component {
 	};
 
 	componentDidMount() {
-		// this.state.uid = this.props.navigation.dangerouslyGetParent().dangerouslyGetParent().getParam('uid', '');
 		this.state.uid = userUid;
 		this.tutorRef = this.tutorRef.doc(this.state.uid);
 		this.requestRef = this.requestRef
@@ -198,6 +197,41 @@ class TutorIncomingRequests extends Component {
 						Active Requests
 					</Text>
 				</View>
+				<View style={styles.legendContianer}>
+					<View
+						style={[
+							styles.legends,
+							{ backgroundColor: 'white', borderColor: primaryColor, borderWidth: 1 }
+						]}
+					>
+						<Text
+							adjustsFontSizeToFit={true}
+							numberOfLines={1}
+							style={[ styles.legendText, { color: primaryColor } ]}
+						>
+							Open
+						</Text>
+					</View>
+					<View style={[ styles.legends, { backgroundColor: primaryColor } ]}>
+						<Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.legendText}>
+							Accepted
+						</Text>
+					</View>
+					<View
+						style={[
+							styles.legends,
+							{ backgroundColor: accentColor, borderColor: accentColor, borderWidth: 1 }
+						]}
+					>
+						<Text
+							adjustsFontSizeToFit={true}
+							numberOfLines={1}
+							style={[ styles.legendText, { color: primaryColor } ]}
+						>
+							Resopnse Needed
+						</Text>
+					</View>
+				</View>
 				<View style={styles.requestList}>
 					{this.state.requests.length > 0 ? (
 						<FlatList
@@ -228,7 +262,7 @@ const styles = StyleSheet.create({
 	},
 	requestList: {
 		paddingTop: 10,
-		flex: 15,
+		flex: 10,
 		backgroundColor: secondaryColor
 	},
 	requestInfo: {
@@ -240,22 +274,26 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'space-around',
 		alignItems: 'stretch',
-		margin: 10
+		margin: 15
 	},
 	button: {
 		alignSelf: 'center',
-		width: '95%'
+		width: '95%',
+		padding: 5
 	},
 	buttonText: {
-		alignSelf: 'center',
-		padding: 3
+		alignSelf: 'center'
 	},
 	row: {
 		backgroundColor: primaryColor,
 		flexDirection: 'row',
 		marginBottom: '2%',
 		marginHorizontal: 16,
-		borderRadius: 20
+		borderRadius: 20,
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 2 },
+		shadowRadius: 3,
+		shadowOpacity: 0.5
 	},
 	container: {
 		flex: 1,
@@ -270,6 +308,24 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		alignSelf: 'center',
 		paddingTop: '50%'
+	},
+	legendContianer: {
+		flex: 1,
+		flexDirection: 'row',
+		backgroundColor: 'white',
+		justifyContent: 'space-around',
+		alignItems: 'center'
+	},
+	legends: {
+		width: '30%',
+		textAlign: 'center',
+		borderRadius: 5,
+		alignItems: 'center',
+		height: '50%',
+		justifyContent: 'center'
+	},
+	legendText: {
+		color: 'white'
 	}
 });
 

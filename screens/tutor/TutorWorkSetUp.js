@@ -115,6 +115,8 @@ class TutorWorkSetUp extends Component {
 						]}
 					>
 						<Text
+							adjustsFontSizeToFit={true}
+							numberOfLines={1}
 							style={[
 								styles.statusText,
 								{
@@ -222,7 +224,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-around'
 	},
 	liveButtons: {
-		width: '40%'
+		width: '40%',
+		padding: 5
 	},
 	liveButtonsText: {
 		fontSize: 30
