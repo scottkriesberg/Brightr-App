@@ -12,7 +12,7 @@ import StudentActiveRequests from '../screens/student/StudentActiveRequests';
 import StudentConnections from '../screens/student/StudentConnections';
 import TutorConnections from '../screens/tutor/TutorConnections';
 import StudentConnectionPreview from '../screens/tutor/StudentConnectionPreview';
-// import TutorAddConnections from '../screens/tutor/tutorAddConnections';
+import ConnectionRequestPreview from '../screens/student/ConnectionRequestPreview';
 import TutorPendingConnections from '../screens/tutor/TutorPendingConnections';
 import TutorPendingConnectionPreview from '../screens/tutor/TutorPendingConnectionPreview';
 import TutorConnectedPreview from '../screens/student/TutorConnectedPreview';
@@ -21,7 +21,10 @@ import AddConnections from '../screens/student/AddConnections';
 import PendingConnections from '../screens/student/PendingConnections';
 import PendingConnectionPreview from '../screens/student/PendingConnectionPreview';
 import TutorPreview from '../screens/student/tutorPreview';
+import TutorRequestRespond from '../screens/tutor/TutorRequestRespond';
+import StudentRequestRespond from '../screens/student/StudentRequestRespond';
 import RequestWaiting from '../screens/student/RequestWaiting';
+import TutorRequestWaiting from '../screens/tutor/TutorRequestWaiting';
 import StudentChat from '../screens/student/StudentChat';
 import StudentInProgress from '../screens/student/StudentInProgress';
 import TutorProfile from '../screens/tutor/TutorProfile';
@@ -58,6 +61,9 @@ const StudentRequestNavigator = createStackNavigator(
 		},
 		StudentChat: {
 			screen: StudentChat
+		},
+		StudentRequestRespond: {
+			screen: StudentRequestRespond
 		}
 	},
 	{
@@ -98,6 +104,9 @@ const StudentConnectionsNavigator = createStackNavigator(
 		},
 		PendingConnectionPreview: {
 			screen: PendingConnectionPreview
+		},
+		ConnectionRequestPreview: {
+			screen: ConnectionRequestPreview
 		}
 	},
 	{
@@ -195,6 +204,12 @@ const TutorRequestNavigator = createStackNavigator(
 		},
 		TutorChat: {
 			screen: TutorChat
+		},
+		TutorRequestRespond: {
+			screen: TutorRequestRespond
+		},
+		TutorRequestWaiting: {
+			screen: TutorRequestWaiting
 		}
 	},
 	{

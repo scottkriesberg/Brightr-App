@@ -4,6 +4,7 @@ import { Button } from '../components/buttons';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 import '../components/global';
+import { Icon } from 'react-native-elements';
 
 class TutorIncomingRequests extends Component {
 	constructor() {
@@ -24,9 +25,29 @@ class TutorIncomingRequests extends Component {
 	};
 
 	renderItem = ({ item }) => {
-		const pColor = item.status == 'pending' ? secondaryColor : primaryColor;
-		const sColor = item.status == 'pending' ? primaryColor : secondaryColor;
-		const screenNav = item.status == 'pending' ? 'TutorRequestPreview' : 'TutorChat';
+		var pColor, sColor, screenNav;
+		switch (item.status) {
+			case 'pending':
+				pColor = secondaryColor;
+				sColor = primaryColor;
+				screenNav = 'TutorRequestPreview';
+				break;
+			case 'accepted':
+				pColor = primaryColor;
+				sColor = secondaryColor;
+				screenNav = 'TutorChat';
+				break;
+			case 'waitingTutor':
+				pColor = accentColor;
+				sColor = primaryColor;
+				screenNav = 'TutorRequestRespond';
+				break;
+			case 'waitingStudent':
+				pColor = secondaryColor;
+				sColor = primaryColor;
+				screenNav = 'TutorRequestWaiting';
+				break;
+		}
 		return (
 			<TouchableOpacity
 				style={[ styles.row, { backgroundColor: pColor, borderWidth: 1, borderColor: sColor } ]}
@@ -60,7 +81,7 @@ class TutorIncomingRequests extends Component {
 						Description: {item.description ? item.description : 'N/A'}
 					</Text>
 				</View>
-				{item.status == 'pending' ? (
+				{item.status == 'pending' || item.status == 'tutorWaiting' ? (
 					<View style={styles.requestButtons}>
 						<Button
 							type="primary"
@@ -77,7 +98,11 @@ class TutorIncomingRequests extends Component {
 							onPress={() => this.decline({ item })}
 						/>
 					</View>
-				) : null}
+				) : (
+					<View style={{ alignItems: 'center', justifyContent: 'center' }}>
+						<Icon name="keyboard-arrow-right" size={60} color={sColor} />
+					</View>
+				)}
 			</TouchableOpacity>
 		);
 	};
@@ -87,7 +112,7 @@ class TutorIncomingRequests extends Component {
 		this.tutorRef = this.tutorRef.doc(this.state.uid);
 		this.requestRef = this.requestRef
 			.where('tutorUid', '==', this.state.uid)
-			.where('status', 'in', [ 'pending', 'accepted' ]);
+			.where('status', 'in', [ 'pending', 'accepted', 'waitingTutor', 'waitingStudent' ]);
 		this.unsubscribe = this.requestRef.onSnapshot(this.onCollectionUpdate);
 	}
 

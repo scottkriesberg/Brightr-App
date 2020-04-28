@@ -25,20 +25,41 @@ class StudentActiveRequests extends Component {
 	};
 
 	renderItem = ({ item }) => {
-		const pColor = item.status == 'pending' ? secondaryColor : primaryColor;
-		const sColor = item.status == 'pending' ? primaryColor : secondaryColor;
-		const screenNav = item.status == 'pending' ? 'RequestWaiting' : 'StudentChat';
+		var pColor, sColor, screenNav;
+		switch (item.status) {
+			case 'pending':
+				pColor = secondaryColor;
+				sColor = primaryColor;
+				screenNav = 'RequestWaiting';
+				break;
+			case 'accepted':
+				pColor = primaryColor;
+				sColor = secondaryColor;
+				screenNav = 'StudentChat';
+				break;
+			case 'waitingTutor':
+				pColor = secondaryColor;
+				sColor = primaryColor;
+				screenNav = 'RequestWaiting';
+				break;
+			case 'waitingStudent':
+				pColor = accentColor;
+				sColor = primaryColor;
+				screenNav = 'StudentRequestRespond';
+				break;
+		}
 		return (
 			<TouchableOpacity
 				style={[ styles.row, { backgroundColor: pColor, borderWidth: 1, borderColor: sColor } ]}
-				onPress={() =>
+				onPress={() => {
 					this.props.navigation.navigate(screenNav, {
 						uid: this.state.uid,
 						tutorUid: item.tutorUid,
 						requestUid: item.id,
 						tutorImage: 'https://bootdey.com/img/Content/avatar/avatar6.png',
 						tutorName: item.tutorInfo.name
-					})}
+					});
+				}}
 			>
 				<View style={styles.requestInfo}>
 					<Text style={{ fontSize: 20, fontWeight: 'bold', color: sColor }} allowFontScaling={true}>
@@ -73,7 +94,7 @@ class StudentActiveRequests extends Component {
 		this.studentRef = this.studentRef.doc(this.state.uid);
 		this.requestRef = this.requestRef
 			.where('studentUid', '==', this.state.uid)
-			.where('status', 'in', [ 'pending', 'accepted' ]);
+			.where('status', 'in', [ 'pending', 'accepted', 'waitingTutor', 'waitingStudent' ]);
 		this.unsubscribe = this.requestRef.onSnapshot(this.onCollectionUpdate);
 	}
 

@@ -16,7 +16,7 @@ import Loading from '../components/utils.js';
 import { Dropdown } from '../components/dropdown';
 import { Button } from '../components/buttons';
 
-export default class TutorPreview extends Component {
+export default class ConnectionRequestPreview extends Component {
 	classSelected = (selectedItem) => {
 		this.state.classRequest = selectedItem[0];
 	};
@@ -26,7 +26,7 @@ export default class TutorPreview extends Component {
 
 	static navigationOptions = {
 		gestureEnabled: false,
-		title: 'Tutor Preview',
+		title: 'Request Preview',
 		headerStyle: {
 			backgroundColor: secondaryColor
 		},
@@ -58,7 +58,7 @@ export default class TutorPreview extends Component {
 		this.requestRef = firebase.firestore().collection('requests');
 		this.unsubscribe = null;
 		this.state = {
-			id: '',
+			uid: '',
 			tutorUid: '',
 			tutor: {},
 			isLoading: true,
@@ -66,6 +66,7 @@ export default class TutorPreview extends Component {
 			classRequest: '',
 			locationRequest: '',
 			value: 15,
+			rate: 25,
 			description: ''
 		};
 	}
@@ -73,6 +74,7 @@ export default class TutorPreview extends Component {
 	componentDidMount() {
 		this.state.tutorUid = this.props.navigation.getParam('tutorUid', '');
 		this.state.uid = this.props.navigation.getParam('uid', '');
+		console.log(this.state.uid);
 		this.tutorRef = this.tutorRef.doc(this.state.tutorUid);
 		this.tutorRef.get().then((doc) => {
 			if (doc.exists) {
@@ -91,22 +93,6 @@ export default class TutorPreview extends Component {
 	onCollectionUpdate = (doc) => {
 		if (doc.exists) {
 			if (doc.data().isLive == false) {
-				Alert.alert(
-					'Tutor Unavailable',
-					'Please request a different tutor',
-					[
-						{
-							text: 'OK',
-							onPress: () =>
-								this.props.navigation.navigate('StudentMap', {
-									uid: this.state.uid
-								})
-						}
-					],
-					{
-						cancelable: false
-					}
-				);
 			}
 		} else {
 			this.props.navigation.navigate('StudentMap', { uid: this.state.uid });
@@ -173,13 +159,13 @@ export default class TutorPreview extends Component {
 							location: this.state.locationRequest,
 							estTime: this.state.value,
 							classObj: this.state.classRequest,
-							status: 'pending',
+							status: this.state.tutor.isLive ? 'pending' : 'waitingTutor',
 							studentReady: false,
 							tutorReady: false,
 							messages: [],
 							description: this.state.description,
-							hourlyRate: this.state.tutor.hourlyRate,
-							type: 'Live'
+							hourlyRate: this.state.tutor.isLive ? this.state.tutor.hourlyRate : this.state.rate,
+							type: this.state.tutor.isLive ? 'Live' : 'Connection'
 						})
 						.then((docRef) => {
 							console.log('requested');
@@ -232,28 +218,75 @@ export default class TutorPreview extends Component {
 							value={this.state.description}
 						/>
 					</View>
+					{this.state.tutor.isLive ? (
+						<View style={styles.sliderContainer}>
+							<Slider
+								style={{ width: '90%' }}
+								value={this.state.value}
+								maximumValue={90}
+								minimumValue={15}
+								step={15}
+								thumbTintColor="#6A7BD6"
+								thumbTouchSize={{ width: 30, height: 30 }}
+								trackStyle={{ height: 15, borderRadius: 10 }}
+								thumbStyle={{ height: 30, width: 30, borderRadius: 15 }}
+								onValueChange={(value) => this.setState({ value })}
+							/>
 
-					<View style={styles.sliderContainer}>
-						<Slider
-							style={{ width: '90%' }}
-							value={this.state.value}
-							maximumValue={90}
-							minimumValue={15}
-							step={15}
-							thumbTintColor="#6A7BD6"
-							thumbTouchSize={{ width: 30, height: 30 }}
-							trackStyle={{ height: 15, borderRadius: 10 }}
-							thumbStyle={{ height: 30, width: 30, borderRadius: 15 }}
-							onValueChange={(value) => this.setState({ value })}
-						/>
+							<Text style={styles.sliderText} adjustsFontSizeToFit={true} numberOfLines={1}>
+								Estimated Session Time: {this.state.value} minutes
+							</Text>
 
-						<Text style={styles.sliderText} adjustsFontSizeToFit={true} numberOfLines={1}>
-							Estimated Session Time: {this.state.value} minutes
-						</Text>
-						<Text style={styles.sliderText} adjustsFontSizeToFit={true} numberOfLines={1}>
-							Estimated Session Cost: ${this.state.value * this.state.tutor.hourlyRate / 60}
-						</Text>
-					</View>
+							<Text style={styles.sliderText} adjustsFontSizeToFit={true} numberOfLines={1}>
+								Estimated Session Cost: ${this.state.value * this.state.tutor.hourlyRate / 60}
+							</Text>
+						</View>
+					) : (
+						<View style={styles.sliderContainer}>
+							<View style={styles.individualSliderContainer}>
+								<Text>Time</Text>
+								<Slider
+									style={{ width: '90%' }}
+									value={this.state.value}
+									maximumValue={90}
+									minimumValue={15}
+									step={15}
+									thumbTintColor="#6A7BD6"
+									thumbTouchSize={{ width: 30, height: 30 }}
+									trackStyle={{ height: 15, borderRadius: 10 }}
+									thumbStyle={{ height: 30, width: 30, borderRadius: 15 }}
+									onValueChange={(value) => this.setState({ value })}
+								/>
+
+								<Text style={styles.sliderText} adjustsFontSizeToFit={true} numberOfLines={1}>
+									Estimated Session Time: {this.state.value} minutes
+								</Text>
+							</View>
+							<View style={styles.individualSliderContainer}>
+								<Text>Rate</Text>
+								<Slider
+									style={{ width: '90%' }}
+									value={this.state.rate}
+									maximumValue={100}
+									minimumValue={10}
+									step={5}
+									thumbTintColor="#6A7BD6"
+									thumbTouchSize={{ width: 30, height: 30 }}
+									trackStyle={{ height: 15, borderRadius: 10, width: '100%' }}
+									thumbStyle={{ height: 30, width: 30, borderRadius: 15 }}
+									onValueChange={(rate) => this.setState({ rate })}
+								/>
+
+								<Text style={styles.sliderText} adjustsFontSizeToFit={true} numberOfLines={1}>
+									Session Rate: ${this.state.rate}/hr
+								</Text>
+
+								<Text style={styles.sliderText} adjustsFontSizeToFit={true} numberOfLines={1}>
+									Estimated Session Cost: ${this.state.value * this.state.rate / 60}
+								</Text>
+							</View>
+						</View>
+					)}
 
 					<View style={styles.pickerContainer}>
 						<Dropdown
@@ -326,7 +359,12 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	sliderContainer: {
-		flex: 2,
+		flex: 3,
+		width: '100%',
+		justifyContent: 'space-around'
+	},
+	individualSliderContainer: {
+		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center'
 	},

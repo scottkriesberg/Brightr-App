@@ -52,7 +52,6 @@ export default class TutorConnectedPreview extends Component {
 		this.state.tutorUid = this.props.navigation.getParam('tutorUid', '');
 		this.state.uid = this.props.navigation.getParam('uid', '');
 		this.state.connectId = this.props.navigation.getParam('connectId', '');
-		console.log(this.state.connectId);
 		this.tutorRef = this.tutorRef.doc(this.state.tutorUid);
 		this.tutorRef.get().then((doc) => {
 			if (doc.exists) {
@@ -120,7 +119,15 @@ export default class TutorConnectedPreview extends Component {
 				</View>
 				<ProfileClasses items={this.state.tutor.classes} />
 				<View style={styles.requestContianer}>
-					<Button buttonStyle={{ width: '60%', height: '70%' }} text={'Request Tutor'} />
+					<Button
+						buttonStyle={{ width: '60%', height: '70%' }}
+						text={'Request Tutor'}
+						onPress={() =>
+							this.props.navigation.navigate('ConnectionRequestPreview', {
+								tutorUid: this.state.tutorUid,
+								uid: this.state.uid
+							})}
+					/>
 				</View>
 			</View>
 		);
