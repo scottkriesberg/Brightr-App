@@ -1,4 +1,5 @@
 import { SET_USER, CLEAR_USER } from "../types";
+import firebase from "../../firebase";
 
 export function setUser(userData) {
   return {
