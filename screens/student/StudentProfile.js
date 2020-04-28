@@ -15,7 +15,6 @@ import store from "../../redux/store";
 const mapDispatchToProps = (dispatch) => {
   return {
     clearUser: () => {
-      console.log("Made the redux call");
       dispatch(clearUser());
     },
   };
