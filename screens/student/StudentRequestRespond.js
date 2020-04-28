@@ -271,7 +271,6 @@ const styles = StyleSheet.create({
 	basicInfoContainer: {
 		flex: 2,
 		flexDirection: 'row',
-		backgroundColor: '#F8F8FF',
 		justifyContent: 'space-between',
 		alignItems: 'center'
 	},
@@ -286,8 +285,7 @@ const styles = StyleSheet.create({
 	requestInfoContainer: {
 		flex: 3,
 		backgroundColor: secondaryColor,
-		justifyContent: 'space-around',
-		backgroundColor: '#F8F8FF'
+		justifyContent: 'space-around'
 	},
 	requestInfoHeader: {
 		fontSize: 25,
@@ -295,6 +293,7 @@ const styles = StyleSheet.create({
 	},
 	requestInfoText: {
 		fontSize: 20,
+		textAlign: 'center',
 		marginLeft: '3%'
 	},
 	live: {
@@ -307,7 +306,7 @@ const styles = StyleSheet.create({
 	button: {
 		alignSelf: 'center',
 		width: '30%',
-		padding: 5
+		padding: 15
 	},
 	buttonText: {
 		alignSelf: 'center'
@@ -321,8 +320,14 @@ const styles = StyleSheet.create({
 		textAlign: 'left'
 	},
 	individualSliderContainer: {
-		flex: 0.5,
+		alignSelf: 'center',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		justifyContent: 'center',
+		borderWidth: 1,
+		width: '90%',
+		borderColor: 'black',
+		borderRadius: 5,
+		padding: 5
 	}
 });

@@ -170,7 +170,9 @@ export default class TutorRequestRespond extends Component {
 				<View style={styles.requestInfoContainer}>
 					<Text style={styles.requestInfoHeader}>Request Information</Text>
 					<View style={styles.individualSliderContainer}>
-						<Text>Time</Text>
+						<Text style={styles.sliderHeaderText} adjustsFontSizeToFit={true} numberOfLines={1}>
+							Estimated Time: {this.state.estTime} minutes
+						</Text>
 						<Slider
 							style={{ width: '90%' }}
 							value={this.state.estTime}
@@ -183,13 +185,9 @@ export default class TutorRequestRespond extends Component {
 							thumbStyle={{ height: 30, width: 30, borderRadius: 15 }}
 							onValueChange={(estTime) => this.setState({ estTime, changed: true })}
 						/>
-
-						<Text style={styles.requestInfoText} adjustsFontSizeToFit={true} numberOfLines={1}>
-							Estimated Session Time: {this.state.estTime} minutes
-						</Text>
 					</View>
 					<View style={styles.individualSliderContainer}>
-						<Text>Rate</Text>
+						<Text style={styles.sliderHeaderText}>Rate: ${this.state.rate}/hr</Text>
 						<Slider
 							style={{ width: '90%' }}
 							value={this.state.rate}
@@ -202,18 +200,13 @@ export default class TutorRequestRespond extends Component {
 							thumbStyle={{ height: 30, width: 30, borderRadius: 15 }}
 							onValueChange={(rate) => this.setState({ rate, changed: true })}
 						/>
-
-						<Text style={styles.requestInfoText} adjustsFontSizeToFit={true} numberOfLines={1}>
-							Session Rate: ${this.state.rate}/hr
-						</Text>
-
-						<Text style={styles.requestInfoText} adjustsFontSizeToFit={true} numberOfLines={1}>
-							Estimated Session Cost: ${(this.state.estTime * this.state.rate / 60).toFixed(2)}
-						</Text>
-						<Text style={styles.requestInfoText}>
-							Class: {this.state.request.classObj.department} {this.state.request.classObj.code}
-						</Text>
 					</View>
+					<Text style={styles.requestInfoText} adjustsFontSizeToFit={true} numberOfLines={1}>
+						Estimated Session Cost: ${(this.state.estTime * this.state.rate / 60).toFixed(2)}
+					</Text>
+					<Text style={styles.requestInfoText}>
+						Class: {this.state.request.classObj.department} {this.state.request.classObj.code}
+					</Text>
 				</View>
 
 				<View style={styles.pickerContainer}>
@@ -286,7 +279,6 @@ const styles = StyleSheet.create({
 	basicInfoContainer: {
 		flex: 2,
 		flexDirection: 'row',
-		backgroundColor: '#F8F8FF',
 		justifyContent: 'space-between',
 		alignItems: 'center'
 	},
@@ -300,7 +292,6 @@ const styles = StyleSheet.create({
 	},
 	requestInfoContainer: {
 		flex: 3,
-		backgroundColor: secondaryColor,
 		justifyContent: 'space-around'
 	},
 	requestInfoHeader: {
@@ -309,6 +300,7 @@ const styles = StyleSheet.create({
 	},
 	requestInfoText: {
 		fontSize: 20,
+		textAlign: 'center',
 		marginLeft: '3%'
 	},
 	live: {
@@ -321,7 +313,7 @@ const styles = StyleSheet.create({
 	button: {
 		alignSelf: 'center',
 		width: '30%',
-		padding: 5
+		padding: 15
 	},
 	buttonText: {
 		alignSelf: 'center'
@@ -329,9 +321,20 @@ const styles = StyleSheet.create({
 	pickerContainer: {
 		flex: 1
 	},
+	sliderHeaderText: {
+		fontSize: 20,
+		fontWeight: 'bold',
+		textAlign: 'left'
+	},
 	individualSliderContainer: {
-		flex: 1,
+		alignSelf: 'center',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		justifyContent: 'center',
+		borderWidth: 1,
+		width: '90%',
+		borderColor: 'black',
+		borderRadius: 5,
+		padding: 5
 	}
 });
