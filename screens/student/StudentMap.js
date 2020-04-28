@@ -103,6 +103,7 @@ class StudentMap extends Component {
 
   componentDidMount() {
     const userCreds = store.getState().user;
+    console.log(store.getState());
     this.setState({
       uid: userCreds.uid,
     });

@@ -9,14 +9,14 @@ import {
 import Loading from "../components/utils.js";
 import { Button } from "../components/buttons";
 import { clearUser } from "../../redux/actions/userAction";
+import { setUser } from "../../redux/actions/userAction";
 import store from "../../redux/store";
 import { connect } from "react-redux";
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    clearUser: () => {
-      dispatch(clearUser());
-    },
+    clearUser: () => dispatch(clearUser()),
+    setUser: (userData) => dispatch(setUser(userData)),
   };
 };
 
@@ -99,6 +99,25 @@ class TutorHome extends Component {
     this.props.navigation.navigate("TutorEditProfile", { uid: this.state.uid });
   };
 
+  studentSwitch = () => {
+    const userCreds = store.getState().user;
+    //TODO: Add error checking although this shoudln't fail
+    firebase
+      .firestore()
+      .collection("students")
+      .doc(userCreds.uid)
+      .get()
+      .then((doc) => {
+        const reduxData = {
+          email: userCreds.email,
+          type: "student",
+          uid: userCreds.uid,
+          userData: doc.data(),
+        };
+        this.props.setUser(reduxData);
+      });
+  };
+
   toStudentAccount = () => {
     Alert.alert(
       "Cancel All Active Requests",
@@ -112,6 +131,7 @@ class TutorHome extends Component {
           text: "Switch",
           onPress: () => {
             //TODO: Set up redux flow to change into student account
+            this.studentSwitch();
             this.cancelAll();
           },
         },

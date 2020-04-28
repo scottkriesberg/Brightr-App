@@ -8,15 +8,15 @@ import {
 } from "../components/profile";
 import Loading from "../components/utils";
 import { clearUser } from "../../redux/actions/userAction";
+import { setUser } from "../../redux/actions/userAction";
 import { connect } from "react-redux";
 import store from "../../redux/store";
 
 //This allows us to dispatch the action through props in component
 const mapDispatchToProps = (dispatch) => {
   return {
-    clearUser: () => {
-      dispatch(clearUser());
-    },
+    clearUser: () => dispatch(clearUser()),
+    setUser: (userData) => dispatch(setUser(userData)),
   };
 };
 class Profile extends Component {
@@ -72,8 +72,29 @@ class Profile extends Component {
     this.props.navigation.navigate("StudentMap", { uid: this.state.uid });
   };
 
+  tutorSwitch = () => {
+    //Get userid from store
+    const userCreds = store.getState().user;
+    //Get tutor info
+    firebase
+      .firestore()
+      .collection("tutors")
+      .doc(userCreds.uid)
+      .get()
+      .then((doc) => {
+        const reduxData = {
+          email: userCreds.email,
+          type: "tutor",
+          uid: userCreds.uid,
+          userData: doc.data(),
+        };
+        this.props.setUser(reduxData);
+      });
+  };
+
   toTutorAccount = () => {
     //TODO: Need to set up switching to tutor profile on redux
+    this.tutorSwitch();
     this.props.navigation.navigate("TutorNavigator", { uid: this.state.uid });
   };
 
