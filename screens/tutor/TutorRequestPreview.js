@@ -53,75 +53,18 @@ export default class RequestPreview extends Component {
       });
   };
 
-<<<<<<< HEAD
-	accept = () => {
-		this.requestRef
-			.update({
-				status: 'accepted'
-			})
-			.then(() => {
-				this.props.navigation.navigate('TutorChat', {
-					tutorUid: this.state.tutorUid,
-					studentUid: this.state.studentUid,
-					requestUid: this.state.requestUid,
-					studentImage: 'https://bootdey.com/img/Content/avatar/avatar6.png',
-					studentName: this.state.student.name
-				});
-			});
-	};
-
-	onCollectionUpdate = (doc) => {
-		if (doc.exists) {
-			this.state.request = doc.data();
-			if (doc.data().status == 'cancelled') {
-				Alert.alert(
-					'Request Cancelled',
-					'This student has cancelled their request',
-					[
-						{
-							text: 'OK',
-							onPress: () => {
-								this.props.navigation.navigate('TutorIncomingRequests', { uid: this.state.tutorUid });
-							}
-						}
-					],
-					{
-						cancelable: false
-					}
-				);
-			} else if (doc.data().status == 'declined') {
-				this.toTutorIncomingRequests();
-				return;
-			}
-			const ref = firebase.firestore().collection('students').doc(this.state.studentUid);
-			ref.get().then((doc) => {
-				if (doc.exists) {
-					this.setState({
-						student: doc.data(),
-						key: doc.id,
-						isLoading: false
-					});
-				} else {
-					console.log('No such document!');
-				}
-			});
-		} else {
-			this.props.navigation.navigate('TutorTabNavigator', {
-				screen: 'TutorIncomingRequests',
-				params: { uid: this.state.tutorUid }
-			});
-		}
-	};
-=======
   accept = () => {
     this.requestRef
       .update({
         status: "accepted",
       })
       .then(() => {
-        this.props.navigation.navigate("TutorIncomingRequests", {
-          uid: this.state.tutorUid,
+        this.props.navigation.navigate("TutorChat", {
+          tutorUid: this.state.tutorUid,
+          studentUid: this.state.studentUid,
           requestUid: this.state.requestUid,
+          studentImage: "https://bootdey.com/img/Content/avatar/avatar6.png",
+          studentName: this.state.student.name,
         });
       });
   };
@@ -137,7 +80,7 @@ export default class RequestPreview extends Component {
             {
               text: "OK",
               onPress: () => {
-                this.props.navigation.navigate("TutorTabNavigator", {
+                this.props.navigation.navigate("TutorIncomingRequests", {
                   uid: this.state.tutorUid,
                 });
               },
@@ -173,7 +116,6 @@ export default class RequestPreview extends Component {
       });
     }
   };
->>>>>>> Small debug statements added along with some todos to polish redux flow. Going to start chipping at switching between tutor and student.
 
   componentWillUnmount() {
     this.unsubscribe();
