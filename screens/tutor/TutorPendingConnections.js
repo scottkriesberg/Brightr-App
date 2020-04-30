@@ -100,8 +100,9 @@ class TutorPendingConnections extends Component {
 		const pendingConnectionId = item.pendingConnectionId;
 		const id = item.id;
 		const description = item.description;
+
 		item = item.studentInfo;
-		if (!this.filter(item)) {
+		if (item.name == undefined || !this.filter(item)) {
 			return;
 		}
 		return (

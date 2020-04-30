@@ -207,7 +207,7 @@ export default class StudentRequestRespond extends Component {
 						titleStyle={{ color: 'black', fontSize: 20 }}
 						items={this.state.locations}
 						getSelectedItem={(i) => {
-							this.setState({ locationRequest: i, changed: true });
+							this.setState({ location: i, changed: true });
 						}}
 						modalHeaderText={'Select a location'}
 						intitalValue={this.state.location}

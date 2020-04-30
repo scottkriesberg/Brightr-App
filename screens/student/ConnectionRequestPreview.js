@@ -67,7 +67,16 @@ export default class ConnectionRequestPreview extends Component {
 			locationRequest: '',
 			value: 15,
 			rate: 25,
-			description: ''
+			description: '',
+			locations: [
+				'Cafe 84',
+				'VKC Library',
+				'SAL',
+				'Leavey  Library',
+				'USC Village Tables',
+				'RTH Campus Center Tables',
+				'Fertitta Hall'
+			]
 		};
 	}
 
@@ -292,7 +301,7 @@ export default class ConnectionRequestPreview extends Component {
 						<Dropdown
 							containerStyle={{ width: '100%', alignItems: 'center', marginVertical: '2%' }}
 							titleStyle={{ color: 'black', fontSize: 20 }}
-							items={this.state.tutor.locations}
+							items={this.state.locations}
 							getSelectedItem={(i) => {
 								this.setState({ locationRequest: i });
 							}}
