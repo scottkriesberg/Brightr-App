@@ -28,8 +28,9 @@ export default class Chat extends React.Component {
 
 	static navigationOptions = ({ navigation }) => {
 		const { params = {} } = navigation.state;
+		console.log(params);
 		return {
-			headerTitle: () => <ProfileIcon image={{ uri: params.tutorImage }} name={params.tutorName} />,
+			headerTitle: navigation.state.params.headerTitle,
 			headerStyle: {
 				backgroundColor: secondaryColor,
 				height: 115
@@ -59,7 +60,11 @@ export default class Chat extends React.Component {
 	}
 
 	componentDidMount() {
+		const tutorUid = this.props.navigation.getParam('tutorUid', '');
+		const tutorName = this.props.navigation.getParam('tutorName', '');
+		console.log('demoImages/' + tutorUid + '.jpg');
 		this.props.navigation.setParams({
+			headerTitle: () => <ProfileIcon image={'demoImages/' + tutorUid + '.jpg'} name={tutorName} />,
 			headerRight: () => (
 				<Icon
 					onPress={() => this.setState({ optionsVisible: true })}

@@ -82,6 +82,7 @@ export default class StudentRequestRespond extends Component {
 					uid: this.state.uid,
 					requestUid: this.state.requestUid,
 					tutorImage: 'https://bootdey.com/img/Content/avatar/avatar6.png',
+					tutorUid: this.state.tutorUid,
 					tutorName: this.state.tutor.name
 				});
 			});
@@ -160,7 +161,7 @@ export default class StudentRequestRespond extends Component {
 					name={this.state.tutor.name}
 					containerStyle={styles.basicInfoContainer}
 					avatarStyle={styles.avatar}
-					image={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }}
+					image={'demoImages/' + this.state.tutorUid + '.jpg'}
 					bio={this.state.tutor.bio}
 				/>
 				<View style={styles.requestInfoContainer}>

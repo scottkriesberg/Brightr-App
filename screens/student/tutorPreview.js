@@ -218,9 +218,7 @@ export default class TutorPreview extends Component {
 						avatarStyle={styles.avatar}
 						name={this.state.tutor.name}
 						bio={this.state.tutor.bio}
-						image={{
-							uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'
-						}}
+						image={'demoImages/' + this.state.tutorUid + '.jpg'}
 						gpa={this.state.tutor.gpa}
 					/>
 					<View style={styles.descriptionContainer}>

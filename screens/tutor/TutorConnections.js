@@ -114,6 +114,7 @@ class StudentConnections extends Component {
 						connectId: connectId
 					})}
 				user={item}
+				userId={id}
 			/>
 		);
 	};

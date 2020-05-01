@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Rating } from '../components/profile';
 import PropTypes from 'prop-types';
 import { Button } from './buttons';
+import AsyncImage from './AsyncImage';
 import { Icon } from 'react-native-elements';
 
 export class UserBar extends Component {
@@ -12,10 +13,11 @@ export class UserBar extends Component {
 		imageStyle: PropTypes.any,
 		user: PropTypes.any,
 		onPressFunc: PropTypes.any,
-		rate: PropTypes.any
+		rate: PropTypes.any,
+		userId: PropTypes.any
 	};
 	render() {
-		const { user } = this.props;
+		const { user, userId } = this.props;
 		var classList = '';
 		for (var i = 0; i < user.classesArray.length; i++) {
 			classList += user.classesArray[i] + ', ';
@@ -37,7 +39,7 @@ export class UserBar extends Component {
 				onPress={this.props.onPressFunc}
 			>
 				<View>
-					<Image
+					<AsyncImage
 						style={[
 							this.props.imageStyle,
 							{
@@ -49,9 +51,7 @@ export class UserBar extends Component {
 								margin: 20
 							}
 						]}
-						source={{
-							uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'
-						}}
+						image={'demoImages/' + userId + '.jpg'}
 					/>
 				</View>
 				<View

@@ -30,6 +30,7 @@ class Profile extends Component {
 	componentDidMount() {
 		//Get UID from redux
 		const userCreds = store.getState().user;
+		this.state.uid = userCreds.uid;
 		const ref = firebase.firestore().collection('students').doc(userCreds.uid);
 		ref.get().then((doc) => {
 			if (doc.exists) {
@@ -97,7 +98,7 @@ class Profile extends Component {
 					name={this.state.user.name}
 					containerStyle={styles.basicInfoContainer}
 					avatarStyle={styles.avatar}
-					image={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }}
+					image={'demoImages/' + this.state.uid + '.jpg'}
 					bio={this.state.user.bio}
 				/>
 				<ProfileClasses items={this.state.user.classes} />

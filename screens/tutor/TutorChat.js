@@ -29,7 +29,9 @@ export default class Chat extends React.Component {
 	static navigationOptions = ({ navigation }) => {
 		const { params = {} } = navigation.state;
 		return {
-			headerTitle: () => <ProfileIcon image={{ uri: params.studentImage }} name={params.studentName} />,
+			headerTitle: () => (
+				<ProfileIcon image={'demoImages/' + params.studentUid + '.jpg'} name={params.studentName} />
+			),
 			headerStyle: {
 				backgroundColor: secondaryColor,
 				height: 115

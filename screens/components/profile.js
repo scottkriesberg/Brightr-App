@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PropTypes from 'prop-types';
 import { Button } from './buttons';
+import AsyncImage from './AsyncImage';
 const Background = require('../../assets/BackgroundTopBar.png');
 
 export class ProfileIcon extends Component {
@@ -15,6 +16,7 @@ export class ProfileIcon extends Component {
 		uid: PropTypes.any
 	};
 	render() {
+		console.log(this.props.image);
 		return (
 			<View
 				style={[
@@ -22,10 +24,9 @@ export class ProfileIcon extends Component {
 					{ flex: 1, flexDirection: 'coloumn', justifyContent: 'center', alignItems: 'center' }
 				]}
 			>
-				<Image
-					resizeMode="stretch"
+				<AsyncImage
 					style={[ this.props.imageStyle, { width: 50, height: 50, borderRadius: 25 } ]}
-					source={this.props.image}
+					image={this.props.image}
 				/>
 				<View
 					style={[
@@ -75,7 +76,7 @@ export class ProfileHeadingInfo extends Component {
 	render() {
 		return (
 			<View style={this.props.containerStyle || styles.container}>
-				<Image resizeMode="stretch" style={this.props.avatarStyle} source={this.props.image} />
+				<AsyncImage style={[ this.props.avatarStyle, { resizeMode: 'stretch' } ]} image={this.props.image} />
 				<View style={styles.basicText}>
 					<Text adjustsFontSizeToFit style={styles.profileNameText}>
 						{this.props.name}

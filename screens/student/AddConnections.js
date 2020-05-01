@@ -121,6 +121,7 @@ class AddConnections extends Component {
 						uid: this.state.uid
 					})}
 				user={item}
+				userId={id}
 			/>
 		);
 	};

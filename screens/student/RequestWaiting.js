@@ -60,6 +60,7 @@ export default class TutorPreview extends Component {
 					uid: this.state.uid,
 					requestUid: this.state.requestUid,
 					tutorImage: 'https://bootdey.com/img/Content/avatar/avatar6.png',
+					tutorUid: this.state.tutorUid,
 					tutorName: this.state.tutor.name
 				});
 			} else if (doc.data().status == 'declined') {

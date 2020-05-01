@@ -155,9 +155,7 @@ class TutorHome extends Component {
 					name={this.state.user.name}
 					containerStyle={styles.basicInfoContainer}
 					avatarStyle={styles.avatar}
-					image={{
-						uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'
-					}}
+					image={'demoImages/' + this.state.uid + '.jpg'}
 					bio={this.state.user.bio}
 				/>
 				<View style={styles.stats}>

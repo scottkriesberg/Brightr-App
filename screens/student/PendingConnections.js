@@ -113,6 +113,7 @@ class PendingConnections extends Component {
 						description: description
 					})}
 				user={item}
+				userId={id}
 			/>
 		);
 	};

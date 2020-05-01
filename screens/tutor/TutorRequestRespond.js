@@ -164,7 +164,7 @@ export default class TutorRequestRespond extends Component {
 					name={this.state.student.name}
 					containerStyle={styles.basicInfoContainer}
 					avatarStyle={styles.avatar}
-					image={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }}
+					image={'demoImages/' + this.state.studentUid + '.jpg'}
 					bio={this.state.student.bio}
 				/>
 				<View style={styles.requestInfoContainer}>

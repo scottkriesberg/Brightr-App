@@ -82,6 +82,7 @@ class StudentMap extends Component {
 						uid: this.state.uid
 					})}
 				user={item}
+				userId={item.id}
 				rate={true}
 			/>
 		);
