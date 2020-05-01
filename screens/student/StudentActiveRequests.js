@@ -201,10 +201,18 @@ class StudentActiveRequests extends Component {
 							{ backgroundColor: 'white', borderColor: primaryColor, borderWidth: 1 }
 						]}
 					>
-						<Text style={[ styles.legendText, { color: primaryColor } ]}>Sent</Text>
+						<Text
+							adjustsFontSizeToFit={true}
+							numberOfLines={1}
+							style={[ styles.legendText, { color: primaryColor } ]}
+						>
+							Open
+						</Text>
 					</View>
 					<View style={[ styles.legends, { backgroundColor: primaryColor } ]}>
-						<Text style={styles.legendText}>Accepted</Text>
+						<Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.legendText}>
+							Accepted
+						</Text>
 					</View>
 					<View
 						style={[
@@ -212,7 +220,13 @@ class StudentActiveRequests extends Component {
 							{ backgroundColor: accentColor, borderColor: accentColor, borderWidth: 1 }
 						]}
 					>
-						<Text style={[ styles.legendText, { color: primaryColor } ]}>Resopnse Needed</Text>
+						<Text
+							adjustsFontSizeToFit={true}
+							numberOfLines={1}
+							style={[ styles.legendText, { color: primaryColor } ]}
+						>
+							Resopnse Needed
+						</Text>
 					</View>
 				</View>
 				<View style={styles.requestList}>
@@ -308,7 +322,9 @@ const styles = StyleSheet.create({
 		width: '30%',
 		textAlign: 'center',
 		borderRadius: 5,
-		alignItems: 'center'
+		alignItems: 'center',
+		height: '50%',
+		justifyContent: 'center'
 	},
 	legendText: {
 		color: 'white'

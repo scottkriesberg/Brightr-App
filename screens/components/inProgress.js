@@ -65,10 +65,12 @@ export class RecapModal extends Component {
 		headingText: PropTypes.any.isRequired,
 		time: PropTypes.any,
 		cost: PropTypes.any.isRequired,
-		duration: PropTypes.any.isRequired
+		duration: PropTypes.any.isRequired,
+		ratingFunc: PropTypes.func.isRequired,
+		ratingText: PropTypes.any.isRequired
 	};
 	render() {
-		const { visible, dismissFunc, time, cost, duration, headingText } = this.props;
+		const { visible, dismissFunc, time, cost, duration, headingText, ratingFunc, ratingText } = this.props;
 		return (
 			<Modal animationType="slide" transparent={false} visible={visible}>
 				<View style={styles.recapContainer}>
@@ -88,6 +90,8 @@ export class RecapModal extends Component {
 						<Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.recapText}>
 							{'$' + cost}
 						</Text>
+						<Text style={styles.modalRatingTitleText}>{ratingText}</Text>
+						<AirbnbRating count={5} defaultRating={0} reviews={[]} onFinishRating={ratingFunc} />
 					</View>
 					<View style={styles.doneButtonConainter}>
 						<Button type={'primary'} text={'Done'} buttonStyle={styles.doneButton} onPress={dismissFunc} />
@@ -122,9 +126,8 @@ const styles = StyleSheet.create({
 		alignSelf: 'center'
 	},
 	modalRatingTitleText: {
-		paddingTop: '50%',
 		textAlign: 'center',
-		fontSize: 35,
+		fontSize: 25,
 		color: primaryColor
 	},
 	//WaitingModal Styles

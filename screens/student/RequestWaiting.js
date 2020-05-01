@@ -19,7 +19,8 @@ export default class TutorPreview extends Component {
 			tutorUid: '',
 			isLoading: true,
 			uid: '',
-			requestUid: ''
+			requestUid: '',
+			tutor: {}
 		};
 	}
 
@@ -45,10 +46,21 @@ export default class TutorPreview extends Component {
 
 	onCollectionUpdate = (doc) => {
 		if (doc.exists) {
+			firebase.firestore().collection('tutors').doc(doc.data().tutorUid).get().then((tutorDoc) => {
+				if (tutorDoc.exists) {
+					this.setState({
+						tutor: tutorDoc.data()
+					});
+				} else {
+					console.log('No such document!');
+				}
+			});
 			if (doc.data().status == 'accepted') {
 				this.props.navigation.navigate('StudentChat', {
 					uid: this.state.uid,
-					requestUid: this.state.requestUid
+					requestUid: this.state.requestUid,
+					tutorImage: 'https://bootdey.com/img/Content/avatar/avatar6.png',
+					tutorName: this.state.tutor.name
 				});
 			} else if (doc.data().status == 'declined') {
 				Alert.alert(

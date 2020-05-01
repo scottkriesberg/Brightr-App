@@ -4,7 +4,8 @@ import { View, Alert, Button, StyleSheet, TouchableWithoutFeedback, Keyboard, Mo
 import firebase from '../../firebase';
 import Fire from 'firebase';
 import Loading from '../components/utils.js';
-import { ChatHeader, StartWaiting } from '../components/chat';
+import { ChatHeader, StartWaiting, OptionsModal } from '../components/chat';
+import { Icon } from 'react-native-elements';
 import { ProfileIcon } from '../components/profile';
 
 export default class Chat extends React.Component {
@@ -20,7 +21,8 @@ export default class Chat extends React.Component {
 			isLoading: true,
 			messages: [],
 			code: '',
-			modalVisible: false
+			modalVisible: false,
+			optionsVisible: false
 		};
 	}
 
@@ -32,6 +34,7 @@ export default class Chat extends React.Component {
 				backgroundColor: secondaryColor,
 				height: 115
 			},
+			headerRight: navigation.state.params.headerRight,
 			headerTintColor: primaryColor,
 			headerTitleStyle: {
 				fontWeight: 'bold',
@@ -56,9 +59,19 @@ export default class Chat extends React.Component {
 	}
 
 	componentDidMount() {
+		this.props.navigation.setParams({
+			headerRight: () => (
+				<Icon
+					onPress={() => this.setState({ optionsVisible: true })}
+					name="ellipsis-v"
+					type="font-awesome"
+					color={primaryColor}
+					containerStyle={{ right: 17 }}
+				/>
+			)
+		});
 		this.state.uid = this.props.navigation.getParam('tutorUid', '');
 		this.state.requestUid = this.props.navigation.getParam('requestUid', '');
-		console.log(this.state);
 		this.requestRef = this.requestRef.doc(this.state.requestUid);
 		const ref = firebase.firestore().collection('tutors').doc(this.state.uid);
 		ref.get().then((doc) => {
@@ -81,6 +94,7 @@ export default class Chat extends React.Component {
 	}
 
 	cancel = () => {
+		this.setState({ optionsVisible: false });
 		this.requestRef
 			.update({
 				status: 'declined'
@@ -99,9 +113,8 @@ export default class Chat extends React.Component {
 	};
 
 	start = () => {
-		this.requestRef.update({ tutorReady: true }).then(() => {
-			this.setState({ modalVisible: true });
-		});
+		this.setState({ optionsVisible: false, modalVisible: true });
+		this.requestRef.update({ tutorReady: true }).then(() => {});
 	};
 
 	begin = () => {
@@ -151,6 +164,7 @@ export default class Chat extends React.Component {
 				isLoading: false
 			});
 			if (doc.data().status == 'started') {
+				this.setState({ modalVisible: false });
 				this.begin();
 			} else if (doc.data().status == 'cancelled') {
 				Alert.alert(
@@ -193,7 +207,12 @@ export default class Chat extends React.Component {
 						});
 					}}
 				/>
-				<ChatHeader startFunction={this.start} cancelFunction={this.cancel} />
+				<OptionsModal
+					visible={this.state.optionsVisible}
+					cancelFunc={this.cancel}
+					startFunc={this.start}
+					dismissFunc={() => this.setState({ optionsVisible: false })}
+				/>
 				<GiftedChat
 					textInputStyle={styles.chatTextInput}
 					scrollToBottomStyle={styles.chatBottom}

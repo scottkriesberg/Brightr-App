@@ -107,8 +107,7 @@ class StudentInProgress extends Component {
 	}
 
 	componentWillUnmount() {
-		this.setState({ waitingModalVisible: false });
-		this.setState({ ratingModalVisible: false });
+		this.setState({ waitingModalVisible: false, ratingModalVisible: false, recapModalVisible: false });
 		this.unsubscribe();
 		clearInterval(this.interval);
 	}
@@ -131,7 +130,7 @@ class StudentInProgress extends Component {
 				if (doc.data().studentDone) {
 					this.setState({ waitingModalVisible: true });
 				}
-				if (doc.data().tutorDone && doc.data().studentDone) {
+				if (doc.data().tutorDone && doc.data().studentDone && doc.data().tutorRating == 0) {
 					const sessionTime = Date.now() - this.state.session.startTime;
 					const sessionCost = this.calcSessionCost(sessionTime, this.state.session.hourlyRate);
 					const duration = Math.round(sessionTime / 60000);
@@ -145,16 +144,11 @@ class StudentInProgress extends Component {
 						new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 					this.setState({ duration: duration, cost: cost, time: time });
 					this.setState({ waitingModalVisible: false, ratingModalVisible: false, recapModalVisible: true });
-					this.currentSessionRef
-						.update({
-							tutorRating: this.state.rating,
-							sessionTime: sessionTime,
-							status: 'completed',
-							sessionCost: sessionCost
-						})
-						.then(() => {
-							this.addRating('tutors', this.state.session.tutorUid, this.state.rating);
-						});
+					this.currentSessionRef.update({
+						sessionTime: sessionTime,
+						status: 'completed',
+						sessionCost: sessionCost
+					});
 				}
 			}
 		});
@@ -176,10 +170,27 @@ class StudentInProgress extends Component {
 					cost={this.state.cost}
 					duration={this.state.duration}
 					dismissFunc={() => {
+						if (this.state.rating == 0) {
+							Alert.alert('No Rating', 'Please rate your student', [ { text: 'OK' } ], {
+								cancelable: false
+							});
+							return;
+						}
 						this.setState({ recapModalVisible: false });
-						this.props.navigation.navigate('StudentTabNavigator', {
-							uid: this.state.uid
-						});
+						this.currentSessionRef
+							.update({
+								tutorRating: this.state.rating
+							})
+							.then(() => {
+								this.addRating('tutors', this.state.session.tutorUid, this.state.rating);
+								this.props.navigation.navigate('StudentTabNavigator', {
+									uid: this.state.uid
+								});
+							});
+					}}
+					ratingText={'Please rate the tutor'}
+					ratingFunc={(rating) => {
+						this.state.rating = rating;
 					}}
 				/>
 				<RatingModal
@@ -231,7 +242,9 @@ class StudentInProgress extends Component {
 					<Button
 						text={'End Session'}
 						onPress={() => {
-							this.setState({ ratingModalVisible: true });
+							this.currentSessionRef.update({ studentDone: true }).then(() => {
+								this.setState({ waitingModalVisible: true });
+							});
 						}}
 					/>
 				</View>

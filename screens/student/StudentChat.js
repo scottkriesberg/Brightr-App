@@ -4,8 +4,9 @@ import { View, Modal, StyleSheet, Text, Alert } from 'react-native';
 import firebase from '../../firebase';
 import Fire from 'firebase';
 import Loading from '../components/utils.js';
-import { ChatHeader, StartWaiting } from '../components/chat';
+import { ChatHeader, StartWaiting, OptionsModal } from '../components/chat';
 import { ProfileIcon } from '../components/profile';
+import { Icon } from 'react-native-elements';
 import store from '../../redux/store';
 
 export default class Chat extends React.Component {
@@ -20,6 +21,7 @@ export default class Chat extends React.Component {
 			isLoading: true,
 			messages: [],
 			modalVisible: false,
+			optionsVisible: false,
 			request: {}
 		};
 	}
@@ -32,6 +34,7 @@ export default class Chat extends React.Component {
 				backgroundColor: secondaryColor,
 				height: 115
 			},
+			headerRight: navigation.state.params.headerRight,
 			headerTintColor: primaryColor,
 			headerTitleStyle: {
 				fontWeight: 'bold',
@@ -56,6 +59,17 @@ export default class Chat extends React.Component {
 	}
 
 	componentDidMount() {
+		this.props.navigation.setParams({
+			headerRight: () => (
+				<Icon
+					onPress={() => this.setState({ optionsVisible: true })}
+					name="ellipsis-v"
+					type="font-awesome"
+					color={primaryColor}
+					containerStyle={{ right: 17 }}
+				/>
+			)
+		});
 		const userCreds = store.getState().user;
 		this.state.requestUid = this.props.navigation.getParam('requestUid', '');
 		this.requestRef = this.requestRef.doc(this.state.requestUid);
@@ -84,6 +98,7 @@ export default class Chat extends React.Component {
 	}
 
 	cancel = () => {
+		this.setState({ optionsVisible: false });
 		this.requestRef
 			.update({ status: 'cancelled' })
 			.then((docRef) => {
@@ -101,8 +116,11 @@ export default class Chat extends React.Component {
 	};
 
 	start = () => {
+		this.setState({ optionsVisible: false, modalVisible: true });
 		this.requestRef.update({ studentReady: true }).then(() => {
-			this.setState({ modalVisible: true });
+			console.log(this.state.modalVisible);
+
+			this.setState({ update: true });
 		});
 	};
 
@@ -134,6 +152,9 @@ export default class Chat extends React.Component {
 						cancelable: false
 					}
 				);
+			} else if (!doc.data().tutorReady && doc.data().studentReady) {
+				console.log('here');
+				this.setState({ modalVisible: true });
 			} else if (doc.data().tutorReady && doc.data().studentReady) {
 				this.requestRef.update({ status: 'started' }).then(() => {
 					this.props.navigation.navigate('StudentInProgress', {
@@ -166,7 +187,12 @@ export default class Chat extends React.Component {
 						});
 					}}
 				/>
-				<ChatHeader startFunction={this.start} cancelFunction={this.cancel} />
+				<OptionsModal
+					visible={this.state.optionsVisible}
+					cancelFunc={this.cancel}
+					startFunc={this.start}
+					dismissFunc={() => this.setState({ optionsVisible: false })}
+				/>
 				<GiftedChat
 					messages={this.state.messages}
 					onSend={(messages) => this.onSend(messages)}
