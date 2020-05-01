@@ -287,7 +287,6 @@ const styles = StyleSheet.create({
 	},
 	requestInfoContainer: {
 		flex: 3,
-		backgroundColor: secondaryColor,
 		justifyContent: 'space-around'
 	},
 	requestInfoHeader: {
@@ -327,9 +326,9 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		justifyContent: 'center',
-		borderWidth: 1,
+		// borderWidth: 1,
 		width: '90%',
-		borderColor: 'black',
+		// borderColor: 'black',
 		borderRadius: 5,
 		padding: 5
 	}

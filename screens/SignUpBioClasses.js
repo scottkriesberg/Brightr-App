@@ -124,7 +124,7 @@ class SignUpBasicInfo extends React.Component {
         title: "Computer Science (CSCI)",
         data: [
           {
-            name: "Data Structures and Algortims",
+            name: "Data Structures and Algorithms",
             department: "CSCI",
             code: "104",
           },
