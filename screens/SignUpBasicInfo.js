@@ -181,7 +181,7 @@ class SignUpBasicInfo extends React.Component {
 								this.setState({ year: i.value });
 							}}
 							modalHeaderText={'Please select your year'}
-							intitalValue={'Super Senior'}
+							intitalValue={'Junior'}
 							dropdownTitle={'Year'}
 							renderItemTextFunc={(item) => item.name}
 						/>
@@ -195,7 +195,7 @@ class SignUpBasicInfo extends React.Component {
 								this.setState({ major: { name: item.name, code: item.code } });
 							}}
 							modalHeaderText={'Please select your major'}
-							intitalValue={'Basket Weaving'}
+							intitalValue={'Computer Science'}
 							dropdownTitle={'Major'}
 						/>
 						<Text style={styles.errorText} adjustsFontSizeToFit={true} numberOfLines={1}>
