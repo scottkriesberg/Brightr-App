@@ -123,17 +123,21 @@ export default class TutorPendingConnectionPreview extends Component {
 				<ProfileClasses items={this.state.student.classes} />
 				<View style={styles.descriptionContainer}>
 					<Text style={styles.descriptionTextHeader}>Request Description</Text>
-					<Text style={styles.descriptionText}>{this.state.description}</Text>
+					{this.state.description.length == 0 ? (
+						<Text style={styles.descriptionText}>N/A</Text>
+					) : (
+						<Text style={styles.descriptionText}>{this.state.description}</Text>
+					)}
 				</View>
 				<View style={styles.requestContianer}>
 					<Button
-						buttonStyle={{ width: '45%', height: '70%', justifyContent: 'center' }}
+						buttonStyle={{ width: '45%', height: '70%', justifyContent: 'center', padding: 7 }}
 						text={'Cancel Request'}
 						type={'secondary'}
 						onPress={this.cancelConnectionRequest}
 					/>
 					<Button
-						buttonStyle={{ width: '45%', height: '70%', justifyContent: 'center' }}
+						buttonStyle={{ width: '45%', height: '70%', justifyContent: 'center', padding: 7 }}
 						text={'Accept Request'}
 						onPress={this.acceptConnectionRequest}
 					/>

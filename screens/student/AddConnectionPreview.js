@@ -1,16 +1,7 @@
 import React, { Component } from 'react';
 import { Slider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-	StyleSheet,
-	Alert,
-	TouchableWithoutFeedback,
-	Keyboard,
-	TextInput,
-	Text,
-	View,
-	TouchableOpacity
-} from 'react-native';
+import { StyleSheet, Alert, TouchableWithoutFeedback, Keyboard, TextInput, Text, View, YellowBox } from 'react-native';
 import firebase from '../../firebase';
 import Loading from '../components/utils.js';
 import { Dropdown } from '../components/dropdown';
@@ -18,6 +9,9 @@ import { Button } from '../components/buttons';
 import { ProfileTopBar, ProfileHeadingInfo, ProfileClasses } from '../components/profile';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+YellowBox.ignoreWarnings([
+	'VirtualizedLists should never be nested' // TODO: Remove when fixed
+]);
 export default class AddConnectionPreview extends Component {
 	static navigationOptions = {
 		gestureEnabled: false,
