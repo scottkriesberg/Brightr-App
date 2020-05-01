@@ -234,9 +234,19 @@ class StudentInProgress extends Component {
 					<Text style={styles.heading}>Session Time</Text>
 				</View>
 				<View style={styles.clockContainer}>
-					<Text style={styles.child} adjustsFontSizeToFit={true} numberOfLines={1}>
-						{this.padToTwo(this.state.hour) + ' : ' + this.padToTwo(this.state.min)}
-					</Text>
+					{this.state.min == 0 && this.state.hour == 0 ? (
+						<Text style={styles.child} adjustsFontSizeToFit={true} numberOfLines={1}>
+							{this.padToTwo(this.state.hour) +
+								' : ' +
+								this.padToTwo(this.state.min) +
+								' : ' +
+								this.padToTwo(this.state.sec)}
+						</Text>
+					) : (
+						<Text style={styles.child} adjustsFontSizeToFit={true} numberOfLines={1}>
+							{this.padToTwo(this.state.hour) + ' : ' + this.padToTwo(this.state.min)}
+						</Text>
+					)}
 				</View>
 				<View style={styles.live}>
 					<Button
@@ -268,7 +278,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	child: {
-		fontSize: 65,
+		fontSize: 55,
 		fontWeight: 'bold'
 	},
 	headerContainer: {

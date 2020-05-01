@@ -80,7 +80,9 @@ export default class StudentRequestRespond extends Component {
 			.then(() => {
 				this.props.navigation.navigate('StudentChat', {
 					uid: this.state.uid,
-					requestUid: this.state.requestUid
+					requestUid: this.state.requestUid,
+					tutorImage: 'https://bootdey.com/img/Content/avatar/avatar6.png',
+					tutorName: this.state.tutor.name
 				});
 			});
 	};

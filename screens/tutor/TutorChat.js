@@ -113,7 +113,6 @@ export default class Chat extends React.Component {
 	};
 
 	start = () => {
-		this.setState({ optionsVisible: false, modalVisible: true });
 		this.requestRef.update({ tutorReady: true }).then(() => {});
 	};
 
@@ -166,6 +165,8 @@ export default class Chat extends React.Component {
 			if (doc.data().status == 'started') {
 				this.setState({ modalVisible: false });
 				this.begin();
+			} else if (doc.data().tutorReady && !doc.data().studentReady) {
+				this.setState({ optionsVisible: false, modalVisible: true });
 			} else if (doc.data().status == 'cancelled') {
 				Alert.alert(
 					'Request Cancelled',
@@ -190,6 +191,7 @@ export default class Chat extends React.Component {
 		}
 	};
 	componentWillUnmount() {
+		this.setState({ optionsVisible: false, modalVisible: false });
 		this.unsubscribe();
 	}
 	render() {

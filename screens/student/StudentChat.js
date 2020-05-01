@@ -116,7 +116,7 @@ export default class Chat extends React.Component {
 	};
 
 	start = () => {
-		this.setState({ optionsVisible: false, modalVisible: true });
+		// this.setState({ optionsVisible: false, modalVisible: true });
 		this.requestRef.update({ studentReady: true }).then(() => {
 			console.log(this.state.modalVisible);
 
@@ -154,8 +154,9 @@ export default class Chat extends React.Component {
 				);
 			} else if (!doc.data().tutorReady && doc.data().studentReady) {
 				console.log('here');
-				this.setState({ modalVisible: true });
+				this.setState({ optionsVisible: false, modalVisible: true });
 			} else if (doc.data().tutorReady && doc.data().studentReady) {
+				this.setState({ optionsVisible: false, modalVisible: false });
 				this.requestRef.update({ status: 'started' }).then(() => {
 					this.props.navigation.navigate('StudentInProgress', {
 						uid: this.state.uid
