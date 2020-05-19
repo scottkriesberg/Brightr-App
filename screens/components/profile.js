@@ -95,6 +95,7 @@ export class ProfileHeadingInfo extends Component {
 
     render() {
         const { user, image, avatarStyle, containerStyle } = this.props;
+        console.log(user);
         return (
             <View style={containerStyle || styles.container}>
                 <AsyncImage
@@ -106,7 +107,7 @@ export class ProfileHeadingInfo extends Component {
                         {user.name}
                     </Text>
                     <Text adjustsFontSizeToFit style={styles.profileInfoText}>
-                        {user.year} / {user.major}
+                        {user.year} / {user.major.code}
                     </Text>
                     {user.gpa ? (
                         <Text style={styles.profileInfoText}>

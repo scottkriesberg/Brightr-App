@@ -7,6 +7,7 @@ import {
     Text,
     TouchableOpacity,
     SafeAreaView,
+    Modal,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Button } from '../components/buttons';
@@ -29,6 +30,7 @@ class StudentActiveRequests extends Component {
             uid: '',
             isLoading: true,
             requests: [],
+            menuVisible: false,
         };
     }
 
@@ -235,6 +237,7 @@ class StudentActiveRequests extends Component {
                     console.error('Error adding document: ', error);
                 });
         }
+        this.setState({ menuVisible: false });
     };
 
     render() {
@@ -243,6 +246,28 @@ class StudentActiveRequests extends Component {
         }
         return (
             <SafeAreaView style={styles.container}>
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={this.state.menuVisible}
+                >
+                    <View style={styles.menuContainer}>
+                        <Button
+                            onPress={this.cancelAll}
+                            type="secondary"
+                            buttonStyle={styles.cancelAllButton}
+                            text="Cancel All"
+                        />
+                        <Button
+                            onPress={() =>
+                                this.setState({ menuVisible: false })
+                            }
+                            type="primary"
+                            buttonStyle={styles.cancelAllButton}
+                            text="Dismiss"
+                        />
+                    </View>
+                </Modal>
                 <View style={styles.header}>
                     <Text
                         adjustsFontSizeToFit
@@ -252,11 +277,15 @@ class StudentActiveRequests extends Component {
                     >
                         Active Requests
                     </Text>
-                    <Button
-                        onPress={this.cancelAll}
-                        type="secondary"
-                        buttonStyle={styles.cancelAllButton}
-                        text="Cancel All"
+                    <Icon
+                        onPress={() => this.setState({ menuVisible: true })}
+                        name="ellipsis-v"
+                        type="font-awesome"
+                        color={primaryColor}
+                        containerStyle={{
+                            position: 'absolute',
+                            right: 10,
+                        }}
                     />
                 </View>
                 <View style={styles.legendContianer}>
@@ -332,15 +361,15 @@ class StudentActiveRequests extends Component {
 const styles = StyleSheet.create({
     header: {
         flex: 2,
+        flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: secondaryColor,
         width: '100%',
     },
     cancelAllButton: {
-        width: '40%',
-        height: '30%',
         alignSelf: 'center',
+        margin: 10,
     },
     headerText: {
         fontSize: 40,
@@ -412,6 +441,21 @@ const styles = StyleSheet.create({
     },
     legendText: {
         color: 'white',
+    },
+    menuContainer: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
 });
 

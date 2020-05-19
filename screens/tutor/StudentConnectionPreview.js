@@ -96,7 +96,6 @@ export default class TutorConnectedPreview extends Component {
                     user={this.state.student}
                 />
                 <View style={styles.followConnectContainer}>
-                    {/* <Button buttonStyle={{ width: '40%', height: '60%' }} text={'Follow'} /> */}
                     <Button
                         buttonStyle={{ width: '40%', height: '60%' }}
                         onPress={this.disconnect}
