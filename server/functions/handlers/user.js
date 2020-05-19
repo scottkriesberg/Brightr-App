@@ -8,6 +8,7 @@ exports.helloWorld = (req, res) => {
 
 exports.getTutors = (req, res) => {
   db.collection("tutors")
+    .where("isLive", "==", true)
     .get()
     .then((data) => {
       let tutors = [];
