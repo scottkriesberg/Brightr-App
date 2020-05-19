@@ -9,7 +9,6 @@ import { UserBar } from '../components/UserBar';
 
 class TutorPendingConnections extends Component {
     static navigationOptions = {
-        headerShown: false,
         gestureEnabled: false,
         title: 'Connection Requests',
         headerStyle: {
@@ -105,7 +104,7 @@ class TutorPendingConnections extends Component {
         const description = item.description;
 
         const studentInfo = item.studentInfo;
-        if (item.name === undefined || !this.filter(item)) {
+        if (studentInfo.name === undefined || !this.filter(item)) {
             return null;
         }
         return (

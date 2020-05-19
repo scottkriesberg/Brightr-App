@@ -9,7 +9,6 @@ import { UserBar } from '../components/UserBar';
 
 class PendingConnections extends Component {
     static navigationOptions = {
-        headerShown: false,
         gestureEnabled: false,
         title: 'Pending Connections',
         headerStyle: {

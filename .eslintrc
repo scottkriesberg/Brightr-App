@@ -23,6 +23,8 @@
         "react/jsx-boolean-value": "off",
         "class-methods-use-this": "off",
         "one-var": "off",
-        "max-classes-per-file": "off"
+        "max-classes-per-file": "off",
+        "react/prefer-stateless-function": "off",
+        "no-undef": "warn"
     }
 }

@@ -201,8 +201,7 @@ class TutorIncomingRequests extends Component {
                 location,
                 status,
             } = doc.data();
-            firebase
-                .firestore()
+            firestore
                 .collection('students')
                 .doc(studentUid)
                 .get()
@@ -233,8 +232,7 @@ class TutorIncomingRequests extends Component {
     };
 
     decline = ({ item }) => {
-        firebase
-            .firestore()
+        firestore
             .collection('requests')
             .doc(item.id)
             .update({ status: 'declined' })
@@ -245,8 +243,7 @@ class TutorIncomingRequests extends Component {
     };
 
     accept = ({ item }) => {
-        firebase
-            .firestore()
+        firestore
             .collection('requests')
             .doc(item.id)
             .update({
@@ -269,8 +266,7 @@ class TutorIncomingRequests extends Component {
             .update({ isLive: false, hourlyRate: 0, locations: [] })
             .then(() => {
                 for (let i = 0; i < this.state.requests.length; i++) {
-                    firebase
-                        .firestore()
+                    firestore
                         .collection('requests')
                         .doc(this.state.requests[i].id)
                         .update({ status: 'declined' })

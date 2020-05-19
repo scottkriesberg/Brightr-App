@@ -106,7 +106,7 @@ export default class RequestPreview extends Component {
             ref.get().then((studentDoc) => {
                 if (studentDoc.exists) {
                     this.setState({
-                        student: doc.data(),
+                        student: studentDoc.data(),
                         isLoading: false,
                     });
                 } else {
