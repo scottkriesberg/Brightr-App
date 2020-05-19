@@ -101,14 +101,10 @@ class Profile extends Component {
                 )}
 
                 <ProfileHeadingInfo
-                    rating={this.state.user.rating}
-                    year={this.state.user.year}
-                    major={this.state.user.major.code}
-                    name={this.state.user.name}
+                    user={this.state.user}
                     containerStyle={styles.basicInfoContainer}
                     avatarStyle={styles.avatar}
                     image={`demoImages/${this.state.uid}.jpg`}
-                    bio={this.state.user.bio}
                 />
                 <ProfileClasses items={this.state.user.classes} />
             </SafeAreaView>

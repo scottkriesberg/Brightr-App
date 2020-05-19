@@ -87,38 +87,35 @@ export class Rating extends Component {
 
 export class ProfileHeadingInfo extends Component {
     static props = {
-        rating: PropTypes.any,
         containerStyle: PropTypes.any,
         avatarStyle: PropTypes.any,
-        major: PropTypes.any,
-        bio: PropTypes.any,
-        name: PropTypes.any,
         image: PropTypes.any,
-        year: PropTypes.any,
+        user: PropTypes.any,
     };
 
     render() {
+        const { user, image, avatarStyle, containerStyle } = this.props;
         return (
-            <View style={this.props.containerStyle || styles.container}>
+            <View style={containerStyle || styles.container}>
                 <AsyncImage
-                    style={[this.props.avatarStyle, { resizeMode: 'stretch' }]}
-                    image={this.props.image}
+                    style={[avatarStyle, { resizeMode: 'stretch' }]}
+                    image={image}
                 />
                 <View style={styles.basicText}>
                     <Text adjustsFontSizeToFit style={styles.profileNameText}>
-                        {this.props.name}
+                        {user.name}
                     </Text>
                     <Text adjustsFontSizeToFit style={styles.profileInfoText}>
-                        {this.props.year} / {this.props.major}
+                        {user.year} / {user.major}
                     </Text>
-                    {this.props.gpa ? (
+                    {user.gpa ? (
                         <Text style={styles.profileInfoText}>
-                            GPA: {this.props.gpa}
+                            GPA: {user.gpa}
                         </Text>
                     ) : null}
                     <Rating
                         style={styles.profileInfoText}
-                        rating={this.props.rating}
+                        rating={user.rating}
                     />
                     <Text adjustsFontSizeToFit style={styles.bio}>
                         <Text
@@ -127,7 +124,7 @@ export class ProfileHeadingInfo extends Component {
                             {' '}
                             Bio:{' '}
                         </Text>
-                        {this.props.bio}
+                        {user.bio}
                     </Text>
                 </View>
             </View>

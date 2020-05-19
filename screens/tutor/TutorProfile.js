@@ -162,15 +162,10 @@ class TutorHome extends Component {
                     />
                 )}
                 <ProfileHeadingInfo
-                    rating={this.state.user.rating}
-                    year={this.state.user.year}
-                    major={this.state.user.major.code}
-                    gpa={this.state.user.gpa}
-                    name={this.state.user.name}
                     containerStyle={styles.basicInfoContainer}
                     avatarStyle={styles.avatar}
                     image={`demoImages/${this.state.uid}.jpg`}
-                    bio={this.state.user.bio}
+                    user={this.state.user}
                 />
                 <View style={styles.stats}>
                     <Text style={styles.statsHeader}>Stats</Text>

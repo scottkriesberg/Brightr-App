@@ -208,7 +208,7 @@ export default class ConnectionRequestPreview extends Component {
                         });
                 }
             })
-            .catch(function (error) {
+            .catch((error) => {
                 console.log('Error getting documents: ', error);
             });
     };
@@ -225,15 +225,10 @@ export default class ConnectionRequestPreview extends Component {
             >
                 <View style={styles.container}>
                     <ProfileHeadingInfo
-                        rating={this.state.tutor.rating}
-                        year={this.state.tutor.year}
-                        major={this.state.tutor.major.code}
+                        user={this.state.tutor}
                         containerStyle={styles.tutorInfo}
                         avatarStyle={styles.avatar}
-                        name={this.state.tutor.name}
-                        bio={this.state.tutor.bio}
                         image={`demoImages/${this.state.tutorUid}.jpg`}
-                        gpa={this.state.tutor.gpa}
                     />
                     <View style={styles.descriptionContainer}>
                         <TextInput

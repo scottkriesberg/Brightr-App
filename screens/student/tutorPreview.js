@@ -235,15 +235,10 @@ export default class TutorPreview extends Component {
             >
                 <View style={styles.container}>
                     <ProfileHeadingInfo
-                        rating={tutor.rating}
-                        year={tutor.year}
-                        major={tutor.major.code}
                         containerStyle={styles.tutorInfo}
                         avatarStyle={styles.avatar}
-                        name={tutor.name}
-                        bio={tutor.bio}
                         image={`demoImages/${tutorUid}.jpg`}
-                        gpa={tutor.gpa}
+                        user={tutor}
                     />
                     <View style={styles.descriptionContainer}>
                         <TextInput

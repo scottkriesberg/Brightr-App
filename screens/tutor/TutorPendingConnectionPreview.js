@@ -111,15 +111,10 @@ export default class TutorPendingConnectionPreview extends Component {
         return (
             <View style={styles.container}>
                 <ProfileHeadingInfo
-                    rating={this.state.student.rating}
-                    year={this.state.student.year}
-                    major={this.state.student.major.code}
-                    gpa={this.state.student.gpa}
-                    name={this.state.student.name}
                     containerStyle={styles.basicInfoContainer}
                     avatarStyle={styles.avatar}
                     image={`demoImages/${this.state.studentUid}.jpg`}
-                    bio={this.state.student.bio}
+                    user={this.state.student}
                 />
                 <ProfileClasses items={this.state.student.classes} />
                 <View style={styles.descriptionContainer}>

@@ -170,14 +170,10 @@ export default class StudentRequestRespond extends Component {
         return (
             <View style={styles.container}>
                 <ProfileHeadingInfo
-                    rating={this.state.tutor.rating}
-                    year={this.state.tutor.year}
-                    major={this.state.tutor.major.code}
-                    name={this.state.tutor.name}
                     containerStyle={styles.basicInfoContainer}
                     avatarStyle={styles.avatar}
                     image={`demoImages/${this.state.tutorUid}.jpg`}
-                    bio={this.state.tutor.bio}
+                    user={this.state.tutor}
                 />
                 <View style={styles.requestInfoContainer}>
                     <Text style={styles.requestInfoHeader}>

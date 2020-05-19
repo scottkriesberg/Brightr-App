@@ -17,7 +17,7 @@
         "react/destructuring-assignment": "off",
         "prefer-destructuring": "off",
         "react/jsx-filename-extension": "off",
-        "no-use-before-define": "warn",
+        "no-use-before-define": "off",
         "no-plusplus": "off",
         "no-throw-literal": "off",
         "react/jsx-boolean-value": "off",

@@ -87,15 +87,10 @@ export default class TutorConnectedPreview extends Component {
         return (
             <View style={styles.container}>
                 <ProfileHeadingInfo
-                    rating={this.state.tutor.rating}
-                    year={this.state.tutor.year}
-                    major={this.state.tutor.major.code}
-                    gpa={this.state.tutor.gpa}
-                    name={this.state.tutor.name}
                     containerStyle={styles.basicInfoContainer}
                     avatarStyle={styles.avatar}
                     image={`demoImages/${this.state.tutorUid}.jpg`}
-                    bio={this.state.tutor.bio}
+                    user={this.state.tutor}
                 />
                 <View style={styles.followConnectContainer}>
                     {/* <Button buttonStyle={{ width: '40%', height: '60%' }} text={'Follow'} /> */}
