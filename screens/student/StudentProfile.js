@@ -1,14 +1,13 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { StyleSheet, SafeAreaView } from 'react-native';
+import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
+import { from } from 'rxjs';
 import store from '../../redux/store';
 import { firestore } from '../../firebase';
-import {
-    ProfileTopBar,
-    ProfileHeadingInfo,
-    ProfileClasses,
-} from '../components/profile';
+import { ProfileHeadingInfo, ProfileClasses } from '../components/profile';
+import { ProfileOptionsModal } from '../components/ProfileOptions';
 import Loading from '../components/utils';
 import { clearUser } from '../../redux/actions/userAction';
 
@@ -29,6 +28,7 @@ class Profile extends Component {
             user: {},
             isLoading: true,
             isTutor: false,
+            profileOptionsVisible: false,
         };
     }
 
@@ -78,28 +78,30 @@ class Profile extends Component {
         });
     };
 
+    toggleProfileOptions = () => {
+        this.setState((prevState) => ({
+            profileOptionsVisible: !prevState.profileOptionsVisible,
+        }));
+    };
+
     render() {
         if (this.state.isLoading) {
             return <Loading />;
         }
         return (
             <SafeAreaView style={styles.container}>
-                {this.state.isTutor ? (
-                    <ProfileTopBar
-                        containerStyle={styles.profileHeaderContainer}
-                        logoutFunction={this.logout}
-                        switchAccountFunc={this.toTutorAccount}
-                        switchText='Switch to Tutor'
-                        closeFunc={this.toStudentMap}
-                    />
-                ) : (
-                    <ProfileTopBar
-                        containerStyle={styles.profileHeaderContainer}
-                        logoutFunction={this.logout}
-                        closeFunc={this.toStudentMap}
-                    />
-                )}
-
+                <Icon
+                    name='bars'
+                    type='font-awesome'
+                    onPress={this.toggleProfileOptions}
+                    containerStyle={styles.optionsStyle}
+                    size={30}
+                />
+                <ProfileOptionsModal
+                    visible={this.state.profileOptionsVisible}
+                    closeFunc={this.toggleProfileOptions}
+                    logoutFunc={this.logout}
+                />
                 <ProfileHeadingInfo
                     user={this.state.user}
                     containerStyle={styles.basicInfoContainer}
@@ -122,7 +124,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignSelf: 'center',
     },
-
     container: {
         flex: 1,
         backgroundColor: '#F8F8FF',
@@ -152,5 +153,12 @@ const styles = StyleSheet.create({
         borderColor: primaryColor,
         alignSelf: 'center',
         aspectRatio: 1,
+    },
+    optionsStyle: {
+        position: 'absolute',
+        alignSelf: 'flex-start',
+        left: '3%',
+        top: '3%',
+        zIndex: 999,
     },
 });

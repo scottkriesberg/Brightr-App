@@ -2,11 +2,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Alert } from 'react-native';
 import { firestore } from '../../firebase';
-import {
-    ProfileTopBar,
-    ProfileHeadingInfo,
-    ProfileClasses,
-} from '../components/profile';
+import { ProfileHeadingInfo, ProfileClasses } from '../components/profile';
 import Loading from '../components/utils';
 
 class TutorHome extends Component {
@@ -146,21 +142,6 @@ class TutorHome extends Component {
         }
         return (
             <View style={styles.container}>
-                {this.state.isStudent ? (
-                    <ProfileTopBar
-                        containerStyle={styles.profileHeaderContainer}
-                        logoutFunction={this.logout}
-                        switchAccountFunc={this.toStudentAccount}
-                        switchText='Switch to Student'
-                        // editFunc={this.toEditPage}
-                    />
-                ) : (
-                    <ProfileTopBar
-                        containerStyle={styles.profileHeaderContainer}
-                        logoutFunction={this.logout}
-                        editFunc={this.toEditPage}
-                    />
-                )}
                 <ProfileHeadingInfo
                     containerStyle={styles.basicInfoContainer}
                     avatarStyle={styles.avatar}
