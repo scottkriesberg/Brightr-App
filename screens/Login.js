@@ -9,16 +9,15 @@ import {
     Text,
     Image,
     SafeAreaView,
-} from 'react-native';
-import { connect } from 'react-redux';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import firebase, { firestore } from '../firebase';
-import { Button } from './components/buttons';
-import { setUser } from '../redux/actions/userAction';
-import store from '../redux/store';
-
-const logo = require('../assets/logo-09.png');
-// This allows us to dispatch the action through props in component
+} from "react-native";
+import { Button } from "./components/buttons";
+import { connect } from "react-redux";
+import { setUser } from "../redux/actions/userAction";
+import store from "../redux/store";
+import axios from "axios";
+const logo = require("../assets/logo-09.png");
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+//This allows us to dispatch the action through props in component
 const mapDispatchToProps = (dispatch) => {
     return {
         setUser: (userData) => {
@@ -27,109 +26,85 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 class Login extends React.Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            email: '',
-            password: '',
-            loginError: '',
-        };
-    }
-
-    componentDidMount() {
-        console.log(store.getState());
-    }
-
     handleSignIn = () => {
         if (!this.validate()) {
             return;
         }
 
         const { email, password } = this.state;
-        firebase
-            .auth()
-            .signInWithEmailAndPassword(email, password)
-            .then((user) => {
-                const uid = user.user.uid;
-                firestore
-                    .collection('students')
-                    .doc(uid)
-                    .get()
-                    .then((doc) => {
-                        if (doc.exists) {
-                            userUid = uid;
-                            // Calling the function that dispatches action
-                            // Before that I'm creating a nicer user object
-                            const currUser = {
-                                uid: user.user.uid,
-                                email: user.user.email,
-                                type: 'student',
-                                userData: doc.data(),
-                            };
-                            this.props.setUser(currUser);
-                            this.props.navigation.navigate('StudentNavigator', {
-                                uid,
-                            });
-                        } else {
-                            firestore
-                                .collection('tutors')
-                                .doc(uid)
-                                .get()
-                                .then((tutorDoc) => {
-                                    if (tutorDoc.exists) {
-                                        userUid = uid;
-                                        const currUser = {
-                                            uid: user.user.uid,
-                                            email: user.user.email,
-                                            type: 'tutor',
-                                            userData: tutorDoc.data(),
-                                        };
-                                        this.props.setUser(currUser);
-                                        this.props.navigation.navigate(
-                                            'TutorNavigator',
-                                            {
-                                                uid,
-                                            },
-                                        );
-                                    } else {
-                                        console.log('Error');
-                                    }
-                                });
-                        }
-                    });
+        const creds = {
+            email: email,
+            password: password,
+        };
+
+        //Calling login endpoint with user creds
+        axios
+            .get("/login", {
+                params: {
+                    email: email,
+                    password: password,
+                },
+            })
+            .then((res) => {
+                //Login works successfull
+                const userData = res.data;
+                //Setting state in redux
+                console.log("Got a response");
+                this.props.setUser(userData);
+                //Navigation
+                //TODO: Remove userId from history
+                console.log("Updated redux state");
+                if (userData.type == "student") {
+                    this.props.navigation.navigate("StudentNavigator");
+                } else {
+                    console.log("Made it here");
+                    this.props.navigation.navigate("TutorNavigator");
+                }
             })
             .catch((error) => {
-                console.log(error.code);
-                if (error.code === 'auth/invalid-email') {
+                //This will contain the auth/wrong-password, etc.
+                const errorCode = error.response.data;
+                if (errorCode == "auth/invalid-email") {
                     this.setState({
-                        loginError: 'Please check your email format',
+                        loginError: "Please check your email format",
                     });
-                } else if (error.code === 'auth/user-not-found') {
+                } else if (errorCode == "auth/user-not-found") {
                     this.setState({
-                        loginError: 'No account found with that email',
+                        loginError: "No account found with that email",
                     });
-                } else if (error.code === 'auth/wrong-password') {
-                    this.setState({ loginError: 'Wrong Password' });
+                } else if (errorCode == "auth/wrong-password") {
+                    this.setState({
+                        loginError: "Wrong Password",
+                    });
                 }
             });
     };
 
+    state = {
+        email: "",
+        password: "",
+        loginError: "",
+    };
+
+    componentDidMount() {
+        console.log(store.getState());
+    }
+
+    static navigationOptions = {
+        headerShown: false,
+    };
+
     validate() {
-        let valid = true;
+        var valid = true;
         this.setState({
-            loginError: '',
+            loginError: "",
         });
-        if (this.state.email === '') {
-            this.setState({ loginError: 'Please enter an email' });
+        if (this.state.email == "") {
+            this.setState({ loginError: "Please enter an email" });
             valid = false;
         }
-        if (this.state.password === '') {
-            this.setState({ loginError: 'Please enter an email' });
+        if (this.state.password == "") {
+            this.setState({ classesError: "Please enter an email" });
             valid = false;
         }
         return valid;

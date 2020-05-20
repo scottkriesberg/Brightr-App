@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from 'react';
 import { decode, encode } from 'base-64';
 import './screens/components/global';
@@ -20,6 +21,10 @@ if (!global.btoa) {
 if (!global.atob) {
     global.atob = decode;
 }
+
+//Setting the baseURL for our cloud functions endpoint
+axios.defaults.baseURL =
+    "https://us-central1-lavalab-project.cloudfunctions.net/api";
 
 export default class App extends React.Component {
     render() {

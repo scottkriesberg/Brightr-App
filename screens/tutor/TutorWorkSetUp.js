@@ -6,50 +6,47 @@ import { firestore } from '../../firebase';
 import Loading from '../components/utils';
 import { Map } from '../components/map';
 import { Button } from '../components/buttons';
+import store from "../../redux/store";
 
 class TutorWorkSetUp extends Component {
     constructor() {
         super();
-        this.tutorRef = firestore.collection('tutors');
         this.state = {
-            uid: '',
+            uid: "",
+            user: {},
             isLoading: true,
             locations: [],
             value: 25,
-            status: 'Offline',
+            status: "Offline",
         };
     }
 
     componentDidMount() {
-        // this.state.uid = this.props.navigation.dangerouslyGetParent().dangerouslyGetParent().getParam('uid');
-        this.state.uid = userUid;
-        this.tutorRef = this.tutorRef.doc(this.state.uid);
-        this.tutorRef.get().then((doc) => {
-            if (doc.exists) {
-                this.setState({
-                    isLoading: false,
-                    value: 25,
-                    status: doc.data().isLive ? 'Live' : 'Offline',
-                });
-            } else {
-                console.log('No such document!');
-            }
+        console.log(store.getState());
+        const uid = store.getState().user.uid;
+        this.setState({
+            user: store.getState().user,
+            uid: uid,
+            isLoading: false,
+            value: 25,
+            status: store.getState().user.userData.isLive ? "Live" : "Offline",
         });
     }
+    å;
 
     toProfile = () => {
-        this.props.navigation.navigate('TutorProfile', { uid: this.state.uid });
+        this.props.navigation.navigate("TutorProfile", { uid: this.state.uid });
     };
 
     goLive = () => {
-        if (this.state.locations.length === 0) {
+        if (this.state.locations.length == 0) {
             Alert.alert(
-                'No Locations',
-                'Please select at least one location',
-                [{ text: 'OK' }],
+                "No Locations",
+                "Please select at least one location",
+                [{ text: "OK" }],
                 {
                     cancelable: false,
-                },
+                }
             );
             return;
         }
@@ -60,14 +57,14 @@ class TutorWorkSetUp extends Component {
                 locations: this.state.locations,
             })
             .then(() => {
-                this.setState({ status: 'Live' });
+                this.setState({ status: "Live" });
             });
     };
 
     toggleLoc = (pin) => {
         if (this.state.locations.includes(pin.title)) {
             this.state.locations = this.state.locations.filter(
-                (x) => x !== pin.title,
+                (x) => x != pin.title
             );
         } else {
             this.state.locations.push(pin.title);
