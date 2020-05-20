@@ -89,7 +89,7 @@ class Profile extends Component {
                         containerStyle={styles.profileHeaderContainer}
                         logoutFunction={this.logout}
                         switchAccountFunc={this.toTutorAccount}
-                        switchText="Switch to Tutor"
+                        switchText='Switch to Tutor'
                         closeFunc={this.toStudentMap}
                     />
                 ) : (

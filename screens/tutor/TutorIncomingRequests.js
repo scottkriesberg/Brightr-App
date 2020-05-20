@@ -154,17 +154,17 @@ class TutorIncomingRequests extends Component {
                 {item.status === 'pending' || item.status === 'tutorWaiting' ? (
                     <View style={styles.requestButtons}>
                         <Button
-                            type="primary"
+                            type='primary'
                             buttonStyle={styles.button}
                             textStyle={styles.buttonText}
-                            text="Accept"
+                            text='Accept'
                             onPress={() => this.accept({ item })}
                         />
                         <Button
-                            type="secondary"
+                            type='secondary'
                             buttonStyle={styles.button}
                             textStyle={styles.buttonText}
-                            text="Decline"
+                            text='Decline'
                             onPress={() => this.decline({ item })}
                         />
                     </View>
@@ -176,7 +176,7 @@ class TutorIncomingRequests extends Component {
                         }}
                     >
                         <Icon
-                            name="keyboard-arrow-right"
+                            name='keyboard-arrow-right'
                             size={60}
                             color={sColor}
                         />

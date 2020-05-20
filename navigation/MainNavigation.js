@@ -18,7 +18,7 @@ const SignUpStackNavigator = createStackNavigator(
     },
     {
         initialRouteName: 'Login',
-    }
+    },
 );
 
 const MainNavigator = createSwitchNavigator(
@@ -29,7 +29,7 @@ const MainNavigator = createSwitchNavigator(
     },
     {
         initialRouteName: 'SignUpStackNavigator',
-    }
+    },
 );
 
 export default createAppContainer(MainNavigator);

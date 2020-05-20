@@ -41,7 +41,7 @@ export default class TutorPreview extends Component {
         this.state.uid = this.props.navigation.getParam('uid', '');
         this.state.requestUid = this.props.navigation.getParam(
             'requestUid',
-            ''
+            '',
         );
         this.requestRef = this.requestRef.doc(this.state.requestUid);
         this.unsubscribe = this.requestRef.onSnapshot(this.onCollectionUpdate);
@@ -90,7 +90,7 @@ export default class TutorPreview extends Component {
                     ],
                     {
                         cancelable: false,
-                    }
+                    },
                 );
             }
         } else {
@@ -125,9 +125,9 @@ export default class TutorPreview extends Component {
                 <View style={styles.iconBackground}>
                     <Image source={FaceLogo} style={styles.face} />
                     <Icon
-                        name="check"
-                        type="font-awesome"
-                        color="white"
+                        name='check'
+                        type='font-awesome'
+                        color='white'
                         size={50}
                         containerStyle={styles.checkMark}
                     />
@@ -139,7 +139,7 @@ export default class TutorPreview extends Component {
                         request.
                     </Text>
                 </View>
-                <Button text="Cancel Request" onPress={this.cancelRequest} />
+                <Button text='Cancel Request' onPress={this.cancelRequest} />
             </View>
         );
     }

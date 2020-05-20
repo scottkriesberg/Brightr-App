@@ -59,8 +59,8 @@ export default class Chat extends React.Component {
             headerRight: () => (
                 <Icon
                     onPress={() => this.setState({ optionsVisible: true })}
-                    name="ellipsis-v"
-                    type="font-awesome"
+                    name='ellipsis-v'
+                    type='font-awesome'
                     color={primaryColor}
                     containerStyle={{ right: 17 }}
                 />
@@ -69,7 +69,7 @@ export default class Chat extends React.Component {
         const userCreds = store.getState().user;
         this.state.requestUid = this.props.navigation.getParam(
             'requestUid',
-            ''
+            '',
         );
         this.requestRef = this.requestRef.doc(this.state.requestUid);
         const ref = firestore.collection('students').doc(userCreds.uid);
@@ -163,7 +163,7 @@ export default class Chat extends React.Component {
                     ],
                     {
                         cancelable: false,
-                    }
+                    },
                 );
             } else if (!doc.data().tutorReady && doc.data().studentReady) {
                 this.setState({ optionsVisible: false, modalVisible: true });
@@ -190,7 +190,7 @@ export default class Chat extends React.Component {
             <View style={styles.container}>
                 <StartWaiting
                     visible={this.state.modalVisible}
-                    text="Waiting for tutor to start session..."
+                    text='Waiting for tutor to start session...'
                     dismissFunc={() => {
                         this.requestRef
                             .update({ studentReady: false })

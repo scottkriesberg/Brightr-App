@@ -43,7 +43,7 @@ class TutorInProgress extends Component {
         this.state.uid = this.props.navigation.getParam('uid', '');
         this.state.sessionUid = this.props.navigation.getParam(
             'sessionUid',
-            ''
+            '',
         );
         this.ref = this.ref.doc(this.state.uid);
         this.sessionRef = this.sessionRef.doc(this.state.sessionUid);
@@ -98,10 +98,10 @@ class TutorInProgress extends Component {
                 const duration = Math.round(sessionTime / 60000);
                 const cost = this.calcSessionCost(
                     sessionTime,
-                    this.state.session.hourlyRate
+                    this.state.session.hourlyRate,
                 ).toFixed(2);
                 const time = `${new Date(
-                    this.state.session.startTime
+                    this.state.session.startTime,
                 ).toLocaleTimeString([], {
                     hour: '2-digit',
                     minute: '2-digit',
@@ -162,7 +162,7 @@ class TutorInProgress extends Component {
             <View style={styles.container}>
                 <RecapModal
                     visible={this.state.recapModalVisible}
-                    headingText="Summary"
+                    headingText='Summary'
                     time={this.state.time}
                     cost={this.state.cost}
                     duration={this.state.duration}
@@ -174,7 +174,7 @@ class TutorInProgress extends Component {
                                 [{ text: 'OK' }],
                                 {
                                     cancelable: false,
-                                }
+                                },
                             );
                             return;
                         }
@@ -187,18 +187,18 @@ class TutorInProgress extends Component {
                                 this.addRating(
                                     'students',
                                     this.state.session.studentUid,
-                                    this.state.rating
+                                    this.state.rating,
                                 );
                                 this.setState({ recapModalVisible: false });
                                 this.props.navigation.navigate(
                                     'TutorRequestNavigator',
                                     {
                                         uid: this.state.uid,
-                                    }
+                                    },
                                 );
                             });
                     }}
-                    ratingText="Please rate the student"
+                    ratingText='Please rate the student'
                     ratingFunc={(rating) => {
                         this.state.rating = rating;
                     }}
@@ -210,7 +210,7 @@ class TutorInProgress extends Component {
                             this.setState({ ratingModalVisible: false });
                         });
                     }}
-                    text="Please rate the student"
+                    text='Please rate the student'
                     ratingFunc={(rating) => {
                         this.state.rating = rating;
                     }}
@@ -225,7 +225,7 @@ class TutorInProgress extends Component {
                                 this.setState({ waitingModalVisible: false });
                             });
                     }}
-                    text="Waiting for student to finish session..."
+                    text='Waiting for student to finish session...'
                 />
                 <View style={styles.facesContainer}>
                     <View style={styles.studentFace}>
@@ -246,9 +246,9 @@ class TutorInProgress extends Component {
                             numberOfLines={1}
                         >
                             {`${this.padToTwo(
-                                this.state.hour
+                                this.state.hour,
                             )} : ${this.padToTwo(
-                                this.state.min
+                                this.state.min,
                             )} : ${this.padToTwo(this.state.sec)}`}
                         </Text>
                     ) : (
@@ -258,14 +258,14 @@ class TutorInProgress extends Component {
                             numberOfLines={1}
                         >
                             {`${this.padToTwo(
-                                this.state.hour
+                                this.state.hour,
                             )} : ${this.padToTwo(this.state.min)}`}
                         </Text>
                     )}
                 </View>
                 <View style={styles.live}>
                     <Button
-                        text="End Session"
+                        text='End Session'
                         onPress={() => {
                             this.sessionRef
                                 .update({ tutorDone: true })

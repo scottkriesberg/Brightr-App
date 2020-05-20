@@ -54,7 +54,7 @@ export default class StudentRequestRespond extends Component {
         this.state.tutorUid = this.props.navigation.getParam('tutorUid', '');
         this.state.requestUid = this.props.navigation.getParam(
             'requestUid',
-            ''
+            '',
         );
         this.requestRef = this.requestRef.doc(this.state.requestUid);
 
@@ -127,14 +127,14 @@ export default class StudentRequestRespond extends Component {
                             onPress: () => {
                                 this.props.navigation.navigate(
                                     'StudentActiveRequests',
-                                    { uid: this.state.studentUid }
+                                    { uid: this.state.studentUid },
                                 );
                             },
                         },
                     ],
                     {
                         cancelable: false,
-                    }
+                    },
                 );
             } else if (
                 doc.data().status === 'cancelled' ||
@@ -189,7 +189,7 @@ export default class StudentRequestRespond extends Component {
                             maximumValue={90}
                             minimumValue={15}
                             step={15}
-                            thumbTintColor="#6A7BD6"
+                            thumbTintColor='#6A7BD6'
                             thumbTouchSize={{ width: 30, height: 30 }}
                             trackStyle={{ height: 15, borderRadius: 10 }}
                             thumbStyle={{
@@ -212,7 +212,7 @@ export default class StudentRequestRespond extends Component {
                             maximumValue={100}
                             minimumValue={10}
                             step={5}
-                            thumbTintColor="#6A7BD6"
+                            thumbTintColor='#6A7BD6'
                             thumbTouchSize={{ width: 30, height: 30 }}
                             trackStyle={{
                                 height: 15,
@@ -236,7 +236,7 @@ export default class StudentRequestRespond extends Component {
                     >
                         Estimated Session Cost: $
                         {((this.state.estTime * this.state.rate) / 60).toFixed(
-                            2
+                            2,
                         )}
                     </Text>
                     <Text style={styles.requestInfoText}>
@@ -257,35 +257,35 @@ export default class StudentRequestRespond extends Component {
                         getSelectedItem={(i) => {
                             this.setState({ location: i, changed: true });
                         }}
-                        modalHeaderText="Select a location"
+                        modalHeaderText='Select a location'
                         intitalValue={this.state.location}
-                        dropdownTitle="Location"
+                        dropdownTitle='Location'
                     />
                 </View>
 
                 <View style={styles.live}>
                     <Button
-                        type="secondary"
+                        type='secondary'
                         buttonStyle={styles.button}
                         textStyle={styles.buttonText}
-                        text="Decline"
+                        text='Decline'
                         onPress={() => this.cancelRequest()}
                     />
 
                     {this.state.changed ? (
                         <Button
-                            type="primary"
+                            type='primary'
                             buttonStyle={styles.button}
                             textStyle={styles.buttonText}
-                            text="Update"
+                            text='Update'
                             onPress={() => this.update()}
                         />
                     ) : (
                         <Button
-                            type="primary"
+                            type='primary'
                             buttonStyle={styles.button}
                             textStyle={styles.buttonText}
-                            text="Accept"
+                            text='Accept'
                             onPress={() => this.accept()}
                         />
                     )}

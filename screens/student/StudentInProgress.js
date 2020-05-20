@@ -94,13 +94,13 @@ class StudentInProgress extends Component {
                         Date.now() - this.state.session.startTime;
                     const sessionCost = this.calcSessionCost(
                         sessionTime,
-                        this.state.session.hourlyRate
+                        this.state.session.hourlyRate,
                     );
                     const duration = Math.round(sessionTime / 60000);
                     const cost = sessionCost.toFixed(2);
                     const time = `${new Date(
                         // eslint-disable-next-line react/no-access-state-in-setstate
-                        this.state.session.startTime
+                        this.state.session.startTime,
                     ).toLocaleTimeString([], {
                         hour: '2-digit',
                         minute: '2-digit',
@@ -166,7 +166,7 @@ class StudentInProgress extends Component {
                     res.data().moneyMade +
                     this.calcSessionCost(
                         sessionTime,
-                        this.state.session.hourlyRate
+                        this.state.session.hourlyRate,
                     );
 
                 // Commit to Firestore
@@ -201,7 +201,7 @@ class StudentInProgress extends Component {
             <View style={styles.container}>
                 <RecapModal
                     visible={this.state.recapModalVisible}
-                    headingText="Summary"
+                    headingText='Summary'
                     time={this.state.time}
                     cost={this.state.cost}
                     duration={this.state.duration}
@@ -213,7 +213,7 @@ class StudentInProgress extends Component {
                                 [{ text: 'OK' }],
                                 {
                                     cancelable: false,
-                                }
+                                },
                             );
                             return;
                         }
@@ -226,17 +226,17 @@ class StudentInProgress extends Component {
                                 this.addRating(
                                     'tutors',
                                     this.state.session.tutorUid,
-                                    this.state.rating
+                                    this.state.rating,
                                 );
                                 this.props.navigation.navigate(
                                     'StudentTabNavigator',
                                     {
                                         uid: this.state.uid,
-                                    }
+                                    },
                                 );
                             });
                     }}
-                    ratingText="Please rate the tutor"
+                    ratingText='Please rate the tutor'
                     ratingFunc={(rating) => {
                         this.state.rating = rating;
                     }}
@@ -251,7 +251,7 @@ class StudentInProgress extends Component {
                                 [{ text: 'OK' }],
                                 {
                                     cancelable: false,
-                                }
+                                },
                             );
                             console.log(this.currentSessionRef);
                             return;
@@ -262,7 +262,7 @@ class StudentInProgress extends Component {
                                 this.setState({ ratingModalVisible: false });
                             });
                     }}
-                    text="Please rate the tutor"
+                    text='Please rate the tutor'
                     ratingFunc={(rating) => {
                         this.state.rating = rating;
                     }}
@@ -277,7 +277,7 @@ class StudentInProgress extends Component {
                                 this.setState({ waitingModalVisible: false });
                             });
                     }}
-                    text="Waiting for tutor to finish session..."
+                    text='Waiting for tutor to finish session...'
                 />
                 <View style={styles.facesContainer}>
                     <View style={styles.studentFace}>
@@ -298,9 +298,9 @@ class StudentInProgress extends Component {
                             numberOfLines={1}
                         >
                             {`${this.padToTwo(
-                                this.state.hour
+                                this.state.hour,
                             )} : ${this.padToTwo(
-                                this.state.min
+                                this.state.min,
                             )} : ${this.padToTwo(this.state.sec)}`}
                         </Text>
                     ) : (
@@ -310,14 +310,14 @@ class StudentInProgress extends Component {
                             numberOfLines={1}
                         >
                             {`${this.padToTwo(
-                                this.state.hour
+                                this.state.hour,
                             )} : ${this.padToTwo(this.state.min)}`}
                         </Text>
                     )}
                 </View>
                 <View style={styles.live}>
                     <Button
-                        text="End Session"
+                        text='End Session'
                         onPress={() => {
                             this.currentSessionRef
                                 .update({ studentDone: true })

@@ -38,16 +38,16 @@ export default class TutorPendingConnectionPreview extends Component {
     componentDidMount() {
         this.state.studentUid = this.props.navigation.getParam(
             'studentUid',
-            ''
+            '',
         );
         this.state.uid = this.props.navigation.getParam('uid', '');
         this.state.pendingConnectionId = this.props.navigation.getParam(
             'pendingConnectionId',
-            ''
+            '',
         );
         this.state.description = this.props.navigation.getParam(
             'description',
-            ''
+            '',
         );
         this.studentRef = this.studentRef.doc(this.state.studentUid);
         this.studentRef.get().then((doc) => {
@@ -87,7 +87,7 @@ export default class TutorPendingConnectionPreview extends Component {
             .then(() =>
                 this.props.navigation.navigate('TutorPendingConnections', {
                     uid: this.state.uid,
-                })
+                }),
             );
     };
 
@@ -137,8 +137,8 @@ export default class TutorPendingConnectionPreview extends Component {
                             justifyContent: 'center',
                             padding: 7,
                         }}
-                        text="Cancel Request"
-                        type="secondary"
+                        text='Cancel Request'
+                        type='secondary'
                         onPress={this.cancelConnectionRequest}
                     />
                     <Button
@@ -148,7 +148,7 @@ export default class TutorPendingConnectionPreview extends Component {
                             justifyContent: 'center',
                             padding: 7,
                         }}
-                        text="Accept Request"
+                        text='Accept Request'
                         onPress={this.acceptConnectionRequest}
                     />
                 </View>

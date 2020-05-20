@@ -40,11 +40,11 @@ export default class PendingConnectionPreview extends Component {
         this.state.uid = this.props.navigation.getParam('uid', '');
         this.state.pendingConnectionId = this.props.navigation.getParam(
             'pendingConnectionId',
-            ''
+            '',
         );
         this.state.description = this.props.navigation.getParam(
             'description',
-            ''
+            '',
         );
         this.tutorRef = this.tutorRef.doc(this.state.tutorUid);
         this.tutorRef.get().then((doc) => {
@@ -84,7 +84,7 @@ export default class PendingConnectionPreview extends Component {
             .then(() =>
                 this.props.navigation.navigate('PendingConnections', {
                     uid: this.state.uid,
-                })
+                }),
             );
     };
 
@@ -112,7 +112,7 @@ export default class PendingConnectionPreview extends Component {
                 <View style={styles.requestContianer}>
                     <Button
                         buttonStyle={{ width: '90%', height: '80%' }}
-                        text="Cancel Request"
+                        text='Cancel Request'
                         onPress={this.cancelConnectionRequest}
                     />
                 </View>

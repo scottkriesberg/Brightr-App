@@ -203,7 +203,7 @@ class StudentActiveRequests extends Component {
                     style={{ alignItems: 'center', justifyContent: 'center' }}
                 >
                     <Icon
-                        name="keyboard-arrow-right"
+                        name='keyboard-arrow-right'
                         size={60}
                         color={sColor}
                     />
@@ -247,24 +247,24 @@ class StudentActiveRequests extends Component {
         return (
             <SafeAreaView style={styles.container}>
                 <Modal
-                    animationType="fade"
+                    animationType='fade'
                     transparent={true}
                     visible={this.state.menuVisible}
                 >
                     <View style={styles.menuContainer}>
                         <Button
                             onPress={this.cancelAll}
-                            type="secondary"
+                            type='secondary'
                             buttonStyle={styles.cancelAllButton}
-                            text="Cancel All"
+                            text='Cancel All'
                         />
                         <Button
                             onPress={() =>
                                 this.setState({ menuVisible: false })
                             }
-                            type="primary"
+                            type='primary'
                             buttonStyle={styles.cancelAllButton}
-                            text="Dismiss"
+                            text='Dismiss'
                         />
                     </View>
                 </Modal>
@@ -279,8 +279,8 @@ class StudentActiveRequests extends Component {
                     </Text>
                     <Icon
                         onPress={() => this.setState({ menuVisible: true })}
-                        name="ellipsis-v"
-                        type="font-awesome"
+                        name='ellipsis-v'
+                        type='font-awesome'
                         color={primaryColor}
                         containerStyle={{
                             position: 'absolute',

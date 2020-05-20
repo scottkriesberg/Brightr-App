@@ -42,14 +42,14 @@ export class StartWaiting extends Component {
     render() {
         const { visible, dismissFunc, text } = this.props;
         return (
-            <Modal animationType="slide" transparent={false} visible={visible}>
+            <Modal animationType='slide' transparent={false} visible={visible}>
                 <View style={styles.modalContainer}>
                     <Text style={styles.modalTitleText}>{text}</Text>
                     <Loading />
                     <Button
-                        type="secondary"
+                        type='secondary'
                         textStyle={styles.cancelModalButtonText}
-                        text="Cancel"
+                        text='Cancel'
                         buttonStyle={styles.cancelModalButton}
                         onPress={dismissFunc}
                     />
@@ -70,13 +70,13 @@ export class OptionsModal extends Component {
     render() {
         const { visible, cancelFunc, startFunc, dismissFunc } = this.props;
         return (
-            <Modal animationType="fade" transparent={true} visible={visible}>
+            <Modal animationType='fade' transparent={true} visible={visible}>
                 <View style={styles.centeredView}>
                     <View style={styles.optionsModalContainer}>
                         <Icon
-                            name="times"
-                            type="font-awesome"
-                            color="grey"
+                            name='times'
+                            type='font-awesome'
+                            color='grey'
                             containerStyle={{
                                 alignSelf: 'flex-start',
                                 bottom: '10%',
@@ -85,14 +85,14 @@ export class OptionsModal extends Component {
                             onPress={dismissFunc}
                         />
                         <Button
-                            type="secondary"
-                            text="Cancel Session"
+                            type='secondary'
+                            text='Cancel Session'
                             buttonStyle={styles.optionsButton}
                             onPress={cancelFunc}
                         />
                         <Button
-                            type="primary"
-                            text="Start Session"
+                            type='primary'
+                            text='Start Session'
                             buttonStyle={styles.optionsButton}
                             onPress={startFunc}
                         />

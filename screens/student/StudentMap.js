@@ -53,10 +53,10 @@ class StudentMap extends Component {
                     this.ref = this.ref.where(
                         'classesArray',
                         'array-contains-any',
-                        this.state.user.classesArray
+                        this.state.user.classesArray,
                     );
                     this.unsubscribe = this.ref.onSnapshot(
-                        this.onCollectionUpdate
+                        this.onCollectionUpdate,
                     );
                 } else {
                     console.log('No such document!');
@@ -177,7 +177,7 @@ class StudentMap extends Component {
                                     getSelectedItem={(i) => {
                                         this.setState({ classFilter: i });
                                     }}
-                                    modalHeaderText="Select a class"
+                                    modalHeaderText='Select a class'
                                     intitalValue={
                                         this.state.classFilter
                                             ? this.state.classFilter.name
@@ -216,8 +216,8 @@ class StudentMap extends Component {
                             </View>
                             <View style={styles.filterButtonsContainer}>
                                 <Button
-                                    text="Clear"
-                                    type="secondary"
+                                    text='Clear'
+                                    type='secondary'
                                     textStyle={styles.clearButtonText}
                                     buttonStyle={styles.filterButtons}
                                     onPress={() => {
@@ -231,7 +231,7 @@ class StudentMap extends Component {
                                 />
 
                                 <Button
-                                    text="Apply"
+                                    text='Apply'
                                     textStyle={styles.filterButtonsText}
                                     buttonStyle={styles.filterButtons}
                                     onPress={this.applyFilter}
@@ -255,9 +255,9 @@ class StudentMap extends Component {
                         </Text>
                         <Icon
                             style={styles.filterButton}
-                            name="settings-input-component"
-                            type="Octicons"
-                            color="black"
+                            name='settings-input-component'
+                            type='Octicons'
+                            color='black'
                             onPress={this.toggleFilterWindow}
                         />
                     </View>

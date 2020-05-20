@@ -82,7 +82,7 @@ export default class AddConnectionPreview extends Component {
             .then(() =>
                 this.props.navigation.navigate('StudentConnections', {
                     uid: this.state.uid,
-                })
+                }),
             );
     };
 
@@ -109,7 +109,7 @@ export default class AddConnectionPreview extends Component {
                         <TextInput
                             style={styles.description}
                             multiline={true}
-                            placeholder="Request Description"
+                            placeholder='Request Description'
                             onChangeText={(description) =>
                                 this.setState({ description })
                             }
@@ -119,7 +119,7 @@ export default class AddConnectionPreview extends Component {
                     <View style={styles.requestContianer}>
                         <Button
                             buttonStyle={{ width: '90%', height: '80%' }}
-                            text="Request Connection"
+                            text='Request Connection'
                             onPress={this.requestConnection}
                         />
                     </View>

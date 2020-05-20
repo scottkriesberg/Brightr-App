@@ -39,7 +39,7 @@ class AddConnections extends Component {
     componentDidMount() {
         this.state.connections = this.props.navigation.getParam(
             'connections',
-            []
+            [],
         );
         this.state.uid = userUid;
         this.studentRef = this.studentRef.doc(this.state.uid);
@@ -137,7 +137,7 @@ class AddConnections extends Component {
                 <View style={styles.searchContainer}>
                     <TextInput
                         style={styles.searchBar}
-                        placeholder="Search tutor name"
+                        placeholder='Search tutor name'
                         onChangeText={(text) => this.searchFilterFunction(text)}
                         value={this.state.searchText}
                     />

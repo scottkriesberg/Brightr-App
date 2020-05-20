@@ -113,7 +113,7 @@ export class Map extends Component {
     onMarkerPressTutor(marker, index) {
         if (this.state.selectedMarkerIndexs.includes(index)) {
             this.state.selectedMarkerIndexs = this.state.selectedMarkerIndexs.filter(
-                (x) => x !== index
+                (x) => x !== index,
             );
         } else {
             this.state.selectedMarkerIndexs.push(index);

@@ -85,7 +85,7 @@ export default class TutorPreview extends Component {
                     ],
                     {
                         cancelable: false,
-                    }
+                    },
                 );
             }
         } else {
@@ -138,7 +138,7 @@ export default class TutorPreview extends Component {
                 [{ text: 'OK' }],
                 {
                     cancelable: false,
-                }
+                },
             );
             return;
         }
@@ -165,13 +165,13 @@ export default class TutorPreview extends Component {
                                         'StudentMap',
                                         {
                                             uid: this.state.uid,
-                                        }
+                                        },
                                     ),
                             },
                         ],
                         {
                             cancelable: false,
-                        }
+                        },
                     );
                 } else {
                     const {
@@ -206,7 +206,7 @@ export default class TutorPreview extends Component {
                                 'StudentActiveRequests',
                                 {
                                     uid,
-                                }
+                                },
                             );
                         })
                         .catch((error) => {
@@ -244,7 +244,7 @@ export default class TutorPreview extends Component {
                         <TextInput
                             style={styles.description}
                             multiline
-                            placeholder="Description"
+                            placeholder='Description'
                             onChangeText={(d) =>
                                 this.setState({ description: d })
                             }
@@ -259,7 +259,7 @@ export default class TutorPreview extends Component {
                             maximumValue={90}
                             minimumValue={15}
                             step={15}
-                            thumbTintColor="#6A7BD6"
+                            thumbTintColor='#6A7BD6'
                             thumbTouchSize={{ width: 30, height: 30 }}
                             trackStyle={{ height: 15, borderRadius: 10 }}
                             thumbStyle={{
@@ -299,9 +299,9 @@ export default class TutorPreview extends Component {
                             getSelectedItem={(i) => {
                                 this.setState({ locationRequest: i });
                             }}
-                            modalHeaderText="Select a location"
-                            intitalValue="Select a location"
-                            dropdownTitle="Location"
+                            modalHeaderText='Select a location'
+                            intitalValue='Select a location'
+                            dropdownTitle='Location'
                         />
 
                         <Dropdown
@@ -315,15 +315,15 @@ export default class TutorPreview extends Component {
                             getSelectedItem={(i) => {
                                 this.setState({ classRequest: i });
                             }}
-                            modalHeaderText="Select a class"
-                            intitalValue="Select a class"
-                            dropdownTitle="Class"
+                            modalHeaderText='Select a class'
+                            intitalValue='Select a class'
+                            dropdownTitle='Class'
                             renderItemTextFunc={(item) => item.name}
                         />
                     </View>
                     <View style={styles.live}>
                         <Button
-                            text="Request Tutor"
+                            text='Request Tutor'
                             onPress={this.requestTutor}
                         />
                     </View>

@@ -76,7 +76,7 @@ export default class TutorConnectedPreview extends Component {
             .then(() =>
                 this.props.navigation.navigate('StudentConnections', {
                     uid: this.state.uid,
-                })
+                }),
             );
     };
 
@@ -97,21 +97,21 @@ export default class TutorConnectedPreview extends Component {
                     <Button
                         buttonStyle={{ width: '40%', height: '60%' }}
                         onPress={this.disconnect}
-                        text="Disconnect"
+                        text='Disconnect'
                     />
                 </View>
                 <ProfileClasses items={this.state.tutor.classes} />
                 <View style={styles.requestContianer}>
                     <Button
                         buttonStyle={{ width: '60%', height: '70%' }}
-                        text="Request Tutor"
+                        text='Request Tutor'
                         onPress={() =>
                             this.props.navigation.navigate(
                                 'ConnectionRequestPreview',
                                 {
                                     tutorUid: this.state.tutorUid,
                                     uid: this.state.uid,
-                                }
+                                },
                             )
                         }
                     />

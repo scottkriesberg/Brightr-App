@@ -49,7 +49,7 @@ class TutorWorkSetUp extends Component {
                 [{ text: 'OK' }],
                 {
                     cancelable: false,
-                }
+                },
             );
             return;
         }
@@ -67,7 +67,7 @@ class TutorWorkSetUp extends Component {
     toggleLoc = (pin) => {
         if (this.state.locations.includes(pin.title)) {
             this.state.locations = this.state.locations.filter(
-                (x) => x !== pin.title
+                (x) => x !== pin.title,
             );
         } else {
             this.state.locations.push(pin.title);
@@ -96,7 +96,7 @@ class TutorWorkSetUp extends Component {
                                 .catch((error) => {
                                     console.error(
                                         'Error adding document: ',
-                                        error
+                                        error,
                                     );
                                 });
                         });
@@ -171,16 +171,16 @@ class TutorWorkSetUp extends Component {
                 {this.state.status === 'Live' ? (
                     <View style={styles.live}>
                         <Button
-                            type="secondary"
+                            type='secondary'
                             buttonStyle={styles.liveButtons}
                             textStyle={styles.liveButtonsText}
-                            text="End Live"
+                            text='End Live'
                             onPress={this.stopLive}
                         />
                         <Button
                             buttonStyle={styles.liveButtons}
                             textStyle={styles.liveButtonsText}
-                            text="Update Live"
+                            text='Update Live'
                             onPress={this.goLive}
                         />
                     </View>
@@ -189,7 +189,7 @@ class TutorWorkSetUp extends Component {
                         <Button
                             buttonStyle={styles.liveButtons}
                             textStyle={styles.liveButtonsText}
-                            text="Go Live"
+                            text='Go Live'
                             onPress={this.goLive}
                         />
                     </View>

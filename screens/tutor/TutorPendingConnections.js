@@ -40,10 +40,10 @@ class TutorPendingConnections extends Component {
         this.connectionsRef = this.connectionsRef.where(
             'tutorUid',
             '==',
-            this.state.uid
+            this.state.uid,
         );
         this.unsubscribe = this.connectionsRef.onSnapshot(
-            this.onCollectionUpdate
+            this.onCollectionUpdate,
         );
     }
 
@@ -117,7 +117,7 @@ class TutorPendingConnections extends Component {
                             uid: this.state.uid,
                             pendingConnectionId,
                             description,
-                        }
+                        },
                     )
                 }
                 user={studentInfo}
@@ -135,7 +135,7 @@ class TutorPendingConnections extends Component {
                 <View style={styles.searchContainer}>
                     <TextInput
                         style={styles.searchBar}
-                        placeholder="Search student name"
+                        placeholder='Search student name'
                         onChangeText={(text) => this.searchFilterFunction(text)}
                         value={this.state.searchText}
                     />

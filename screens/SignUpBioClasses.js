@@ -173,7 +173,7 @@ class SignUpBasicInfo extends React.Component {
                                     'TutorNavigator',
                                     {
                                         uid: result.user.uid,
-                                    }
+                                    },
                                 );
                             }
                         })
@@ -192,7 +192,9 @@ class SignUpBasicInfo extends React.Component {
             bioError: '',
         });
         if (this.state.bio === '') {
-            this.setState({ bioError: 'Please enter at least a small bio' });
+            this.setState({
+                bioError: 'Please enter at least a small bio',
+            });
             valid = false;
         }
         if (this.state.classes.length === 0) {
@@ -222,7 +224,7 @@ class SignUpBasicInfo extends React.Component {
                             value={this.state.bio}
                             placeholderTextColor={primaryColor}
                             onChangeText={(bio) => this.setState({ bio })}
-                            placeholder="Fight on!"
+                            placeholder='Fight on!'
                             multiline={true}
                             maxLength={500}
                         />
@@ -244,9 +246,9 @@ class SignUpBasicInfo extends React.Component {
                         </Text>
                         <MultiSelectSearchableDropdown
                             items={this.classes}
-                            modalHeaderText="Please select all the classes you would like to tutor for"
-                            intitalValue="Computer Science"
-                            dropdownTitle="Classes"
+                            modalHeaderText='Please select all the classes you would like to tutor for'
+                            intitalValue='Computer Science'
+                            dropdownTitle='Classes'
                             doneFunc={(selected) => {
                                 this.setState({ classes: selected });
                             }}
@@ -254,8 +256,8 @@ class SignUpBasicInfo extends React.Component {
                     </View>
                     <View style={styles.buttonContainer}>
                         <Button
-                            type="secondary"
-                            text="Sign Up"
+                            type='secondary'
+                            text='Sign Up'
                             onPress={() => this.validate()}
                         />
                     </View>

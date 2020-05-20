@@ -94,7 +94,7 @@ class Login extends React.Component {
                                             'TutorNavigator',
                                             {
                                                 uid,
-                                            }
+                                            },
                                         );
                                     } else {
                                         console.log('Error');
@@ -176,14 +176,14 @@ class Login extends React.Component {
                         <View style={styles.loginInputContainer}>
                             <TextInput
                                 style={styles.loginInput}
-                                label="Email"
+                                label='Email'
                                 value={this.state.email}
                                 onChangeText={(email) =>
                                     this.setState({ email })
                                 }
-                                placeholder="Email"
-                                placeholderTextColor="white"
-                                autoCapitalize="none"
+                                placeholder='Email'
+                                placeholderTextColor='white'
+                                autoCapitalize='none'
                             />
                             <TextInput
                                 style={styles.loginInput}
@@ -191,8 +191,8 @@ class Login extends React.Component {
                                 onChangeText={(password) =>
                                     this.setState({ password })
                                 }
-                                placeholder="Password"
-                                placeholderTextColor="white"
+                                placeholder='Password'
+                                placeholderTextColor='white'
                                 secureTextEntry={true}
                             />
                             <Text
@@ -205,21 +205,21 @@ class Login extends React.Component {
                         </View>
                         <View style={styles.loginButtonContainer}>
                             <Button
-                                type="secondary"
+                                type='secondary'
                                 buttonStyle={styles.loginButton}
                                 textStyle={styles.loginButtonText}
-                                text="Login"
+                                text='Login'
                                 onPress={() => this.handleSignIn()}
                             />
                         </View>
                         <View style={styles.signUpButtonContainer}>
                             <Button
-                                type="primary"
+                                type='primary'
                                 text="Don't have an account yet? Sign up"
                                 buttonStyle={styles.signUpButton}
                                 onPress={() =>
                                     this.props.navigation.navigate(
-                                        'SignUpBasicInfo'
+                                        'SignUpBasicInfo',
                                     )
                                 }
                             />

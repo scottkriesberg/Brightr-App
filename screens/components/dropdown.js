@@ -111,7 +111,7 @@ export class Dropdown extends Component {
                 <Modal
                     style={styles.modalContainer}
                     visible={this.state.pickerDisplayed}
-                    animationType="slide"
+                    animationType='slide'
                     transparent={true}
                 >
                     <View style={modalStyle || styles.modalView}>
@@ -143,8 +143,8 @@ export class Dropdown extends Component {
                                 onPress={() => {
                                     this.togglePicker();
                                 }}
-                                text="Cancel"
-                                type="secondary"
+                                text='Cancel'
+                                type='secondary'
                             />
                         </View>
                     </View>
@@ -249,13 +249,13 @@ export class SearchableDropdown extends Component {
                 <Modal
                     style={styles.searchModalContainer}
                     visible={this.state.pickerDisplayed}
-                    animationType="slide"
+                    animationType='slide'
                     transparent={true}
                 >
                     <View style={styles.searchModalView}>
                         <TextInput
                             style={styles.searchBar}
-                            placeholder="Search"
+                            placeholder='Search'
                             onChangeText={(text) =>
                                 this.searchFilterFunction(text)
                             }
@@ -365,14 +365,14 @@ export class MultiSelectSearchableDropdown extends Component {
                     {item.department} {item.code}
                 </Text>
                 <Icon
-                    name="circle-with-cross"
-                    type="entypo"
-                    color="white"
+                    name='circle-with-cross'
+                    type='entypo'
+                    color='white'
                     onPress={() => {
                         this.state.selected = this.state.selected.filter(
                             (classObj) => {
                                 return classObj.name !== item.name;
-                            }
+                            },
                         );
                         this.setState();
                     }}
@@ -392,14 +392,14 @@ export class MultiSelectSearchableDropdown extends Component {
                     {item.department} {item.code}: {item.name}
                 </Text>
                 <Icon
-                    name="circle-with-cross"
-                    type="entypo"
-                    color="white"
+                    name='circle-with-cross'
+                    type='entypo'
+                    color='white'
                     onPress={() => {
                         this.state.selected = this.state.selected.filter(
                             (classObj) => {
                                 return classObj.name !== item.name;
-                            }
+                            },
                         );
                         this.setState();
                     }}
@@ -434,7 +434,7 @@ export class MultiSelectSearchableDropdown extends Component {
                 <Modal
                     style={styles.searchModalContainer}
                     visible={this.state.pickerDisplayed}
-                    animationType="slide"
+                    animationType='slide'
                     transparent={true}
                 >
                     <View style={styles.searchModalView}>
@@ -454,7 +454,7 @@ export class MultiSelectSearchableDropdown extends Component {
                         <View style={styles.multiHeaderContainer}>
                             <TextInput
                                 style={styles.multiSearchBar}
-                                placeholder="Search"
+                                placeholder='Search'
                                 onChangeText={(text) =>
                                     this.searchFilterFunction(text)
                                 }

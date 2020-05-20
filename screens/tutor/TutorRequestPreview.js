@@ -35,12 +35,12 @@ export default class RequestPreview extends Component {
     componentDidMount() {
         this.state.studentUid = this.props.navigation.getParam(
             'studentUid',
-            ''
+            '',
         );
         this.state.tutorUid = this.props.navigation.getParam('tutorUid', '');
         this.state.requestUid = this.props.navigation.getParam(
             'requestUid',
-            ''
+            '',
         );
         this.requestRef = this.requestRef.doc(this.state.requestUid);
 
@@ -87,14 +87,14 @@ export default class RequestPreview extends Component {
                             onPress: () => {
                                 this.props.navigation.navigate(
                                     'TutorIncomingRequests',
-                                    { uid: this.state.tutorUid }
+                                    { uid: this.state.tutorUid },
                                 );
                             },
                         },
                     ],
                     {
                         cancelable: false,
-                    }
+                    },
                 );
             } else if (doc.data().status === 'declined') {
                 this.toTutorIncomingRequests();
@@ -160,7 +160,7 @@ export default class RequestPreview extends Component {
                         {Math.round(
                             (this.state.request.estTime / 60) *
                                 this.state.request.hourlyRate *
-                                100
+                                100,
                         ) / 100}
                     </Text>
                     <Text style={styles.requestInfoText}>

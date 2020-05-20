@@ -102,7 +102,7 @@ class TutorHome extends Component {
             ],
             {
                 cancelable: false,
-            }
+            },
         );
     };
 
@@ -126,7 +126,7 @@ class TutorHome extends Component {
                                 .catch((error) => {
                                     console.error(
                                         'Error adding document: ',
-                                        error
+                                        error,
                                     );
                                 });
                         });
@@ -151,7 +151,7 @@ class TutorHome extends Component {
                         containerStyle={styles.profileHeaderContainer}
                         logoutFunction={this.logout}
                         switchAccountFunc={this.toStudentAccount}
-                        switchText="Switch to Student"
+                        switchText='Switch to Student'
                         // editFunc={this.toEditPage}
                     />
                 ) : (
@@ -189,7 +189,7 @@ class TutorHome extends Component {
                                 (this.state.user.moneyMade /
                                     this.state.user.timeWorked) *
                                     60 *
-                                    100
+                                    100,
                             ) / 100}
                             /hr
                         </Text>

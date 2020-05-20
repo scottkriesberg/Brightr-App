@@ -37,7 +37,7 @@ const StudentRequestNavigator = createStackNavigator(
     },
     {
         initialRouteName: 'StudentActiveRequests',
-    }
+    },
 );
 
 const StudentLiveNavigator = createStackNavigator(
@@ -51,7 +51,7 @@ const StudentLiveNavigator = createStackNavigator(
     },
     {
         initialRouteName: 'StudentMap',
-    }
+    },
 );
 
 const StudentConnectionsNavigator = createStackNavigator(
@@ -80,7 +80,7 @@ const StudentConnectionsNavigator = createStackNavigator(
     },
     {
         initialRouteName: 'StudentConnections',
-    }
+    },
 );
 
 const StudentTabNavigator = createBottomTabNavigator(
@@ -90,7 +90,7 @@ const StudentTabNavigator = createBottomTabNavigator(
             navigationOptions: {
                 tabBarLabel: 'Profile',
                 tabBarIcon: ({ tintColor }) => (
-                    <Icon name="user" type="font-awesome" color={tintColor} />
+                    <Icon name='user' type='font-awesome' color={tintColor} />
                 ),
                 lazy: false,
             },
@@ -100,7 +100,7 @@ const StudentTabNavigator = createBottomTabNavigator(
             navigationOptions: {
                 tabBarLabel: 'Live',
                 tabBarIcon: ({ tintColor }) => (
-                    <Icon name="place" color={tintColor} />
+                    <Icon name='place' color={tintColor} />
                 ),
                 lazy: false,
             },
@@ -113,8 +113,8 @@ const StudentTabNavigator = createBottomTabNavigator(
                     return (
                         <View style={{ width: 24, height: 24, margin: 5 }}>
                             <Icon
-                                name="lightbulb-o"
-                                type="font-awesome"
+                                name='lightbulb-o'
+                                type='font-awesome'
                                 color={tintColor}
                             />
                         </View>
@@ -128,7 +128,7 @@ const StudentTabNavigator = createBottomTabNavigator(
             navigationOptions: {
                 tabBarLabel: 'Connections',
                 tabBarIcon: ({ tintColor }) => (
-                    <Icon name="users" type="font-awesome" color={tintColor} />
+                    <Icon name='users' type='font-awesome' color={tintColor} />
                 ),
                 lazy: false,
             },
@@ -136,7 +136,7 @@ const StudentTabNavigator = createBottomTabNavigator(
     },
     {
         initialRouteName: 'StudentLiveNavigator',
-    }
+    },
 );
 
 const StudentNavigator = createSwitchNavigator(
@@ -148,7 +148,7 @@ const StudentNavigator = createSwitchNavigator(
     },
     {
         initialRouteName: 'StudentTabNavigator',
-    }
+    },
 );
 
 export default createAppContainer(StudentNavigator);

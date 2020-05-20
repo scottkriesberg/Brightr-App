@@ -52,12 +52,12 @@ export default class TutorRequestRespond extends Component {
     componentDidMount() {
         this.state.studentUid = this.props.navigation.getParam(
             'studentUid',
-            ''
+            '',
         );
         this.state.tutorUid = this.props.navigation.getParam('tutorUid', '');
         this.state.requestUid = this.props.navigation.getParam(
             'requestUid',
-            ''
+            '',
         );
         this.requestRef = this.requestRef.doc(this.state.requestUid);
 
@@ -69,12 +69,9 @@ export default class TutorRequestRespond extends Component {
     }
 
     decline = () => {
-        this.requestRef
-            .update({ status: 'declined' })
-            .then(() => {})
-            .catch((error) => {
-                console.error('Error adding document: ', error);
-            });
+        this.requestRef.update({ status: 'declined' }).catch((error) => {
+            console.error('Error adding document: ', error);
+        });
     };
 
     accept = () => {
@@ -125,14 +122,14 @@ export default class TutorRequestRespond extends Component {
                             onPress: () => {
                                 this.props.navigation.navigate(
                                     'TutorIncomingRequests',
-                                    { uid: this.state.tutorUid }
+                                    { uid: this.state.tutorUid },
                                 );
                             },
                         },
                     ],
                     {
                         cancelable: false,
-                    }
+                    },
                 );
             } else if (
                 doc.data().status === 'declined' ||
@@ -200,16 +197,22 @@ export default class TutorRequestRespond extends Component {
                             maximumValue={90}
                             minimumValue={15}
                             step={15}
-                            thumbTintColor="#6A7BD6"
+                            thumbTintColor='#6A7BD6'
                             thumbTouchSize={{ width: 30, height: 30 }}
-                            trackStyle={{ height: 15, borderRadius: 10 }}
+                            trackStyle={{
+                                height: 15,
+                                borderRadius: 10,
+                            }}
                             thumbStyle={{
                                 height: 30,
                                 width: 30,
                                 borderRadius: 15,
                             }}
                             onValueChange={(estTime) =>
-                                this.setState({ estTime, changed: true })
+                                this.setState({
+                                    estTime,
+                                    changed: true,
+                                })
                             }
                         />
                     </View>
@@ -223,7 +226,7 @@ export default class TutorRequestRespond extends Component {
                             maximumValue={100}
                             minimumValue={10}
                             step={5}
-                            thumbTintColor="#6A7BD6"
+                            thumbTintColor='#6A7BD6'
                             thumbTouchSize={{ width: 30, height: 30 }}
                             trackStyle={{
                                 height: 15,
@@ -247,7 +250,7 @@ export default class TutorRequestRespond extends Component {
                     >
                         Estimated Session Cost: $
                         {((this.state.estTime * this.state.rate) / 60).toFixed(
-                            2
+                            2,
                         )}
                     </Text>
                     <Text style={styles.requestInfoText}>
@@ -266,37 +269,40 @@ export default class TutorRequestRespond extends Component {
                         titleStyle={{ color: 'black', fontSize: 20 }}
                         items={this.state.locations}
                         getSelectedItem={(i) => {
-                            this.setState({ location: i, changed: true });
+                            this.setState({
+                                location: i,
+                                changed: true,
+                            });
                         }}
-                        modalHeaderText="Select a location"
+                        modalHeaderText='Select a location'
                         intitalValue={this.state.location}
-                        dropdownTitle="Location"
+                        dropdownTitle='Location'
                     />
                 </View>
 
                 <View style={styles.live}>
                     <Button
-                        type="secondary"
+                        type='secondary'
                         buttonStyle={styles.button}
                         textStyle={styles.buttonText}
-                        text="Decline"
+                        text='Decline'
                         onPress={() => this.decline()}
                     />
 
                     {this.state.changed ? (
                         <Button
-                            type="primary"
+                            type='primary'
                             buttonStyle={styles.button}
                             textStyle={styles.buttonText}
-                            text="Update"
+                            text='Update'
                             onPress={() => this.update()}
                         />
                     ) : (
                         <Button
-                            type="primary"
+                            type='primary'
                             buttonStyle={styles.button}
                             textStyle={styles.buttonText}
-                            text="Accept"
+                            text='Accept'
                             onPress={() => this.accept()}
                         />
                     )}

@@ -32,10 +32,10 @@ class StudentConnections extends Component {
         this.connectionsRef = this.connectionsRef.where(
             'studentUid',
             '==',
-            this.state.uid
+            this.state.uid,
         );
         this.unsubscribe = this.connectionsRef.onSnapshot(
-            this.onCollectionUpdate
+            this.onCollectionUpdate,
         );
     }
 
@@ -139,8 +139,8 @@ class StudentConnections extends Component {
                 <View style={styles.header}>
                     <Icon
                         containerStyle={styles.pendingConnection}
-                        name="paper-plane"
-                        type="entypo"
+                        name='paper-plane'
+                        type='entypo'
                         onPress={this.toPendingConnections}
                     />
                     <Text
@@ -153,15 +153,15 @@ class StudentConnections extends Component {
                     </Text>
                     <Icon
                         containerStyle={styles.addConnection}
-                        name="adduser"
-                        type="antdesign"
+                        name='adduser'
+                        type='antdesign'
                         onPress={this.toAddConnections}
                     />
                 </View>
                 <View style={styles.searchContainer}>
                     <TextInput
                         style={styles.searchBar}
-                        placeholder="Search tutor name"
+                        placeholder='Search tutor name'
                         onChangeText={(text) => this.searchFilterFunction(text)}
                         value={this.state.searchText}
                     />

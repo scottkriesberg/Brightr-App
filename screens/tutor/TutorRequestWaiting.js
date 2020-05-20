@@ -40,19 +40,19 @@ export default class TutorRequestWaiting extends Component {
         this.state.tutorUid = this.props.navigation.getParam('tutorUid', '');
         this.state.studentUid = this.props.navigation.getParam(
             'studentUid',
-            ''
+            '',
         );
         this.state.requestUid = this.props.navigation.getParam(
             'requestUid',
-            ''
+            '',
         );
         this.state.studentName = this.props.navigation.getParam(
             'studentName',
-            ''
+            '',
         );
         this.state.studentImage = this.props.navigation.getParam(
             'studentImage',
-            ''
+            '',
         );
         this.setState({});
         this.requestRef = this.requestRef.doc(this.state.requestUid);
@@ -83,13 +83,13 @@ export default class TutorRequestWaiting extends Component {
                             onPress: () =>
                                 this.props.navigation.navigate(
                                     'TutorIncomingRequests',
-                                    { uid: this.state.tutorUid }
+                                    { uid: this.state.tutorUid },
                                 ),
                         },
                     ],
                     {
                         cancelable: false,
-                    }
+                    },
                 );
             }
         } else {
@@ -124,9 +124,9 @@ export default class TutorRequestWaiting extends Component {
                 <View style={styles.iconBackground}>
                     <Image source={FaceLogo} style={styles.face} />
                     <Icon
-                        name="check"
-                        type="font-awesome"
-                        color="white"
+                        name='check'
+                        type='font-awesome'
+                        color='white'
                         size={50}
                         containerStyle={styles.checkMark}
                     />
@@ -138,7 +138,7 @@ export default class TutorRequestWaiting extends Component {
                         responds to your request.
                     </Text>
                 </View>
-                <Button text="Cancel Request" onPress={this.cancelRequest} />
+                <Button text='Cancel Request' onPress={this.cancelRequest} />
             </View>
         );
     }

@@ -164,7 +164,7 @@ class SignUpBasicInfo extends React.Component {
                             value={this.state.name}
                             placeholderTextColor={primaryColor}
                             onChangeText={(name) => this.setState({ name })}
-                            placeholder="Tommy Trojan"
+                            placeholder='Tommy Trojan'
                         />
                         <Text
                             style={styles.errorText}
@@ -181,9 +181,9 @@ class SignUpBasicInfo extends React.Component {
                             value={this.state.email}
                             placeholderTextColor={primaryColor}
                             onChangeText={(email) => this.setState({ email })}
-                            autoCompleteType="email"
-                            placeholder="tommyt@usc.edu"
-                            autoCapitalize="none"
+                            autoCompleteType='email'
+                            placeholder='tommyt@usc.edu'
+                            autoCapitalize='none'
                         />
                         <Text
                             style={styles.errorText}
@@ -202,7 +202,7 @@ class SignUpBasicInfo extends React.Component {
                             onChangeText={(password) =>
                                 this.setState({ password })
                             }
-                            placeholder="************"
+                            placeholder='************'
                             secureTextEntry={true}
                         />
                         <Text
@@ -219,9 +219,9 @@ class SignUpBasicInfo extends React.Component {
                             getSelectedItem={(i) => {
                                 this.setState({ year: i.value });
                             }}
-                            modalHeaderText="Please select your year"
-                            intitalValue="Junior"
-                            dropdownTitle="Year"
+                            modalHeaderText='Please select your year'
+                            intitalValue='Junior'
+                            dropdownTitle='Year'
                             renderItemTextFunc={(item) => item.name}
                         />
                         <Text
@@ -239,9 +239,9 @@ class SignUpBasicInfo extends React.Component {
                                     major: { name: item.name, code: item.code },
                                 });
                             }}
-                            modalHeaderText="Please select your major"
-                            intitalValue="Computer Science"
-                            dropdownTitle="Major"
+                            modalHeaderText='Please select your major'
+                            intitalValue='Computer Science'
+                            dropdownTitle='Major'
                         />
                         <Text
                             style={styles.errorText}
@@ -265,8 +265,8 @@ class SignUpBasicInfo extends React.Component {
                                 onChangeText={(gpa) => {
                                     this.setState({ gpa });
                                 }}
-                                placeholder="3.5"
-                                keyboardType="decimal-pad"
+                                placeholder='3.5'
+                                keyboardType='decimal-pad'
                                 enablesReturnKeyAutomatically={true}
                             />
                         ) : null}
@@ -291,9 +291,9 @@ class SignUpBasicInfo extends React.Component {
                                 }));
                             }}
                             isChecked={this.state.student}
-                            rightText="Student"
+                            rightText='Student'
                             rightTextStyle={{ color: secondaryColor }}
-                            checkBoxColor="white"
+                            checkBoxColor='white'
                         />
                         <CheckBox
                             style={{
@@ -306,9 +306,9 @@ class SignUpBasicInfo extends React.Component {
                                 }));
                             }}
                             isChecked={this.state.tutor}
-                            rightText="Tutor"
+                            rightText='Tutor'
                             rightTextStyle={{ color: secondaryColor }}
-                            checkBoxColor="white"
+                            checkBoxColor='white'
                         />
                     </View>
                     <Text

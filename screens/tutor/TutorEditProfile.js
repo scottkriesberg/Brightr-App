@@ -181,7 +181,7 @@ class TutorEditProfile extends Component {
                 <View style={styles.container}>
                     <View style={styles.nameAvatarContianer}>
                         <Image
-                            resizeMode="stretch"
+                            resizeMode='stretch'
                             style={styles.avatarStyle}
                             source={{
                                 uri:
@@ -208,7 +208,7 @@ class TutorEditProfile extends Component {
                             getSelectedItem={(i) => {
                                 this.setState({ year: i.value });
                             }}
-                            modalHeaderText="Update your year"
+                            modalHeaderText='Update your year'
                             intitalValue={this.state.year}
                             renderItemTextFunc={(item) => item.name}
                             touchableStyle={styles.yearDropdown}
@@ -225,7 +225,7 @@ class TutorEditProfile extends Component {
                                     major: { name: item.name, code: item.code },
                                 });
                             }}
-                            modalHeaderText="Update your major"
+                            modalHeaderText='Update your major'
                             intitalValue={this.state.major.code}
                             touchableStyle={styles.majorDropdown}
                             containerStyle={styles.dropdownContainer}
@@ -238,7 +238,7 @@ class TutorEditProfile extends Component {
                             value={this.state.bio}
                             placeholderTextColor={primaryColor}
                             onChangeText={(bio) => this.setState({ bio })}
-                            placeholder="Fight on!"
+                            placeholder='Fight on!'
                             multiline={true}
                             maxLength={500}
                         />
@@ -252,9 +252,9 @@ class TutorEditProfile extends Component {
                                     major: { name: item.name, code: item.code },
                                 });
                             }}
-                            modalHeaderText="Please select all the classes you would like to tutor for"
-                            intitalValue="Computer Science"
-                            dropdownTitle="Classes"
+                            modalHeaderText='Please select all the classes you would like to tutor for'
+                            intitalValue='Computer Science'
+                            dropdownTitle='Classes'
                             doneFunc={(selected) => {
                                 this.setState({ classes: selected });
                             }}

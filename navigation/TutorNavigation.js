@@ -37,7 +37,7 @@ const TutorRequestNavigator = createStackNavigator(
     },
     {
         initialRouteName: 'TutorIncomingRequests',
-    }
+    },
 );
 
 const TutorProfiletNavigator = createStackNavigator(
@@ -51,7 +51,7 @@ const TutorProfiletNavigator = createStackNavigator(
     },
     {
         initialRouteName: 'TutorProfile',
-    }
+    },
 );
 
 const TutorConnectionsNavigator = createStackNavigator(
@@ -71,7 +71,7 @@ const TutorConnectionsNavigator = createStackNavigator(
     },
     {
         initialRouteName: 'TutorConnections',
-    }
+    },
 );
 
 const TutorTabNavigator = createBottomTabNavigator(
@@ -81,7 +81,7 @@ const TutorTabNavigator = createBottomTabNavigator(
             navigationOptions: {
                 tabBarLabel: 'Profile',
                 tabBarIcon: ({ tintColor }) => (
-                    <Icon name="user" type="font-awesome" color={tintColor} />
+                    <Icon name='user' type='font-awesome' color={tintColor} />
                 ),
             },
         },
@@ -90,7 +90,7 @@ const TutorTabNavigator = createBottomTabNavigator(
             navigationOptions: {
                 tabBarLabel: 'Live',
                 tabBarIcon: ({ tintColor }) => (
-                    <Icon name="place" color={tintColor} />
+                    <Icon name='place' color={tintColor} />
                 ),
             },
         },
@@ -100,8 +100,8 @@ const TutorTabNavigator = createBottomTabNavigator(
                 tabBarLabel: 'Requests',
                 tabBarIcon: ({ tintColor }) => (
                     <Icon
-                        name="lightbulb-o"
-                        type="font-awesome"
+                        name='lightbulb-o'
+                        type='font-awesome'
                         color={tintColor}
                     />
                 ),
@@ -112,7 +112,7 @@ const TutorTabNavigator = createBottomTabNavigator(
             navigationOptions: {
                 tabBarLabel: 'Connections',
                 tabBarIcon: ({ tintColor }) => (
-                    <Icon name="users" type="font-awesome" color={tintColor} />
+                    <Icon name='users' type='font-awesome' color={tintColor} />
                 ),
                 lazy: false,
             },
@@ -120,7 +120,7 @@ const TutorTabNavigator = createBottomTabNavigator(
     },
     {
         initialRouteName: 'TutorWorkSetUp',
-    }
+    },
 );
 
 const TutorNavigator = createSwitchNavigator(
@@ -139,7 +139,7 @@ const TutorNavigator = createSwitchNavigator(
     },
     {
         initialRouteName: 'TutorTabNavigator',
-    }
+    },
 );
 
 export default createAppContainer(TutorNavigator);

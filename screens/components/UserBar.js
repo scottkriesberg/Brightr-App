@@ -97,7 +97,7 @@ export class UserBar extends Component {
                     style={{ alignItems: 'center', justifyContent: 'center' }}
                 >
                     <Icon
-                        name="keyboard-arrow-right"
+                        name='keyboard-arrow-right'
                         size={40}
                         color={primaryColor}
                     />

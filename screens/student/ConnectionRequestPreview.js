@@ -132,7 +132,7 @@ export default class ConnectionRequestPreview extends Component {
                 [{ text: 'OK' }],
                 {
                     cancelable: false,
-                }
+                },
             );
             return;
         }
@@ -159,13 +159,13 @@ export default class ConnectionRequestPreview extends Component {
                                         'StudentMap',
                                         {
                                             uid: this.state.uid,
-                                        }
+                                        },
                                     ),
                             },
                         ],
                         {
                             cancelable: false,
-                        }
+                        },
                     );
                 } else {
                     firestore
@@ -197,7 +197,7 @@ export default class ConnectionRequestPreview extends Component {
                                 'StudentActiveRequests',
                                 {
                                     uid: this.state.uid,
-                                }
+                                },
                             );
                         })
                         .catch((error) => {
@@ -234,7 +234,7 @@ export default class ConnectionRequestPreview extends Component {
                         <TextInput
                             style={styles.description}
                             multiline={true}
-                            placeholder="Description"
+                            placeholder='Description'
                             onChangeText={(description) =>
                                 this.setState({ description })
                             }
@@ -249,7 +249,7 @@ export default class ConnectionRequestPreview extends Component {
                                 maximumValue={90}
                                 minimumValue={15}
                                 step={15}
-                                thumbTintColor="#6A7BD6"
+                                thumbTintColor='#6A7BD6'
                                 thumbTouchSize={{ width: 30, height: 30 }}
                                 trackStyle={{ height: 15, borderRadius: 10 }}
                                 thumbStyle={{
@@ -292,7 +292,7 @@ export default class ConnectionRequestPreview extends Component {
                                     maximumValue={90}
                                     minimumValue={15}
                                     step={15}
-                                    thumbTintColor="#6A7BD6"
+                                    thumbTintColor='#6A7BD6'
                                     thumbTouchSize={{ width: 30, height: 30 }}
                                     trackStyle={{
                                         height: 15,
@@ -325,7 +325,7 @@ export default class ConnectionRequestPreview extends Component {
                                     maximumValue={100}
                                     minimumValue={10}
                                     step={5}
-                                    thumbTintColor="#6A7BD6"
+                                    thumbTintColor='#6A7BD6'
                                     thumbTouchSize={{ width: 30, height: 30 }}
                                     trackStyle={{
                                         height: 15,
@@ -374,9 +374,9 @@ export default class ConnectionRequestPreview extends Component {
                             getSelectedItem={(i) => {
                                 this.setState({ locationRequest: i });
                             }}
-                            modalHeaderText="Select a location"
-                            intitalValue="Select a location"
-                            dropdownTitle="Location"
+                            modalHeaderText='Select a location'
+                            intitalValue='Select a location'
+                            dropdownTitle='Location'
                         />
 
                         <Dropdown
@@ -390,15 +390,15 @@ export default class ConnectionRequestPreview extends Component {
                             getSelectedItem={(i) => {
                                 this.setState({ classRequest: i });
                             }}
-                            modalHeaderText="Select a class"
-                            intitalValue="Select a class"
-                            dropdownTitle="Class"
+                            modalHeaderText='Select a class'
+                            intitalValue='Select a class'
+                            dropdownTitle='Class'
                             renderItemTextFunc={(item) => item.name}
                         />
                     </View>
                     <View style={styles.live}>
                         <Button
-                            text="Request Tutor"
+                            text='Request Tutor'
                             onPress={this.requestTutor}
                         />
                     </View>

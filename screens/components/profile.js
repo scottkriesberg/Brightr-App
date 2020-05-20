@@ -79,7 +79,7 @@ export class Rating extends Component {
         return (
             <Text style={this.props.style}>
                 {Math.round(this.props.rating * 10) / 10}/5
-                <Icon name="star" type="Entypo" color="#F0CE49" size={20} />
+                <Icon name='star' type='Entypo' color='#F0CE49' size={20} />
             </Text>
         );
     }
@@ -146,14 +146,14 @@ export class ProfileTopBar extends Component {
         return (
             <View style={this.props.containerStyle || styles.header}>
                 <Button
-                    type="secondary"
+                    type='secondary'
                     buttonStyle={{ width: '20%', height: '40%' }}
-                    text="Logout"
+                    text='Logout'
                     onPress={this.props.logoutFunction}
                 />
                 {this.props.switchAccountFunc ? (
                     <Button
-                        type="primary"
+                        type='primary'
                         buttonStyle={{ width: '50%', height: '45%' }}
                         text={this.props.switchText}
                         onPress={this.props.switchAccountFunc}
@@ -161,7 +161,7 @@ export class ProfileTopBar extends Component {
                 ) : null}
 
                 <Icon
-                    name="account-edit"
+                    name='account-edit'
                     size={35}
                     color={primaryColor}
                     onPress={this.props.editFunc}
@@ -184,7 +184,7 @@ export class ProfilePreviousSessions extends Component {
             text = this.props.renderItemTextFunc(item);
         } else {
             text = `${item.class.date} ${item.class.name}${' '(
-                Math.round(item.sessionTime / 60000)
+                Math.round(item.sessionTime / 60000),
             )}min $${item.sessionCost}`;
         }
         return (

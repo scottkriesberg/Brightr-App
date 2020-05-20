@@ -17,7 +17,7 @@ export class RatingModal extends Component {
     render() {
         const { visible, dismissFunc, ratingFunc, text } = this.props;
         return (
-            <Modal animationType="slide" transparent={false} visible={visible}>
+            <Modal animationType='slide' transparent={false} visible={visible}>
                 <View style={styles.ratingModalContainer}>
                     <Text style={styles.modalRatingTitleText}>{text}</Text>
                     <AirbnbRating
@@ -27,9 +27,9 @@ export class RatingModal extends Component {
                         onFinishRating={ratingFunc}
                     />
                     <Button
-                        type="secondary"
+                        type='secondary'
                         textStyle={styles.finishRatingModalButtonText}
-                        text="Finish"
+                        text='Finish'
                         buttonStyle={styles.finishRatingModalButton}
                         onPress={dismissFunc}
                     />
@@ -49,14 +49,14 @@ export class WaitingModal extends Component {
     render() {
         const { visible, dismissFunc, text } = this.props;
         return (
-            <Modal animationType="slide" transparent={false} visible={visible}>
+            <Modal animationType='slide' transparent={false} visible={visible}>
                 <View style={styles.waitingModalContainer}>
                     <Text style={styles.modalWaitingTitleText}>{text}</Text>
                     <Loading />
                     <Button
-                        type="secondary"
+                        type='secondary'
                         textStyle={styles.cancelWaitingModalButtonText}
-                        text="Cancel"
+                        text='Cancel'
                         buttonStyle={styles.cancelWaitingModalButton}
                         onPress={dismissFunc}
                     />
@@ -90,7 +90,7 @@ export class RecapModal extends Component {
             ratingText,
         } = this.props;
         return (
-            <Modal animationType="slide" transparent={false} visible={visible}>
+            <Modal animationType='slide' transparent={false} visible={visible}>
                 <View style={styles.recapContainer}>
                     <View style={styles.headingContainer}>
                         <Text style={styles.recapTitleText}>{headingText}</Text>
@@ -132,8 +132,8 @@ export class RecapModal extends Component {
                     </View>
                     <View style={styles.doneButtonConainter}>
                         <Button
-                            type="primary"
-                            text="Done"
+                            type='primary'
+                            text='Done'
                             buttonStyle={styles.doneButton}
                             onPress={dismissFunc}
                         />
