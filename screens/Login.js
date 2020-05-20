@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable no-undef */
+import React from 'react';
 import {
     View,
     TextInput,
@@ -117,7 +118,7 @@ class Login extends React.Component {
                 }}
             >
                 <KeyboardAwareScrollView
-                    style={{ backgroundColor: "#4c69a5" }}
+                    style={{ backgroundColor: '#4c69a5' }}
                     resetScrollToCoords={{ x: 0, y: 0 }}
                     contentContainerStyle={styles.screenContainer}
                     scrollEnabled={true}
@@ -150,14 +151,14 @@ class Login extends React.Component {
                         <View style={styles.loginInputContainer}>
                             <TextInput
                                 style={styles.loginInput}
-                                label="Email"
+                                label='Email'
                                 value={this.state.email}
                                 onChangeText={(email) =>
                                     this.setState({ email })
                                 }
-                                placeholder="Email"
-                                placeholderTextColor="white"
-                                autoCapitalize="none"
+                                placeholder='Email'
+                                placeholderTextColor='white'
+                                autoCapitalize='none'
                             />
                             <TextInput
                                 style={styles.loginInput}
@@ -165,8 +166,8 @@ class Login extends React.Component {
                                 onChangeText={(password) =>
                                     this.setState({ password })
                                 }
-                                placeholder="Password"
-                                placeholderTextColor="white"
+                                placeholder='Password'
+                                placeholderTextColor='white'
                                 secureTextEntry={true}
                             />
                             <Text
@@ -179,21 +180,21 @@ class Login extends React.Component {
                         </View>
                         <View style={styles.loginButtonContainer}>
                             <Button
-                                type="secondary"
+                                type='secondary'
                                 buttonStyle={styles.loginButton}
                                 textStyle={styles.loginButtonText}
-                                text="Login"
+                                text='Login'
                                 onPress={() => this.handleSignIn()}
                             />
                         </View>
                         <View style={styles.signUpButtonContainer}>
                             <Button
-                                type="primary"
+                                type='primary'
                                 text="Don't have an account yet? Sign up"
                                 buttonStyle={styles.signUpButton}
                                 onPress={() =>
                                     this.props.navigation.navigate(
-                                        "SignUpBasicInfo"
+                                        'SignUpBasicInfo',
                                     )
                                 }
                             />
@@ -211,67 +212,67 @@ const styles = StyleSheet.create({
     screenContainer: {
         flex: 1,
         backgroundColor: primaryColor,
-        alignItems: "stretch",
+        alignItems: 'stretch',
     },
     titleContainer: {
         flex: 2,
-        justifyContent: "flex-end",
-        alignItems: "center",
+        justifyContent: 'flex-end',
+        alignItems: 'center',
     },
     logoImage: {
-        height: "35%",
-        width: "35%",
-        resizeMode: "contain",
+        height: '35%',
+        width: '35%',
+        resizeMode: 'contain',
     },
     title: {
-        color: "#FFFFFF",
-        fontStyle: "italic",
-        fontWeight: "900",
+        color: '#FFFFFF',
+        fontStyle: 'italic',
+        fontWeight: '900',
         fontSize: 60,
-        alignSelf: "center",
-        margin: "10%",
+        alignSelf: 'center',
+        margin: '10%',
     },
     loginInputContainer: {
         flex: 1,
-        justifyContent: "space-around",
-        width: "100%",
-        alignItems: "center",
-        alignContent: "center",
+        justifyContent: 'space-around',
+        width: '100%',
+        alignItems: 'center',
+        alignContent: 'center',
     },
     loginInput: {
-        width: "90%%",
-        padding: "3%",
+        width: '90%%',
+        padding: '3%',
         fontSize: 16,
         borderColor: secondaryColor,
         borderRadius: 15,
         borderWidth: 2,
-        textAlign: "left",
+        textAlign: 'left',
         color: secondaryColor,
     },
     loginButtonContainer: {
         flex: 1,
-        justifyContent: "flex-start",
-        width: "100%",
-        alignItems: "center",
-        alignContent: "center",
+        justifyContent: 'flex-start',
+        width: '100%',
+        alignItems: 'center',
+        alignContent: 'center',
     },
     loginButton: {
-        height: "30%",
-        justifyContent: "center",
+        height: '30%',
+        justifyContent: 'center',
         padding: 1,
     },
     signUpButtonContainer: {
         flex: 1,
-        alignItems: "center",
-        justifyContent: "flex-start",
+        alignItems: 'center',
+        justifyContent: 'flex-start',
     },
     signUpButton: {
-        padding: "2%",
+        padding: '2%',
     },
     errorText: {
-        color: "red",
+        color: 'red',
         fontSize: 25,
-        fontWeight: "bold",
-        marginTop: "5%",
+        fontWeight: 'bold',
+        marginTop: '5%',
     },
 });

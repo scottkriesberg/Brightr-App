@@ -1,21 +1,25 @@
 import React, { Component } from 'react';
-import { TouchableWithoutFeedback, Keyboard, View, Image, ActivityIndicator, FlatList } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import LoadingStyle from '../../styles/loading';
 
 class Loading extends Component {
-	static props = {
-		style: PropTypes.any,
-		size: PropTypes.any,
-		color: PropTypes.any
-	};
-	render() {
-		return (
-			<View style={this.props.style || LoadingStyle.loadingIcon}>
-				<ActivityIndicator size={this.props.size || 'large'} color={this.props.color || '#0000ff'} />
-			</View>
-		);
-	}
+    static props = {
+        style: PropTypes.any,
+        size: PropTypes.any,
+        color: PropTypes.any,
+    };
+
+    render() {
+        return (
+            <View style={this.props.style || LoadingStyle.loadingIcon}>
+                <ActivityIndicator
+                    size={this.props.size || 'large'}
+                    color={this.props.color || '#0000ff'}
+                />
+            </View>
+        );
+    }
 }
 export default Loading;
 // export function codeGen() {

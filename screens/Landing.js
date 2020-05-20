@@ -1,32 +1,29 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
-import { Button } from 'react-native-elements';
-import firebase from '../firebase';
-import ButtonStyles from '../styles/button.js';
-import ContainerStyles from '../styles/container.js';
-import ImageStyles from '../styles/image.js';
-import TextStyles from '../styles/text.js';
+import { View, Text, Image } from 'react-native';
+import ContainerStyles from '../styles/container';
+import ImageStyles from '../styles/image';
+import TextStyles from '../styles/text';
 
 const logo = require('../assets/logo-09.png');
 
 class Landing extends React.Component {
-	constructor(props) {
-		super(props);
+    constructor(props) {
+        super(props);
 
-		this.state = {};
-	}
+        this.state = {};
+    }
 
-	render() {
-		return (
-			<View style={ContainerStyles.landingContainer}>
-				<View style={ContainerStyles.landingLogoContainer}>
-					<Image style={ImageStyles.logoImage} source={logo} />
-					<Text h1 style={TextStyles.title}>
-						Brightr
-					</Text>
-				</View>
-				{/* Button container */}
-				{/* <View style={ContainerStyles.inputContainer}>
+    render() {
+        return (
+            <View style={ContainerStyles.landingContainer}>
+                <View style={ContainerStyles.landingLogoContainer}>
+                    <Image style={ImageStyles.logoImage} source={logo} />
+                    <Text h1 style={TextStyles.title}>
+                        Brightr
+                    </Text>
+                </View>
+                {/* Button container */}
+                {/* <View style={ContainerStyles.inputContainer}>
 					<Button
 						type="clear"
 						style={ButtonStyles.landingButton}
@@ -40,9 +37,9 @@ class Landing extends React.Component {
 						title="Sign Up"
 					/>
 				</View> */}
-			</View>
-		);
-	}
+            </View>
+        );
+    }
 }
 
 export default Landing;

@@ -1,0 +1,30 @@
+{
+    "extends": ["airbnb", "prettier"],
+    "parser": "babel-eslint",
+    "plugins": ["react", "react-native"],
+    "parserOptions": {
+        "sourceType": "module",
+        "allowImportExportEverywhere": false,
+        "codeFrame": true
+    },
+    "rules": {
+        "no-console": "off",
+        "react/jsx-indent": "off",
+        "react/prop-types": "off",
+        "react/jsx-indent-props": "off",
+        "react/jsx-one-expression-per-line": "off",
+        "react/jsx-curly-newline": "off",
+        "react/destructuring-assignment": "off",
+        "prefer-destructuring": "off",
+        "react/jsx-filename-extension": "off",
+        "no-use-before-define": "off",
+        "no-plusplus": "off",
+        "no-throw-literal": "off",
+        "react/jsx-boolean-value": "off",
+        "class-methods-use-this": "off",
+        "one-var": "off",
+        "max-classes-per-file": "off",
+        "react/prefer-stateless-function": "off",
+        "no-undef": "warn"
+    }
+}

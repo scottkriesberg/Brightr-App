@@ -1,11 +1,12 @@
-import React, { Component } from "react";
-import { Icon, Slider } from "react-native-elements";
-import { Alert, StyleSheet, Text, View, SafeAreaView } from "react-native";
-import firebase from "../../firebase";
-import Loading from "../components/utils.js";
-import { Map } from "../components/map";
+/* eslint-disable no-undef */
+import React, { Component } from 'react';
+import { Slider } from 'react-native-elements';
+import { Alert, StyleSheet, Text, View } from 'react-native';
+import { firestore } from '../../firebase';
+import Loading from '../components/utils';
+import { Map } from '../components/map';
+import { Button } from '../components/buttons';
 import store from "../../redux/store";
-import { Button } from "../components/buttons";
 
 class TutorWorkSetUp extends Component {
     constructor() {
@@ -78,33 +79,30 @@ class TutorWorkSetUp extends Component {
         this.tutorRef
             .update({ isLive: false, hourlyRate: 0, locations: [] })
             .then(() => {
-                firebase
-                    .firestore()
-                    .collection("requests")
-                    .where("tutorUid", "==", this.state.uid)
-                    .where("status", "==", "pending")
+                firestore
+                    .collection('requests')
+                    .where('tutorUid', '==', this.state.uid)
+                    .where('status', '==', 'pending')
                     .get()
-                    .then(function (querySnapshot) {
-                        querySnapshot.forEach(function (doc) {
-                            firebase
-                                .firestore()
-                                .collection("requests")
+                    .then((querySnapshot) => {
+                        querySnapshot.forEach((doc) => {
+                            firestore
+                                .collection('requests')
                                 .doc(doc.id)
-                                .update({ status: "declined" })
-                                .then((docRef) => {})
+                                .update({ status: 'declined' })
                                 .catch((error) => {
                                     console.error(
-                                        "Error adding document: ",
-                                        error
+                                        'Error adding document: ',
+                                        error,
                                     );
                                 });
                         });
                     })
-                    .catch(function (error) {
-                        console.log("Error getting documents: ", error);
+                    .catch((error) => {
+                        console.log('Error getting documents: ', error);
                     });
 
-                this.setState({ status: "Offline" });
+                this.setState({ status: 'Offline' });
             });
     };
 
@@ -125,9 +123,9 @@ class TutorWorkSetUp extends Component {
                             styles.statusContainer,
                             {
                                 shadowColor:
-                                    this.state.status == "Live"
+                                    this.state.status === 'Live'
                                         ? primaryColor
-                                        : "black",
+                                        : 'black',
                             },
                         ]}
                     >
@@ -138,9 +136,9 @@ class TutorWorkSetUp extends Component {
                                 styles.statusText,
                                 {
                                     color:
-                                        this.state.status == "Live"
+                                        this.state.status === 'Live'
                                             ? primaryColor
-                                            : "black",
+                                            : 'black',
                                 },
                             ]}
                         >
@@ -167,19 +165,19 @@ class TutorWorkSetUp extends Component {
                         <Text>$100/hr</Text>
                     </View>
                 </View>
-                {this.state.status == "Live" ? (
+                {this.state.status === 'Live' ? (
                     <View style={styles.live}>
                         <Button
-                            type={"secondary"}
+                            type='secondary'
                             buttonStyle={styles.liveButtons}
                             textStyle={styles.liveButtonsText}
-                            text={"End Live"}
+                            text='End Live'
                             onPress={this.stopLive}
                         />
                         <Button
                             buttonStyle={styles.liveButtons}
                             textStyle={styles.liveButtonsText}
-                            text={"Update Live"}
+                            text='Update Live'
                             onPress={this.goLive}
                         />
                     </View>
@@ -188,7 +186,7 @@ class TutorWorkSetUp extends Component {
                         <Button
                             buttonStyle={styles.liveButtons}
                             textStyle={styles.liveButtonsText}
-                            text={"Go Live"}
+                            text='Go Live'
                             onPress={this.goLive}
                         />
                     </View>
@@ -201,49 +199,49 @@ class TutorWorkSetUp extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: "column",
+        flexDirection: 'column',
     },
     header: {
         flex: 1,
-        flexDirection: "row",
-        backgroundColor: "green",
-        justifyContent: "space-between",
+        flexDirection: 'row',
+        backgroundColor: 'green',
+        justifyContent: 'space-between',
     },
     cancelButton: {
-        alignSelf: "flex-start",
+        alignSelf: 'flex-start',
     },
     mapContainer: {
         flex: 5,
     },
     map: {
-        alignItems: "flex-start",
-        justifyContent: "space-between",
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
         flexGrow: 1,
     },
     sliderContainer: {
         flex: 1,
         paddingLeft: 10,
         paddingRight: 10,
-        justifyContent: "center",
+        justifyContent: 'center',
     },
     slider: {
         flex: 1,
     },
     sliderText: {
-        flexDirection: "row",
-        justifyContent: "space-between",
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     currentRateText: {
         fontSize: 30,
     },
     live: {
         flex: 0.5,
-        alignItems: "flex-start",
-        flexDirection: "row",
-        justifyContent: "space-around",
+        alignItems: 'flex-start',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
     },
     liveButtons: {
-        width: "40%",
+        width: '40%',
         padding: 5,
     },
     liveButtonsText: {
@@ -258,25 +256,25 @@ const styles = StyleSheet.create({
         width: 25,
     },
     statusContainer: {
-        position: "absolute",
-        alignItems: "center",
-        alignSelf: "center",
-        width: "50%",
-        height: "7%",
-        backgroundColor: "white",
-        justifyContent: "center",
-        top: "7%",
+        position: 'absolute',
+        alignItems: 'center',
+        alignSelf: 'center',
+        width: '50%',
+        height: '7%',
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        top: '7%',
         borderRadius: 5,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
         shadowRadius: 6,
         shadowOpacity: 0.8,
     },
     statusText: {
-        textAlign: "center",
+        textAlign: 'center',
         fontSize: 30,
-        alignSelf: "center",
-        fontWeight: "bold",
+        alignSelf: 'center',
+        fontWeight: 'bold',
     },
 });
 
