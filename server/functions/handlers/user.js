@@ -36,9 +36,9 @@ exports.login = (req, res) => {
     //User data should just email, password, account type can be determined
     //TODO: Login in to specific accounts if both student and tutors
     console.log("Request body");
-    console.log(req.body);
+    console.log(req.query);
     //Credentials from the body of the request
-    const creds = req.body;
+    const creds = req.query;
 
     //TODO: Check for any invalid email/password syntax, and return accordingly
 
@@ -92,6 +92,6 @@ exports.login = (req, res) => {
             //Print the error code and just return to client
             //All logic of wrong email, bad password can be done on client
             console.log(error.code);
-            return res.status(403).json(error);
+            return res.status(403).json(error.code);
         });
 };

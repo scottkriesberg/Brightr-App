@@ -33,16 +33,28 @@ class Login extends React.Component {
         }
 
         const { email, password } = this.state;
+        const creds = {
+            email: email,
+            password: password,
+        };
 
         //Calling login endpoint with user creds
         axios
             .get("/login", {
-                email: email,
-                password: password,
+                params: {
+                    email: email,
+                    password: password,
+                },
             })
             .then((res) => {
-                console.log("Axios called completed");
-                console.log(json(res));
+                //Login works successfull
+                const userData = res.data;
+                //Setting state in redux
+                this.props.setUser(userData);
+            })
+            .catch((error) => {
+                //This will contain the auth/wrong-password, etc.
+                console.log(error.response.data);
             });
     };
 
