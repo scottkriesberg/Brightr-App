@@ -9,9 +9,7 @@ import {
     Image,
     SafeAreaView,
 } from "react-native";
-import firebase from "../firebase";
 import { Button } from "./components/buttons";
-import { SET_USER } from "../redux/types";
 import { connect } from "react-redux";
 import { setUser } from "../redux/actions/userAction";
 import store from "../redux/store";
@@ -50,11 +48,34 @@ class Login extends React.Component {
                 //Login works successfull
                 const userData = res.data;
                 //Setting state in redux
+                console.log("Got a response");
                 this.props.setUser(userData);
+                //Navigation
+                //TODO: Remove userId from history
+                console.log("Updated redux state");
+                if (userData.type == "student") {
+                    this.props.navigation.navigate("StudentNavigator");
+                } else {
+                    console.log("Made it here");
+                    this.props.navigation.navigate("TutorNavigator");
+                }
             })
             .catch((error) => {
                 //This will contain the auth/wrong-password, etc.
-                console.log(error.response.data);
+                const errorCode = error.response.data;
+                if (errorCode == "auth/invalid-email") {
+                    this.setState({
+                        loginError: "Please check your email format",
+                    });
+                } else if (errorCode == "auth/user-not-found") {
+                    this.setState({
+                        loginError: "No account found with that email",
+                    });
+                } else if (errorCode == "auth/wrong-password") {
+                    this.setState({
+                        loginError: "Wrong Password",
+                    });
+                }
             });
     };
 
