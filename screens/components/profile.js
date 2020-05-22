@@ -95,7 +95,6 @@ export class ProfileHeadingInfo extends Component {
 
     render() {
         const { user, image, avatarStyle, containerStyle } = this.props;
-        console.log(user);
         return (
             <View style={containerStyle || styles.container}>
                 <AsyncImage

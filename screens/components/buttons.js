@@ -123,15 +123,15 @@ export class ListButton extends Component {
 
         return (
             <TouchableOpacity
-                style={[buttonStyle, ListButtonStyle.button]}
+                style={[ListButtonStyle.button, buttonStyle]}
                 disabled={disabled}
                 onPress={onPress}
             >
                 <Text
-                    style={[textStyle, ListButtonStyle.text]}
+                    style={[ListButtonStyle.text, textStyle]}
                     allowFontScaling={true}
                     adjustsFontSizeToFit={true}
-                    numberOfLines={1}
+                    numberOfLines={2}
                 >
                     {text}
                 </Text>
@@ -154,7 +154,8 @@ const ListButtonStyle = StyleSheet.create({
     },
     text: {
         color: primaryColor,
-        textAlign: 'center',
+        textAlign: 'left',
         fontSize: 20,
+        width: '70%',
     },
 });

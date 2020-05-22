@@ -3,11 +3,10 @@ import React, { Component } from 'react';
 import { StyleSheet, SafeAreaView } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { from } from 'rxjs';
 import store from '../../redux/store';
 import { firestore } from '../../firebase';
 import { ProfileHeadingInfo, ProfileClasses } from '../components/profile';
-import { ProfileOptionsModal } from '../components/ProfileOptions';
+import { ProfileOptionsModal, AboutModal } from '../components/ProfileOptions';
 import Loading from '../components/utils';
 import { clearUser } from '../../redux/actions/userAction';
 
@@ -15,12 +14,16 @@ import { clearUser } from '../../redux/actions/userAction';
 const mapDispatchToProps = (dispatch) => {
     return {
         clearUser: () => {
-            console.log('Made the redux call');
             dispatch(clearUser());
         },
     };
 };
 class Profile extends Component {
+    static navigationOptions = {
+        headerShown: false,
+        title: 'Profile',
+    };
+
     constructor() {
         super();
         this.state = {
@@ -29,6 +32,7 @@ class Profile extends Component {
             isLoading: true,
             isTutor: false,
             profileOptionsVisible: false,
+            aboutModalVisible: false,
         };
     }
 
@@ -101,6 +105,38 @@ class Profile extends Component {
                     visible={this.state.profileOptionsVisible}
                     closeFunc={this.toggleProfileOptions}
                     logoutFunc={this.logout}
+                    aboutFunc={() => {
+                        this.setState({ profileOptionsVisible: false });
+                        this.props.navigation.navigate('About');
+                    }}
+                    helpFunc={() => {
+                        this.setState({ profileOptionsVisible: false });
+                        this.props.navigation.navigate('Help');
+                    }}
+                    reportFunc={() => {
+                        this.setState({ profileOptionsVisible: false });
+                        this.props.navigation.navigate('Report');
+                    }}
+                    sessionsFunc={() => {
+                        this.setState({ profileOptionsVisible: false });
+                        this.props.navigation.navigate('Sessions');
+                    }}
+                    paymentFunc={() => {
+                        this.setState({ profileOptionsVisible: false });
+                        this.props.navigation.navigate('Payment');
+                    }}
+                    editFunc={() => {
+                        this.setState({ profileOptionsVisible: false });
+                        this.props.navigation.navigate('EditProfile');
+                    }}
+                />
+                <AboutModal
+                    visible={this.state.aboutModalVisible}
+                    closeFunc={() =>
+                        this.setState({
+                            aboutModalVisible: false,
+                        })
+                    }
                 />
                 <ProfileHeadingInfo
                     user={this.state.user}
