@@ -95,7 +95,6 @@ export class ProfileHeadingInfo extends Component {
 
     render() {
         const { user, image, avatarStyle, containerStyle } = this.props;
-        console.log(user);
         return (
             <View style={containerStyle || styles.container}>
                 <AsyncImage
@@ -128,44 +127,6 @@ export class ProfileHeadingInfo extends Component {
                         {user.bio}
                     </Text>
                 </View>
-            </View>
-        );
-    }
-}
-
-export class ProfileTopBar extends Component {
-    static props = {
-        containerStyle: PropTypes.any,
-        editFunc: PropTypes.any,
-        name: PropTypes.any,
-        switchAccountFunc: PropTypes.Func,
-        switchText: PropTypes.any,
-    };
-
-    render() {
-        return (
-            <View style={this.props.containerStyle || styles.header}>
-                <Button
-                    type='secondary'
-                    buttonStyle={{ width: '20%', height: '40%' }}
-                    text='Logout'
-                    onPress={this.props.logoutFunction}
-                />
-                {this.props.switchAccountFunc ? (
-                    <Button
-                        type='primary'
-                        buttonStyle={{ width: '50%', height: '45%' }}
-                        text={this.props.switchText}
-                        onPress={this.props.switchAccountFunc}
-                    />
-                ) : null}
-
-                <Icon
-                    name='account-edit'
-                    size={35}
-                    color={primaryColor}
-                    onPress={this.props.editFunc}
-                />
             </View>
         );
     }

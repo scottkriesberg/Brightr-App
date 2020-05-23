@@ -253,7 +253,6 @@ class StudentInProgress extends Component {
                                     cancelable: false,
                                 },
                             );
-                            console.log(this.currentSessionRef);
                             return;
                         }
                         this.currentSessionRef

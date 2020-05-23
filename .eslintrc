@@ -25,6 +25,7 @@
         "one-var": "off",
         "max-classes-per-file": "off",
         "react/prefer-stateless-function": "off",
-        "no-undef": "warn"
+        "no-undef": "warn",
+        "import/prefer-default-export": "off"
     }
 }

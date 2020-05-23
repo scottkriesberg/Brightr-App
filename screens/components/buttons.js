@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
+import { Icon } from 'react-native-elements';
 import './global';
 
 export class Button extends Component {
@@ -61,6 +62,7 @@ const PrimaryStyle = StyleSheet.create({
         width: '80%',
         borderWidth: 1,
         borderColor: secondaryColor,
+        paddingHorizontal: 5,
     },
     text: {
         color: secondaryColor,
@@ -78,6 +80,7 @@ const SecondaryStyle = StyleSheet.create({
         width: '80%',
         borderWidth: 1,
         borderColor: primaryColor,
+        paddingHorizontal: 5,
     },
     text: {
         color: primaryColor,
@@ -95,11 +98,64 @@ const DisabledStyle = StyleSheet.create({
         width: '80%',
         borderWidth: 1,
         borderColor: 'grey',
+        paddingHorizontal: 5,
     },
     text: {
         color: 'lightgrey',
         textAlign: 'center',
         fontSize: 40,
         fontFamily: primaryFont,
+    },
+});
+
+export class ListButton extends Component {
+    static props = {
+        type: PropTypes.any,
+        buttonStyle: PropTypes.any,
+        textStyle: PropTypes.any,
+        onPress: PropTypes.Func,
+        text: PropTypes.any,
+        disabled: PropTypes.any,
+    };
+
+    render() {
+        const { disabled, onPress, text, buttonStyle, textStyle } = this.props;
+
+        return (
+            <TouchableOpacity
+                style={[ListButtonStyle.button, buttonStyle]}
+                disabled={disabled}
+                onPress={onPress}
+            >
+                <Text
+                    style={[ListButtonStyle.text, textStyle]}
+                    allowFontScaling={true}
+                    adjustsFontSizeToFit={true}
+                    numberOfLines={2}
+                >
+                    {text}
+                </Text>
+                <Icon
+                    name='keyboard-arrow-right'
+                    size={40}
+                    color={primaryColor}
+                />
+            </TouchableOpacity>
+        );
+    }
+}
+const ListButtonStyle = StyleSheet.create({
+    button: {
+        flexDirection: 'row',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '80%',
+    },
+    text: {
+        color: primaryColor,
+        textAlign: 'left',
+        fontSize: 20,
+        width: '70%',
     },
 });

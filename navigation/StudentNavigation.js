@@ -19,6 +19,12 @@ import StudentRequestRespond from '../screens/student/StudentRequestRespond';
 import RequestWaiting from '../screens/student/RequestWaiting';
 import StudentChat from '../screens/student/StudentChat';
 import StudentInProgress from '../screens/student/StudentInProgress';
+import About from '../screens/profile/About';
+import Help from '../screens/profile/Help';
+import Report from '../screens/profile/Report';
+import Payment from '../screens/profile/Payment';
+import Sessions from '../screens/profile/Sessions';
+import EditProfile from '../screens/profile/EditProfile';
 
 const StudentRequestNavigator = createStackNavigator(
     {
@@ -83,10 +89,39 @@ const StudentConnectionsNavigator = createStackNavigator(
     },
 );
 
-const StudentTabNavigator = createBottomTabNavigator(
+const StudentProfileNavigator = createStackNavigator(
     {
         StudentProfile: {
             screen: StudentProfile,
+        },
+        About: {
+            screen: About,
+        },
+        Help: {
+            screen: Help,
+        },
+        Report: {
+            screen: Report,
+        },
+        EditProfile: {
+            screen: EditProfile,
+        },
+        Payment: {
+            screen: Payment,
+        },
+        Sessions: {
+            screen: Sessions,
+        },
+    },
+    {
+        initialRouteName: 'StudentProfile',
+    },
+);
+
+const StudentTabNavigator = createBottomTabNavigator(
+    {
+        StudentProfile: {
+            screen: StudentProfileNavigator,
             navigationOptions: {
                 tabBarLabel: 'Profile',
                 tabBarIcon: ({ tintColor }) => (
