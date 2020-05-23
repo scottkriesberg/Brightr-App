@@ -13,6 +13,7 @@ export class ProfileOptionsModal extends Component {
         reportFunc: PropTypes.any,
         paymentFunc: PropTypes.any,
         sessionsFunc: PropTypes.any,
+        switchFunc: PropTypes.any,
         editFunc: PropTypes.any,
         closeFunc: PropTypes.any,
         logoutFunc: PropTypes.any,
@@ -68,6 +69,7 @@ export class ProfileOptionsModal extends Component {
                     <Button
                         buttonStyle={styles.switchButton}
                         text='Switch To Tutor Mode'
+                        onPress={this.props.switchFunc}
                     />
                     <Button
                         type='secondary'
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
     },
     modalHeaderText: {
         fontSize: 30,
-        marginTop: 20,
+        marginTop: 60,
         marginBottom: 20,
     },
     settingsButtons: {

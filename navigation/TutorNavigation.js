@@ -14,7 +14,6 @@ import TutorWorkSetUp from '../screens/tutor/TutorWorkSetUp';
 import TutorIncomingRequests from '../screens/tutor/TutorIncomingRequests';
 import TutorChat from '../screens/tutor/TutorChat';
 import TutorInProgress from '../screens/tutor/TutorInProgress';
-import TutorEditProfile from '../screens/tutor/TutorEditProfile';
 import TutorRequestPreview from '../screens/tutor/TutorRequestPreview';
 
 const TutorRequestNavigator = createStackNavigator(
@@ -44,9 +43,6 @@ const TutorProfiletNavigator = createStackNavigator(
     {
         TutorProfile: {
             screen: TutorProfile,
-        },
-        TutorEditProfile: {
-            screen: TutorEditProfile,
         },
     },
     {
@@ -132,9 +128,6 @@ const TutorNavigator = createSwitchNavigator(
 
         TutorInProgress: {
             screen: TutorInProgress,
-        },
-        TutorEditProfile: {
-            screen: TutorEditProfile,
         },
     },
     {

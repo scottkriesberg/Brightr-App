@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { StyleSheet, SafeAreaView } from 'react-native';
+import { StyleSheet, SafeAreaView, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import store from '../../redux/store';
@@ -77,9 +77,28 @@ class Profile extends Component {
     };
 
     toTutorAccount = () => {
-        this.props.navigation.navigate('TutorNavigator', {
-            uid: this.state.uid,
-        });
+        if (this.state.isTutor) {
+            this.props.navigation.navigate('TutorNavigator', {
+                uid: this.state.uid,
+            });
+        } else {
+            Alert.alert(
+                'No Tutor Account',
+                'You are not currently registered as a tutor. Would you like to register?',
+                [
+                    {
+                        text: 'No',
+                        style: 'destructive',
+                    },
+                    {
+                        text: 'Yes',
+                    },
+                ],
+                {
+                    cancelable: false,
+                },
+            );
+        }
     };
 
     toggleProfileOptions = () => {
@@ -128,6 +147,10 @@ class Profile extends Component {
                     editFunc={() => {
                         this.setState({ profileOptionsVisible: false });
                         this.props.navigation.navigate('EditProfile');
+                    }}
+                    switchFunc={() => {
+                        // this.setState({ profileOptionsVisible: false });
+                        this.toTutorAccount();
                     }}
                 />
                 <AboutModal
@@ -194,7 +217,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignSelf: 'flex-start',
         left: '3%',
-        top: '3%',
+        top: '5%',
         zIndex: 999,
     },
 });
